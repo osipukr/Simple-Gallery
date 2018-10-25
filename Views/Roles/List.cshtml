@@ -1,0 +1,24 @@
+﻿@model Simply_Gallery.Models.RoleViewModel
+
+@{
+    ViewBag.Title = "Список";
+}
+
+<h2>Список всех пользователей с ролью @Model.Name</h2>
+
+<table class="table">
+    <tr>
+        <th>E-mail</th>
+        <th>User name</th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Users)
+    {
+        <tr>
+            <td>@item.Email</td>
+            <td>@item.UserName</td>
+        </tr>
+    }
+</table>
+

@@ -1,25 +1,29 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Simply_Gallery.Models
 {
     public class RoleModel
     {
-        [Display(Name = "Id")]
         public string Id { get; set; }
 
-        [Display(Name = "Name role")]
+        [Display(Name = "Название")]
         public string Name { get; set; }
 
-        [Display(Name = "Description role")]
+        [Display(Name = "Описание")]
         public string Description { get; set; }
     }
 
-    //public class CreateRoleModel
-    //{
-    //    [Display(Name = "Name role")]
-    //    public string Name { get; set; }
+    public class RoleViewModel
+    {
+        public string Name { get; set; }
 
-    //    [Display(Name = "Description role")]
-    //    public string Description { get; set; }
-    //}
+        public List<ApplicationUser> Users { get; set; }
+
+        public RoleViewModel()
+        {
+            Users = new List<ApplicationUser>();
+        }
+    }
 }

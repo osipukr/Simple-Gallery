@@ -8,6 +8,7 @@ namespace Simply_Gallery.Controllers
 {
     public class RolesController : Controller
     {
+        private ApplicationUserManager UserManager => HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
         private ApplicationRoleManager RoleManager => HttpContext.GetOwinContext().GetUserManager<ApplicationRoleManager>();
 
          // GET: Roles
@@ -84,6 +85,24 @@ namespace Simply_Gallery.Controllers
             if (role != null)
             {
                 var result = await RoleManager.DeleteAsync(role);
+            }
+            return RedirectToAction("Index");
+        }
+
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult> List(string id)
+        {
+            var role = await RoleManager.FindByIdAsync(id);
+
+            if (role != null)
+            {
+                var roleModel = new RoleViewModel() { Name = role.Name};
+
+                foreach(var item in role.Users)
+                {
+                    roleModel.Users.Add(await UserManager.FindByIdAsync(item.UserId));
+                }
+                return View(roleModel);
             }
             return RedirectToAction("Index");
         }
