@@ -2,12 +2,12 @@
 
 @if (Request.IsAuthenticated)
 {
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    using (Html.BeginForm("LogOff", "Home", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
         @Html.AntiForgeryToken()
 
         <li class="js_nav-item nav-item navbar-left">
-            @Html.ActionLink(User.Identity.GetUserName(), "Index", "Manage", routeValues: null, htmlAttributes: new { @class = "nav-item-child nav-item-hover" })
+            @Html.ActionLink(User.Identity.GetUserName(), "Index", "Profile", null, new { @class = "nav-item-child nav-item-hover" })
         </li>
         <li class="js_nav-item nav-item navbar-left">
             <a class="nav-item-child nav-item-hover" href="javascript:document.getElementById('logoutForm').submit()">Выйти</a>

@@ -1,16 +1,4 @@
 var Layout = function () {
-    
-    // detect mobile device
-    var isMobileDevice = function() {
-        return  ((
-            navigator.userAgent.match(/Android/i) ||
-            navigator.userAgent.match(/BlackBerry/i) ||
-            navigator.userAgent.match(/iPhone|iPad|iPod/i) ||
-            navigator.userAgent.match(/Opera Mini/i) ||
-            navigator.userAgent.match(/IEMobile/i)
-        ) ? true : false);
-    }
-
     // handle on page scroll
     var handleHeaderOnScroll = function() {
         if ($(window).scrollTop() > 60) {
@@ -45,8 +33,6 @@ var Layout = function () {
             }, 600);
             event.preventDefault();
         });
-
-        var $scrollspy = $('body').scrollspy({target: '.navbar-fixed-top', offset: $offset+2});
 
         // Collapse Navbar When It's Clickicked
         $(window).scroll(function() {

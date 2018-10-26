@@ -1,6 +1,4 @@
-@charset "UTF-8";
-
-html {
+﻿html {
   overflow-x: hidden;
 }
 
@@ -106,12 +104,6 @@ h4 {
 }
 
 ::selection {
-  color: #fff;
-  background: #17bed2;
-  text-shadow: none;
-}
-
-::-webkit-selection {
   color: #fff;
   background: #17bed2;
   text-shadow: none;
@@ -575,7 +567,7 @@ fieldset[disabled] .btn-theme {
   	[Footer]
 ------------------------------------------------------------------*/
 .footer .footer-logo {
-  width: 100px;
+  width: 170px;
   height: auto;
 }
 
@@ -700,10 +692,8 @@ fieldset[disabled] .btn-theme {
 
 .header .logo-img {
   display: inline-block;
-  width: 146px;
+  width: 170px;
   height: auto;
-  max-width: 100%;
-  max-height: 100%;
   vertical-align: middle;
 }
 
@@ -1028,17 +1018,6 @@ fieldset[disabled] .btn-theme {
 
 .form-control:focus::-webkit-input-placeholder {
   color: #515769;
-}
-
-/*----------------------------------
-  Google Map
-------------------------------------*/
-.gmap .gmap-address {
-  border-bottom: 1px solid #edf0f2;
-  text-align: center;
-  background: #fff;
-  padding: 30px;
-  margin-bottom: 0;
 }
 
 /*------------------------------------------------------------------
@@ -1533,4 +1512,8 @@ fieldset[disabled] .btn-theme {
 
 .height-500 {
   height: 500px !important;
+}
+
+#register {
+    height: 500px;
 }
