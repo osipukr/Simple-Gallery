@@ -13,6 +13,7 @@ namespace Simply_Gallery.Controllers
         // менеджер пользователей
         private ApplicationUserManager UserManager => HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
 
+        // аунтификационный менеджер
         private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
 
         // GET: /Account/Register
@@ -45,7 +46,7 @@ namespace Simply_Gallery.Controllers
                         IsPersistent = true
                     }, await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie));
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Profile");
                 }
                 else
                 {
@@ -95,7 +96,7 @@ namespace Simply_Gallery.Controllers
                         IsPersistent = true
                     }, claim);
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Profile");
                 }
             }
             return View(model);

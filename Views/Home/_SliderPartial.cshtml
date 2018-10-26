@@ -1,0 +1,18 @@
+﻿@using Microsoft.AspNet.Identity
+
+<div class="promo-block">
+    <div class="container">
+        <div class="margin-b-40">
+            <h1 class="promo-block-title">Добро пожаловать!</h1>
+            <p class="promo-block-text">На веб-сервис "Simply Gallery"</p>
+        </div>
+        @if (Request.IsAuthenticated)
+        {
+            @Html.ActionLink("Перейти к галлереи", "Index", "Manager", routeValues: null, htmlAttributes: new { @class = "btn-theme btn-theme-md btn-white-bg text-uppercase", title = "Переход к галлереи" })
+        }
+        else
+        {
+            <a class="btn-theme btn-theme-md btn-white-bg text-uppercase" href="#register" title="Регистрация">Загеристрироваться</a>
+        }
+    </div>
+</div>
