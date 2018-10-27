@@ -5,16 +5,21 @@ using Simply_Gallery.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using Simply_Gallery.App_Start;
 
 namespace Simply_Gallery.Controllers
 {
     public class HomeController : Controller
     {
+        #region Manager
         // менеджер пользователей
         private ApplicationUserManager UserManager => HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
 
+        public ApplicationSignInManager SignInManager => HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+
         // аунтификационный менеджер
         private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
+        #endregion
 
         //
         // GET: /Home/Index
@@ -37,15 +42,21 @@ namespace Simply_Gallery.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    // добавляем пользователю роль
                     await UserManager.AddToRoleAsync(user.Id, "user");
-                    // удаляются ранние куки
-                    AuthenticationManager.SignOut();
-                    // устанавливаем новые аутентификационные куки
-                    AuthenticationManager.SignIn(new AuthenticationProperties
-                    {
-                        IsPersistent = true
-                    }, await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie));
+                    // входим в аккаунт
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                     return JavaScript("location.reload()");
+
+                    //await UserManager.AddToRoleAsync(user.Id, "user");
+                    //// удаляются ранние куки
+                    //AuthenticationManager.SignOut();
+                    //// устанавливаем новые аутентификационные куки
+                    //AuthenticationManager.SignIn(new AuthenticationProperties
+                    //{
+                    //    IsPersistent = true
+                    //}, await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie));
+                    //return JavaScript("location.reload()");
                 }
                 else
                 {
@@ -68,10 +79,20 @@ namespace Simply_Gallery.Controllers
             // валидация
             if (ModelState.IsValid)
             {
+                var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent: false, shouldLockout: false);
+                switch (result)
+                {
+                    case SignInStatus.Success:
+                        return JavaScript("location.reload()");
+                    default:
+                        ModelState.AddModelError("", "Неверный логин или пароль"); break;
+                }
+
+                /*
                 var user = await UserManager.FindAsync(model.UserName, model.Password);
                 if (user == null)
                 {
-                    ModelState.AddModelError("", (await UserManager.FindByNameAsync(model.UserName) == null) ? 
+                    ModelState.AddModelError("", (await UserManager.FindByNameAsync(model.UserName) == null) ?
                         "Неверное имя пользователя" : "Неверный пароль");
                 }
                 else
@@ -88,6 +109,7 @@ namespace Simply_Gallery.Controllers
                     }, claim);
                     return JavaScript("location.reload()");
                 }
+                */
             }
             return PartialView("_LoginPartial");
         }

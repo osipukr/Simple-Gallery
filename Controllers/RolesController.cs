@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity.Owin;
+using Simply_Gallery.App_Start;
 using Simply_Gallery.Models;
 using System.Threading.Tasks;
 using System.Web;
@@ -9,6 +10,7 @@ namespace Simply_Gallery.Controllers
     public class RolesController : Controller
     {
         private ApplicationUserManager UserManager => HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+
         private ApplicationRoleManager RoleManager => HttpContext.GetOwinContext().GetUserManager<ApplicationRoleManager>();
 
          // GET: Roles

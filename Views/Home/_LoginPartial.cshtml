@@ -1,12 +1,5 @@
 ﻿@model Simply_Gallery.Models.LoginModel
 
-@*<script type="text/javascript">
-    function OnSuccess(data) {
-        location.reload();
-        //location.href = "Profile";
-    }
-</script>*@
-
 <section id="login">
     <div class="container">
         @using (Ajax.BeginForm("Login", new AjaxOptions { UpdateTargetId = "login", HttpMethod = "Post" }))
@@ -16,14 +9,14 @@
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <div class="form-group">
-                @Html.Label("Имя пользователя", new { @class = "col-md-2 control-label" })
+                @Html.Label("Введите имя пользователя", new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
                     @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
-                @Html.Label("Пароль", new { @class = "col-md-2 control-label" })
+                @Html.Label("Введите пароль", new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
                     @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
@@ -38,5 +31,3 @@
         <ul><li class="js_nav-item"><a href="#register">Зарегистрировать нового пользователя</a></li></ul>
     </div>
 </section>
-
-@Scripts.Render("~/bundles/jqueryval")
