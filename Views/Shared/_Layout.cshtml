@@ -1,8 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@{ 
+    ViewBag.MainTitle = "Simply Gallery";
+}
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>@ViewBag.Title</title>
+    <title>@ViewBag.MainTitle - @ViewBag.Title</title>
     <meta content="width=device-width, initial-scale=1" name="viewport" />
 
     <!-- GLOBAL MANDATORY STYLES -->
@@ -16,7 +20,7 @@
     <link href="~/Content/vendor/magnific-popup/magnific-popup.css" rel="stylesheet" type="text/css" /> <!-- for image gallery -->
     
     <!-- THEME STYLES -->
-    <link href="~/Content/css/layout.css" rel="stylesheet" type="text/css" /> <!-- layout style -->
+    <link href="~/Content/css/layout.min.css" rel="stylesheet" type="text/css" /> <!-- layout style -->
 </head>
 <body id="home" data-spy="scroll" data-target=".header">
 
@@ -29,7 +33,7 @@
     <!-- CORE PLUGINS -->
     <script src="~/Content/vendor/jquery.min.js" type="text/javascript"></script>
     <script src="~/Content/vendor/jquery-migrate.min.js" type="text/javascript"></script>
-    <script src="~/Content/vendor/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="~/Content/vendor/bootstrap/js/bootstrap.js" type="text/javascript"></script>
 
     <!-- PAGE LEVEL PLUGINS -->
     <script src="~/Content/vendor/jquery.easing.js" type="text/javascript"></script>

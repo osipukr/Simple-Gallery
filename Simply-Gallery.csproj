@@ -237,12 +237,12 @@
     <Content Include="Views\Home\_LoginPartial.cshtml" />
     <Content Include="Views\Home\_RegisterPartial.cshtml" />
     <Content Include="Views\Home\_HeaderPartial.cshtml" />
-    <Content Include="Views\Home\_SliderPartial.cshtml" />
-    <Content Include="Views\Home\_AboutPartial.cshtml" />
-    <Content Include="Views\Home\_ImageGalleryPartial.cshtml" />
-    <Content Include="Views\Home\_ContactPartial.cshtml" />
+    <Content Include="Views\Home\HomeContent\_SliderPartial.cshtml" />
+    <Content Include="Views\Home\HomeContent\_AboutPartial.cshtml" />
+    <Content Include="Views\Home\HomeContent\_ImageGalleryPartial.cshtml" />
+    <Content Include="Views\Home\HomeContent\_ContactPartial.cshtml" />
     <Content Include="Views\Home\_FooterPartial.cshtml" />
-    <Content Include="Views\Home\_BannerPartial.cshtml" />
+    <Content Include="Views\Home\HomeContent\_BannerPartial.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>

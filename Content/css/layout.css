@@ -1247,6 +1247,10 @@ fieldset[disabled] .btn-theme {
   margin-left: 20px !important;
 }
 
+.margin-l-auto {
+    margin-left: auto !important;
+}
+
 /*------------------------------------------------------------------
     [Right margin]
 ------------------------------------------------------------------*/
@@ -1512,8 +1516,4 @@ fieldset[disabled] .btn-theme {
 
 .height-500 {
   height: 500px !important;
-}
-
-#register {
-    height: 500px;
 }

@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Simply Gallery";
+    ViewBag.Title = "Главная";
 }
 
 <!--========== HEADER ==========-->
@@ -7,31 +7,35 @@
 <!--========== END HEADER ==========-->
 
 <!--========== SLIDER ==========-->
-@Html.Partial("_SliderPartial")
+@Html.Partial("HomeContent/_SliderPartial")
 <!--========== END SLIDER ==========-->
 
 <!--========== ABOUT ==========-->
-@Html.Partial("_AboutPartial")
+@Html.Partial("HomeContent/_AboutPartial")
 <!--========== END ABOUT ==========-->
 
 <!--========== LOGIN ==========-->
-@Html.Partial("_LoginPartial")
+<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="loginModalTitle" aria-hidden="true">
+    @Html.Partial("_LoginPartial");
+</div>
 <!--========== END LOGIN ==========-->
 
 <!--========== BANNER ==========-->
-@Html.Partial("_BannerPartial")
+@Html.Partial("HomeContent/_BannerPartial")
 <!--========== END BANNER ==========-->
 
 <!--========== REGISTER ==========-->
-@Html.Partial("_RegisterPartial")
+<div class="modal fade" id="register" tabindex="-1" role="dialog" aria-labelledby="registerModalTitle" aria-hidden="true">
+    @Html.Partial("_RegisterPartial")
+</div>
 <!--========== END REGISTER ==========-->
 
 <!--========== IMAGE GALLERY ==========-->
-@Html.Partial("_ImageGalleryPartial")
+@Html.Partial("HomeContent/_ImageGalleryPartial")
 <!--========== END IMAGE GALLERY ==========-->
 
 <!--========== CONTACT ==========-->
-@Html.Partial("_ContactPartial")
+@Html.Partial("HomeContent/_ContactPartial")
 <!--========== END CONTACT ==========-->
 
 <!--========== FOOTER ==========-->

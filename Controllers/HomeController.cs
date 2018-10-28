@@ -47,16 +47,6 @@ namespace Simply_Gallery.Controllers
                     // входим в аккаунт
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                     return JavaScript("location.reload()");
-
-                    //await UserManager.AddToRoleAsync(user.Id, "user");
-                    //// удаляются ранние куки
-                    //AuthenticationManager.SignOut();
-                    //// устанавливаем новые аутентификационные куки
-                    //AuthenticationManager.SignIn(new AuthenticationProperties
-                    //{
-                    //    IsPersistent = true
-                    //}, await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie));
-                    //return JavaScript("location.reload()");
                 }
                 else
                 {
@@ -66,7 +56,7 @@ namespace Simply_Gallery.Controllers
                     }
                 }
             }
-            return PartialView("_RegisterPartial");
+            return PartialView("_RegisterPartial", model);
         }
 
         //
@@ -82,42 +72,20 @@ namespace Simply_Gallery.Controllers
                 var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent: false, shouldLockout: false);
                 switch (result)
                 {
-                    case SignInStatus.Success:
-                        return JavaScript("location.reload()");
+                    case SignInStatus.Success : return JavaScript("location.reload()");
                     default:
-                        ModelState.AddModelError("", "Неверный логин или пароль"); break;
-                }
-
-                /*
-                var user = await UserManager.FindAsync(model.UserName, model.Password);
-                if (user == null)
-                {
-                    ModelState.AddModelError("", (await UserManager.FindByNameAsync(model.UserName) == null) ?
+                        ModelState.AddModelError("", (await UserManager.FindByNameAsync(model.UserName) == null) ?
                         "Неверное имя пользователя" : "Неверный пароль");
+                        break;
                 }
-                else
-                {
-                    // создание настроек аутентификационного тикета
-                    var claim = await UserManager.CreateIdentityAsync(user,
-                                            DefaultAuthenticationTypes.ApplicationCookie);
-                    // удаляются ранние куки
-                    AuthenticationManager.SignOut();
-                    // устанавливаем новые аутентификационные куки
-                    AuthenticationManager.SignIn(new AuthenticationProperties
-                    {
-                        IsPersistent = true
-                    }, claim);
-                    return JavaScript("location.reload()");
-                }
-                */
             }
-            return PartialView("_LoginPartial");
+            return PartialView("_LoginPartial", model);
         }
 
         //
         // POST: /Account/LogOff
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
