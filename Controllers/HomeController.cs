@@ -38,6 +38,12 @@ namespace Simply_Gallery.Controllers
             // валидация
             if (ModelState.IsValid)
             {
+                if(model.UserName.ToLower().Contains("admin") || model.UserName.ToLower().Contains("админ"))
+                {
+                    ModelState.AddModelError("", "Имя пользователя не должно содердать слова 'admin'");
+                    return PartialView("_RegisterPartial", model);
+                }
+
                 var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)

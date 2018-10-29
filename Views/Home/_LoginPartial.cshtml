@@ -8,7 +8,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
+                <span class="fweight-700 color-heading" aria-hidden="true">&Chi;</span>
             </button>
             <h4 class="modal-title" id="loginModalTitle">@ViewBag.Title</h4>
         </div>
@@ -18,18 +18,18 @@
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-froup">
-                    @Html.Label("Введите имя пользователя", new { @for = "loginName" })
-                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", id = "loginName", placeholder = "Имя пользователя" })
+                    @Html.LabelFor(m => m.UserName)
+                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "Введите имя пользователя" })
                     @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "form-text text-muted text-danger" })
                 </div>
-                <div class="form-froup margin-t-10">
-                    @Html.Label("Введите пароль", new { @for = "loginPass" })
-                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", id = "loginPass", placeholder = "Пароль" })
+                <div class="form-froup margin-t-20">
+                    @Html.LabelFor(m => m.Password)
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Введите пароль" })
                     @Html.ValidationMessageFor(m => m.Password, "", new { @class = "form-text text-muted text-danger" })
                 </div>
-                <input type="submit" class="btn btn-primary margin-t-10" value="Войти" />
+                <input type="submit" class="btn btn-primary pull-right margin-t-20" value="Войти" />
             }
-            <p class="margin-t-10">Нету учетной записи? <a class="js_nav-item" data-dismiss="modal" data-toggle="modal" data-target="#register">Зарегистрировать нового пользователя</a></p>
+            <p class="margin-t-20">Нету учетной записи? <a class="js_nav-item" data-dismiss="modal" data-toggle="modal" data-target="#register">Зарегистрировать нового пользователя</a></p>
         </div>
     </div>
 </div>
