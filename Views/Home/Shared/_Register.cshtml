@@ -1,7 +1,8 @@
-﻿@model Simply_Gallery.Models.RegisterModel
+﻿@using Simply_Gallery.Models
+@model RegisterModel
 
 @{
-    ViewBag.Title = "Создание нового аккаунта";
+    ViewBag.ModalTitle = "Создание нового аккаунта";
 }
 
 <div class="modal-dialog" role="document">
@@ -10,7 +11,7 @@
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span class="fweight-700 color-heading" aria-hidden="true">&Chi;</span>
             </button>
-            <h4 class="modal-title" id="registerModalTitle">@ViewBag.Title</h4>
+            <h4 class="modal-title" id="registerModalTitle">@ViewBag.ModalTitle</h4>
         </div>
         <div class="modal-body">
             @using (Ajax.BeginForm("Register", null, new AjaxOptions { UpdateTargetId = "register", HttpMethod = "Post" }, new { @class = "form" }))
@@ -35,7 +36,7 @@
                 </div>
                 <input type="submit" class="btn btn-primary pull-right margin-t-10" value="Зарегистрировать" />
             }
-            <p class="margin-t-10">У вас уже есть аккаунт? <a class="js_nav-item" data-dismiss="modal" data-toggle="modal" data-target="#login">Войти в учётную запись</a></p>
+            <p class="margin-t-10">У вас уже есть аккаунт? <a class="js_nav-item" data-dismiss="modal" data-toggle="modal" data-target="#login" href="">Войти в учётную запись</a></p>
         </div>
     </div>
 </div>

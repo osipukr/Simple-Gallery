@@ -3,10 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Simply_Gallery.Models
 {
-    public class RoleModel
+    public class RoleViewModel
     {
-        public string Id { get; set; }
-
         [Display(Name = "Название")]
         public string Name { get; set; }
 
@@ -14,13 +12,13 @@ namespace Simply_Gallery.Models
         public string Description { get; set; }
     }
 
-    public class RoleViewModel
+    public class UsersRoleViewModel
     {
         public string Name { get; set; }
 
         public List<ApplicationUser> Users { get; set; }
 
-        public RoleViewModel()
+        public UsersRoleViewModel()
         {
             Users = new List<ApplicationUser>();
         }

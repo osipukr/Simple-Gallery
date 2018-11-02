@@ -1,43 +1,37 @@
 ﻿@{
+    Layout = "Shared/_Layout.cshtml";
     ViewBag.Title = "Главная";
 }
 
-<!--========== HEADER ==========-->
-@Html.Partial("_HeaderPartial")
-<!--========== END HEADER ==========-->
-
-<!--========== SLIDER ==========-->
-@Html.Partial("HomeContent/_SliderPartial")
-<!--========== END SLIDER ==========-->
-
-<!--========== ABOUT ==========-->
-@Html.Partial("HomeContent/_AboutPartial")
-<!--========== END ABOUT ==========-->
-
-<!--========== LOGIN ==========-->
+<!-- Modal forms -->
 <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="loginModalTitle" aria-hidden="true">
-    @Html.Partial("_LoginPartial");
+    @Html.Partial("Shared/_Login");
 </div>
-<!--========== END LOGIN ==========-->
-
-<!--========== BANNER ==========-->
-@Html.Partial("HomeContent/_BannerPartial")
-<!--========== END BANNER ==========-->
-
-<!--========== REGISTER ==========-->
 <div class="modal fade" id="register" tabindex="-1" role="dialog" aria-labelledby="registerModalTitle" aria-hidden="true">
-    @Html.Partial("_RegisterPartial")
+    @Html.Partial("Shared/_Register")
 </div>
-<!--========== END REGISTER ==========-->
+<!-- End Modal forms -->
 
-<!--========== IMAGE GALLERY ==========-->
-@Html.Partial("HomeContent/_ImageGalleryPartial")
-<!--========== END IMAGE GALLERY ==========-->
+<!-- Header section -->
+@Html.Partial("HomeContent/Header")
+<!-- End Header section -->
 
-<!--========== CONTACT ==========-->
-@Html.Partial("HomeContent/_ContactPartial")
-<!--========== END CONTACT ==========-->
+<!-- About section -->
+@Html.Partial("HomeContent/About")
+<!-- End About section -->
 
-<!--========== FOOTER ==========-->
-@Html.Partial("_FooterPartial")
-<!--========== END FOOTER ==========-->
+<!-- Banner form -->
+@Html.Partial("HomeContent/Banner")
+<!-- End Banner form -->
+
+<!-- Gallery section -->
+@Html.Partial("HomeContent/Gallery")
+<!-- End Gallery section -->
+
+<!-- Contact section -->
+@Html.Partial("HomeContent/Contact")
+<!-- End Contact section -->
+
+<!-- Footer section -->
+@Html.Partial("HomeContent/Footer")
+<!-- End Footer section -->

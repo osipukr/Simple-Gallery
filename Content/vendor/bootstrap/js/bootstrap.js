@@ -549,7 +549,8 @@ if (typeof jQuery === 'undefined') {
     this.$element      = $(element)
     this.options       = $.extend({}, Collapse.DEFAULTS, options)
     this.$trigger      = $('[data-toggle="collapse"][href="#' + element.id + '"],' +
-                           '[data-toggle="collapse"][data-target="#' + element.id + '"]')
+        '[data-toggle="collapse"][data-target="#' + element.id + '"]')
+      this.$navLastChild = $('.nav-item:last-child.nav-item-child')
     this.transitioning = null
 
     if (this.options.parent) {
@@ -603,14 +604,15 @@ if (typeof jQuery === 'undefined') {
 
     this.$trigger
       .removeClass('collapsed')
-      .attr('aria-expanded', true)
+        .attr('aria-expanded', true)
+      this.$navLastChild.css('margin-bottom', '20px')
 
     this.transitioning = 1
 
     var complete = function () {
       this.$element
         .removeClass('collapsing')
-        .addClass('collapse in')[dimension]('')
+          .addClass('collapse in')[dimension]('')
       this.transitioning = 0
       this.$element
         .trigger('shown.bs.collapse')
@@ -629,7 +631,8 @@ if (typeof jQuery === 'undefined') {
     if (this.transitioning || !this.$element.hasClass('in')) return
 
     var startEvent = $.Event('hide.bs.collapse')
-    this.$element.trigger(startEvent)
+      this.$element.trigger(startEvent)
+
     if (startEvent.isDefaultPrevented()) return
 
     var dimension = this.dimension()
@@ -825,7 +828,7 @@ if (typeof jQuery === 'undefined') {
 
       $this
         .trigger('focus')
-        .attr('aria-expanded', 'true')
+          .attr('aria-expanded', 'true')
 
       $parent
         .toggleClass('open')

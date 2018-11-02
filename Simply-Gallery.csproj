@@ -200,7 +200,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -213,11 +212,10 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Web.config" />
-    <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Shared\_LogOffPartial.cshtml" />
+    <Content Include="Views\Home\Shared\_LogOut.cshtml" />
     <Content Include="Views\Roles\Index.cshtml" />
     <Content Include="Views\Roles\Create.cshtml" />
     <Content Include="Views\Roles\Edit.cshtml" />
@@ -226,23 +224,18 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\" />
+    <Folder Include="Content\css\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <None Include="packages.config" />
-    <Content Include="Views\Home\_LoginPartial.cshtml" />
-    <Content Include="Views\Home\_RegisterPartial.cshtml" />
-    <Content Include="Views\Home\_HeaderPartial.cshtml" />
-    <Content Include="Views\Home\HomeContent\_SliderPartial.cshtml" />
-    <Content Include="Views\Home\HomeContent\_AboutPartial.cshtml" />
-    <Content Include="Views\Home\HomeContent\_ImageGalleryPartial.cshtml" />
-    <Content Include="Views\Home\HomeContent\_ContactPartial.cshtml" />
-    <Content Include="Views\Home\_FooterPartial.cshtml" />
-    <Content Include="Views\Home\HomeContent\_BannerPartial.cshtml" />
+    <Content Include="Views\Home\Shared\_Login.cshtml" />
+    <Content Include="Views\Home\Shared\_Register.cshtml" />
+    <Content Include="Views\Home\HomeContent\Header.cshtml" />
+    <Content Include="Views\Home\HomeContent\About.cshtml" />
+    <Content Include="Views\Home\HomeContent\Gallery.cshtml" />
+    <Content Include="Views\Home\HomeContent\Contact.cshtml" />
+    <Content Include="Views\Home\HomeContent\Footer.cshtml" />
+    <Content Include="Views\Home\HomeContent\Banner.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>

@@ -62,7 +62,7 @@ namespace Simply_Gallery.Controllers
                     }
                 }
             }
-            return PartialView("_RegisterPartial", model);
+            return PartialView("Shared/_Register", model);
         }
 
         //
@@ -85,17 +85,17 @@ namespace Simply_Gallery.Controllers
                         break;
                 }
             }
-            return PartialView("_LoginPartial", model);
+            return PartialView("Shared/_Login", model);
         }
 
         //
-        // POST: /Account/LogOff
+        // POST: /Home/LogOut
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult LogOff()
+        public ActionResult LogOut()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index");
         }
     }
 }

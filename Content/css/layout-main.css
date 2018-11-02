@@ -3,12 +3,12 @@
 }
 
 html, html a, body {
-  -webkit-font-smoothing: antialiased;
+    -webkit-font-smoothing: antialiased;
 }
 
 body {
-  position: relative;
-  font-family: Hind, sans-serif;
+    position: relative;
+    font-family: Hind, sans-serif;
 }
 
 p {
@@ -99,10 +99,6 @@ h3 {
   font-size: 22px;
 }
 
-h4 {
-  font-size: 22px;
-}
-
 ::selection {
   color: #fff;
   background: #17bed2;
@@ -137,10 +133,7 @@ h4 {
   text-decoration: none;
 }
 
-/*------------------------------------------------------------------
-  	[Blockquote]
-------------------------------------------------------------------*/
-.blockquote {
+.contact-info {
   position: relative;
   font-size: 17px;
   font-weight: 400;
@@ -148,17 +141,6 @@ h4 {
   color: #a6a7aa;
   line-height: 1.4;
   border-left: none;
-  margin-left: 20px;
-}
-
-.blockquote:before {
-  position: absolute;
-  top: 0;
-  left: -20px;
-  font-size: 60px;
-  display: inline-block;
-  color: #17bed2;
-  content: '“';
 }
 
 /*------------------------------------------------------------------
@@ -261,9 +243,10 @@ fieldset[disabled] .btn-theme {
 }
 
 .btn-theme-md {
-  font-size: 15px;
-  font-weight: 600;
-  padding: 20px 30px;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 20px 30px;
+    border-radius: 40px 10px;
 }
 
 /*------------------------------------------------------------------
@@ -326,7 +309,7 @@ fieldset[disabled] .btn-theme {
   position: relative;
   z-index: 1;
   text-align: center;
-  background: url(../img/1920x1080/02.jpg) no-repeat;
+  background: url(../img/banner.jpg) no-repeat;
   background-size: cover;
   background-position: center center;
   background-attachment: fixed;
@@ -359,13 +342,13 @@ fieldset[disabled] .btn-theme {
   	[Promo Block]
 ------------------------------------------------------------------*/
 .promo-block {
-  position: relative;
-  z-index: 1;
-  text-align: center;
-  background: url(../img/1920x1080/01.jpg) no-repeat;
-  background-size: cover;
-  background-position: center center;
-  padding: 250px 0 200px;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    background: url(../img/header.jpg) no-repeat;
+    background-size: cover;
+    background-position: center center;
+    padding: 250px 0 200px;
 }
 
 .promo-block:before {
@@ -396,7 +379,7 @@ fieldset[disabled] .btn-theme {
 }
 
 /*------------------------------------------------------------------
-  	[Service]
+|  	[Service]
 ------------------------------------------------------------------*/
 .service {
   background: #fff;
@@ -674,7 +657,6 @@ fieldset[disabled] .btn-theme {
 
 /* Navbar Logo */
 .header .logo {
-  width: 150px;
   height: 150px;
   float: left;
   max-height: 95px;
@@ -745,7 +727,7 @@ fieldset[disabled] .btn-theme {
 .header .nav-item-child {
   position: relative;
   display: block;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
   font-family: Hind, sans-serif;
   color: #fff;
@@ -805,6 +787,9 @@ fieldset[disabled] .btn-theme {
   }
   .header .navbar-nav .nav-item {
     float: none;
+  }
+  #logOutForm {
+      flex-direction: column;
   }
   /* Menu Container */
   .header .menu-container:before, .header .menu-container:after {
@@ -912,8 +897,6 @@ fieldset[disabled] .btn-theme {
   bottom: 10px;
   display: inline-block;
   z-index: 9;
-  width: 40px;
-  height: 40px;
   font-size: 11px;
   font-weight: 400;
   color: #fff;
@@ -1189,7 +1172,7 @@ fieldset[disabled] .btn-theme {
 
 .content-md {
   padding-top: 80px;
-  padding-bottom: 80px;
+  padding-bottom: 20px;
 }
 
 .content-lg {
