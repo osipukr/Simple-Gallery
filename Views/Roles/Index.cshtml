@@ -1,30 +1,113 @@
-﻿@model IEnumerable<Simply_Gallery.Models.ApplicationRole>
+﻿@using Simply_Gallery.Models;
+@model IEnumerable<ApplicationRole>
 
 @{
-    ViewBag.Title = "Роли";
+    Layout = "Shared/_Layout.cshtml";
+    ViewBag.Title = "Список ролей";
 }
 
-<h2>Роли</h2>
-<table class="table">
-    <tr>
-        <th>Название</th>
-        <th>Описание</th>
-        <th></th>
-    </tr>
+<div class="wrapper">
+    <div class="fresh-table full-color-blue full-screen-table">
+        <div class="fixed-table-toolbar"><div class="bars pull-left"></div><div class="columns columns-right pull-right"><button class="btn btn-default" type="button" name="refresh" title="Refresh"><i class="glyphicon fa fa-refresh"></i></button><button class="btn btn-default" type="button" name="toggle" title="Toggle"><i class="glyphicon fa fa-th-list"></i></button><div class="keep-open btn-group" title="Columns"><button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="glyphicon fa fa-columns"></i> <span class="caret"></span></button><ul class="dropdown-menu" role="menu"><li><label><input type="checkbox" data-field="name" value="0" checked="checked"> Имя</label></li><li><label><input type="checkbox" data-field="description" value="1" checked="checked"> Описание</label></li><li><label><input type="checkbox" data-field="actions" value="2" checked="checked"> Действия</label></li></ul></div></div><div class="pull-right search"><input class="form-control" type="text" placeholder="Поиск"></div></div>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>@item.Name</td>
-            <td>@item.Description</td>
-            <td>
-                @Html.ActionLink("Изменить", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Список", "List", new { id = item.Id }) |
-                @Html.ActionLink("Удалить", "Delete", new { id = item.Id })
-            </td>
-        </tr>
-    }
-</table>
-<p>
-    @Html.ActionLink("Добавить новую роль", "Create")
-</p>
+        <table id="fresh-table" class="table">
+            <thead>
+            <th data-field="name" data-sortable="true">Имя</th>
+            <th data-field="description" data-sortable="true">Описание</th>
+            <th data-field="actions" data-formatter="operateFormatter" data-events="operateEvents">Действия</th>
+            </thead>
+            <tbody>
+                @foreach (var role in Model)
+                {
+                    <tr>
+                        <td>@role.Name</td>
+                        <td>@role.Description</td>
+                        <td></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scrips{
+    <script type="text/javascript">
+
+        var $table = $('#fresh-table'),
+            full_screen = false,
+            window_height;
+
+        $().ready(function () {
+
+            window_height = $(window).height();
+            table_height = window_height - 20;
+
+
+            $table.bootstrapTable({
+                toolbar: ".toolbar",
+
+                showRefresh: true,
+                search: true,
+                showToggle: true,
+                showColumns: true,
+                pagination: true,
+                striped: true,
+                sortable: true,
+                height: table_height,
+                pageSize: 25,
+                pageList: [25, 50, 100],
+
+                formatShowingRows: function (pageFrom, pageTo, totalRows) {
+                    //do nothing here, we don't want to show the text "showing x of y from..." 
+                },
+                formatRecordsPerPage: function (pageNumber) {
+                    return pageNumber + " rows visible";
+                },
+                icons: {
+                    refresh: 'fa fa-refresh',
+                    toggle: 'fa fa-th-list',
+                    columns: 'fa fa-columns',
+                    detailOpen: 'fa fa-plus-circle',
+                    detailClose: 'fa fa-minus-circle'
+                }
+            });
+
+            window.operateEvents = {
+                'click .like': function (e, value, row, index) {
+                    alert('You click like icon, row: ' + JSON.stringify(row));
+                    console.log(value, row, index);
+                },
+                'click .edit': function (e, value, row, index) {
+                    alert('You click edit icon, row: ' + JSON.stringify(row));
+                    console.log(value, row, index);
+                },
+                'click .remove': function (e, value, row, index) {
+                    $table.bootstrapTable('remove', {
+                        field: 'id',
+                        values: [row.id]
+                    });
+
+                }
+            };
+
+            $(window).resize(function () {
+                $table.bootstrapTable('resetView');
+            });
+        });
+
+
+        function operateFormatter(value, row, index) {
+            return [
+                '<a rel="tooltip" title="Like" class="table-action like" href="javascript:void(0)" title="Like">',
+                '<i class="fa fa-heart"></i>',
+                '</a>',
+                '<a rel="tooltip" title="Edit" class="table-action edit" href="javascript:void(0)" title="Edit">',
+                '<i class="fa fa-edit"></i>',
+                '</a>',
+                '<a rel="tooltip" title="Remove" class="table-action remove" href="javascript:void(0)" title="Remove">',
+                '<i class="fa fa-remove"></i>',
+                '</a>'
+            ].join('');
+        }
+    </script>
+}

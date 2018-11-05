@@ -177,7 +177,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -219,12 +218,12 @@
     <Content Include="Views\Roles\Index.cshtml" />
     <Content Include="Views\Roles\Create.cshtml" />
     <Content Include="Views\Roles\Edit.cshtml" />
-    <Content Include="Views\Roles\_RolesPartial.cshtml" />
+    <Content Include="Views\Roles\Shared\_Roles.cshtml" />
     <Content Include="Views\Roles\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\css\" />
+    <Folder Include="Content\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -237,6 +236,8 @@
     <Content Include="Views\Home\HomeContent\Footer.cshtml" />
     <Content Include="Views\Home\HomeContent\Banner.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
+    <Content Include="Views\Roles\Shared\_Layout.cshtml" />
+    <Content Include="Views\Profile\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201810251032500_initial.resx">
