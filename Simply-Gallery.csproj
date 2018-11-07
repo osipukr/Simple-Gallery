@@ -194,6 +194,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ProfileModels.cs" />
     <Compile Include="Models\RoleModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -238,6 +239,9 @@
     <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\Roles\Shared\_Layout.cshtml" />
     <Content Include="Views\Profile\Shared\_Layout.cshtml" />
+    <Content Include="Views\Profile\ProfileContent\Header.cshtml" />
+    <Content Include="Views\Profile\ProfileContent\Main.cshtml" />
+    <Content Include="Views\Profile\ProfileContent\Footer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201810251032500_initial.resx">

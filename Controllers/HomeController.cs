@@ -15,7 +15,7 @@ namespace Simply_Gallery.Controllers
         // менеджер пользователей
         private ApplicationUserManager UserManager => HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
 
-        public ApplicationSignInManager SignInManager => HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+        private ApplicationSignInManager SignInManager => HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
 
         // аунтификационный менеджер
         private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;

@@ -1,4 +1,14 @@
-﻿@{
+﻿@using Simply_Gallery.Models;
+
+@model ApplicationUser
+
+@{
     Layout = "Shared/_Layout.cshtml";
     ViewBag.Title = "Главная";
 }
+
+<!-- Header -->
+@Html.Partial("ProfileContent/Header")
+
+<!-- Main -->
+@Html.Partial("ProfileContent/Main")

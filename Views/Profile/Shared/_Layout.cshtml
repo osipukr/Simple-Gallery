@@ -1,15 +1,29 @@
-﻿@{ 
+﻿@{
     ViewBag.MainTitle = "Профиль";
 }
 
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
 <head>
-    <meta charset="utf-8" />
     <title>@ViewBag.MainTitle - @ViewBag.Title</title>
-    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/Content/profile/css/main.css" />
+
 </head>
-<body>
+<body class="is-preload">
+
     @RenderBody()
+   
+    <!-- Scripts -->
+    <script src="~/Content/profile/js/jquery.min.js"></script>
+    <script src="~/Content/profile/js/jquery.scrolly.min.js"></script>
+    <script src="~/Content/profile/js/jquery.scrollex.min.js"></script>
+    <script src="~/Content/profile/js/breakpoints.min.js"></script>
+    <script src="~/Content/profile/js/util.js"></script>
+    <script src="~/Content/profile/js/main.js"></script>
+
 </body>
 </html>
