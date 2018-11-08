@@ -191,10 +191,27 @@
     <Compile Include="Migrations\201810251032500_initial.Designer.cs">
       <DependentUpon>201810251032500_initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811072212319_Album-migration.cs" />
+    <Compile Include="Migrations\201811072212319_Album-migration.Designer.cs">
+      <DependentUpon>201811072212319_Album-migration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811081538489_UserImage-migration.cs" />
+    <Compile Include="Migrations\201811081538489_UserImage-migration.Designer.cs">
+      <DependentUpon>201811081538489_UserImage-migration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811081711167_Edit-picture-model.cs" />
+    <Compile Include="Migrations\201811081711167_Edit-picture-model.Designer.cs">
+      <DependentUpon>201811081711167_Edit-picture-model.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811081815414_Change-profile-model.cs" />
+    <Compile Include="Migrations\201811081815414_Change-profile-model.Designer.cs">
+      <DependentUpon>201811081815414_Change-profile-model.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ProfileModels.cs" />
+    <Compile Include="Models\ProfileViewModels.cs" />
     <Compile Include="Models\RoleModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -242,10 +259,27 @@
     <Content Include="Views\Profile\ProfileContent\Header.cshtml" />
     <Content Include="Views\Profile\ProfileContent\Main.cshtml" />
     <Content Include="Views\Profile\ProfileContent\Footer.cshtml" />
+    <Content Include="Views\Profile\ProfileContent\Albums.cshtml" />
+    <Content Include="Views\Profile\ProfileContent\Setting.cshtml" />
+    <Content Include="Views\Profile\ProfileContent\Photos.cshtml" />
+    <Content Include="Views\Profile\Shared\_CreateAlbum.cshtml" />
+    <Content Include="Views\Profile\Shared\_AddPhoto.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201810251032500_initial.resx">
       <DependentUpon>201810251032500_initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811072212319_Album-migration.resx">
+      <DependentUpon>201811072212319_Album-migration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811081538489_UserImage-migration.resx">
+      <DependentUpon>201811081538489_UserImage-migration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811081711167_Edit-picture-model.resx">
+      <DependentUpon>201811081711167_Edit-picture-model.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811081815414_Change-profile-model.resx">
+      <DependentUpon>201811081815414_Change-profile-model.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

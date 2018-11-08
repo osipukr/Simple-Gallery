@@ -1,11 +1,8 @@
 namespace Simply_Gallery.Migrations
 {
-    using System;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
-    using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Simply_Gallery.Models.ApplicationContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<Models.ApplicationContext>
     {
         public Configuration()
         {

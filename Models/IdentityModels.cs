@@ -26,18 +26,10 @@ namespace Simply_Gallery.Models
     {
         public ApplicationContext() : base("DbConnection") { }
 
-        public static ApplicationContext Create() => new ApplicationContext();
-    }
-
-    public class ProfileContext : DbContext
-    {
-        public ProfileContext()
-            : base("AlbumConnection")
-        {
-        }
-
         public DbSet<Picture> Pictures { get; set; }
         public DbSet<Album> Albums { get; set; }
-        public DbSet<ProfileModel> ProfileModels { get; set; }
+        public DbSet<Profile> Profiles { get; set; }
+
+        public static ApplicationContext Create() => new ApplicationContext();
     }
 }

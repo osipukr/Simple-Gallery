@@ -19,6 +19,8 @@ namespace Simply_Gallery.Controllers
 
         // аунтификационный менеджер
         private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
+
+        private ApplicationContext db = new ApplicationContext();
         #endregion
 
         //
@@ -50,6 +52,10 @@ namespace Simply_Gallery.Controllers
                 {
                     // добавляем пользователю роль
                     await UserManager.AddToRoleAsync(user.Id, "user");
+
+                    db.Profiles.Add(new Profile { UserId = user.Id });
+                    await db.SaveChangesAsync();
+
                     // входим в аккаунт
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                     return JavaScript("location.reload()");
