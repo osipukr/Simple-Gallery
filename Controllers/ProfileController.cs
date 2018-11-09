@@ -22,43 +22,18 @@ namespace Simply_Gallery.Controllers
 
         // контекст бд
         private ApplicationContext db = new ApplicationContext();
-
-        //// текущий авторизованный пользователь
-        //private ApplicationUser CurrentUser { get; set; }
-
-        //// профиль пользователя
-        //private Profile CurrentProfile { get; set; }
         #endregion
 
-        //private async Task GetCurrent()
-        //{
-        //    CurrentUser = await UserManager.FindByNameAsync(User.Identity.Name);
-        //    CurrentProfile = db.Profiles.FirstOrDefault(p => p.UserId == CurrentUser.Id);
-        //}
 
         //
         // GET: /Profile/Index
         public async Task<ActionResult> Index()
         {
-            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            var userId = User.Identity.GetUserId();
+            var user = await UserManager.FindByIdAsync(userId);
             ViewBag.Roles = user.Roles.Select(x => RoleManager.Roles.FirstOrDefault(r => r.Id == x.RoleId).Description);
-            return View(db.Profiles.FirstOrDefault(u => u.UserId == user.Id));
-        }
-
-        //
-        // GET: /Profile/Album
-        public ActionResult Album(int? id)
-        {
-            if (id != null)
-            {
-                var album = db.Albums.FirstOrDefault(a => a.AlbumId == id && a.Profile.UserId == User.Identity.GetUserId());
-                if (album != null)
-                {
-                    return View(album);
-                }
-            }
-
-            return RedirectToAction("Index");
+            var UserAlbum = db.Albums.Where(x => x.UserId == userId).ToList();
+            return View(UserAlbum);
         }
 
         //
@@ -70,28 +45,45 @@ namespace Simply_Gallery.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<ActionResult> CreateAlbum(AlbumModel albumModel)
+        public ActionResult CreateAlbum(AlbumModel albumModel)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var userId = User.Identity.GetUserId();
-                var profileId = db.Profiles.FirstOrDefault(x => x.UserId == userId).Id;
-                var result = db.Albums.FirstOrDefault(a => a.Name == albumModel.Name && a.Profile.UserId == userId);
-                if(result == null)
+                var result = db.Albums.FirstOrDefault(x => x.Name == albumModel.Name && x.UserId == userId);
+                if (result == null)
                 {
                     var album = new Album
                     {
                         Name = albumModel.Name,
-                        ProfileId = profileId,
+                        UserId = userId
                     };
-
                     db.Albums.Add(album);
-                    await db.SaveChangesAsync();
-                    return RedirectToAction("Album", new { id = album.AlbumId });
+                    db.SaveChanges();
+                    return RedirectToAction("Album", new { id = Convert.ToString(album.AlbumId) });
                 }
                 ModelState.AddModelError("", "Альбом с таким названием уже создан");
             }
             return View();
+        }
+
+        //
+        // GET: /Profile/Album
+        public ActionResult Album(string id)
+        {
+            int? albumId = Convert.ToInt32(id);
+            if (albumId != null)
+            {
+                var userId = User.Identity.GetUserId();
+                var album = db.Albums.FirstOrDefault(a => a.AlbumId == albumId && a.UserId == userId);
+
+                if (album != null)
+                {
+                    return View(album);
+                }
+            }
+
+            return RedirectToAction("Index");
         }
 
         //
@@ -140,19 +132,19 @@ namespace Simply_Gallery.Controllers
         //    return null;
         //}
 
-        [AllowAnonymous]
-        public FileContentResult GetUserPhoto()
-        {
-            var profile = db.Profiles.FirstOrDefault(p => p.UserId == User.Identity.GetUserId());
-            if(profile != null)
-            {
-                if (profile.UserImage != null)
-                {
-                    return File(profile.UserImage, profile.ImageMimeType);
-                }
-            }
+        //[AllowAnonymous]
+        //public FileContentResult GetUserPhoto()
+        //{
+        //    var profile = db.Profiles.FirstOrDefault(p => p.UserId == User.Identity.GetUserId());
+        //    if(profile != null)
+        //    {
+        //        if (profile.UserImage != null)
+        //        {
+        //            return File(profile.UserImage, profile.ImageMimeType);
+        //        }
+        //    }
 
-            return null;
-        }
+        //    return null;
+        //}
     }
 }

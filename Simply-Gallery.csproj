@@ -207,6 +207,14 @@
     <Compile Include="Migrations\201811081815414_Change-profile-model.Designer.cs">
       <DependentUpon>201811081815414_Change-profile-model.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811091906335_Delete-profile-model.cs" />
+    <Compile Include="Migrations\201811091906335_Delete-profile-model.Designer.cs">
+      <DependentUpon>201811091906335_Delete-profile-model.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811091911511_User image.cs" />
+    <Compile Include="Migrations\201811091911511_User image.Designer.cs">
+      <DependentUpon>201811091911511_User image.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -258,7 +266,6 @@
     <Content Include="Views\Roles\Shared\_Layout.cshtml" />
     <Content Include="Views\Profile\Shared\_Layout.cshtml" />
     <Content Include="Views\Profile\Album.cshtml" />
-    <Content Include="Views\Profile\Photo.cshtml" />
     <Content Include="Views\Profile\Setting.cshtml" />
     <Content Include="Views\Profile\CreateAlbum.cshtml" />
     <Content Include="Views\Profile\Shared\_Header.cshtml" />
@@ -278,6 +285,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811081815414_Change-profile-model.resx">
       <DependentUpon>201811081815414_Change-profile-model.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811091906335_Delete-profile-model.resx">
+      <DependentUpon>201811091906335_Delete-profile-model.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811091911511_User image.resx">
+      <DependentUpon>201811091911511_User image.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

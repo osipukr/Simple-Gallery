@@ -8,6 +8,12 @@ namespace Simply_Gallery.Models
 {
     public class ApplicationUser : IdentityUser
     {
+        // аватар пользователя
+        public byte[] Image { get; set; }
+
+        // разширение файла аватара
+        public string ImageMimeType { get; set; }
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
@@ -19,6 +25,7 @@ namespace Simply_Gallery.Models
 
     public class ApplicationRole : IdentityRole
     {
+        // описание роли
         public string Description { get; set; }
     }
 
@@ -28,8 +35,10 @@ namespace Simply_Gallery.Models
 
         public DbSet<Picture> Pictures { get; set; }
         public DbSet<Album> Albums { get; set; }
-        public DbSet<Profile> Profiles { get; set; }
 
-        public static ApplicationContext Create() => new ApplicationContext();
+        public static ApplicationContext Create()
+        {
+            return new ApplicationContext();
+        }
     }
 }

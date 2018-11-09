@@ -1,4 +1,5 @@
-﻿@model Simply_Gallery.Models.Profile
+﻿@using Simply_Gallery.Models;
+@model List<Album>
 @{
     Layout = "Shared/_Layout.cshtml";
     ViewBag.Title = "Мои альбомы";
@@ -8,20 +9,20 @@
     <h2>Список всех альбомов</h2>
 </div>
 
-@if (Model.Albums == null)
+@if (Model == null)
 {
     <div class="album-null">
         <p>У вас пока нету альбомов ;(</p>
-        <img src="~/Content/profile/images/empty-album.jpg" alt=":(" title="Альбомов нет" />
+        <img src="~/Content/profile/img/empty-album.jpg" alt=":(" title="Альбомов нет" />
     </div>
 }
 else
 {
-    <div class="albums">
-        @foreach (var album in Model.Albums)
+    <div class="albums" style=@(Model.Count < 3 ? "justify-content:space-around" : "")>
+        @foreach (var album in Model)
         {
             <div class="album">
-                <div class="album-image"><img src="album-image.png" alt="Фото альбома" title="Фото альбома"></div>
+                <div class="album-image"><img src="~/Content/profile/img/album-image.png" alt="Фото альбома" title="Фото альбома"></div>
                 <div class="album-name"><h3 title="Название альбома">@album.Name</h3></div>
                 <div class="album-butt">
                     <li><a href="#" title="Пеерйти"><i class="far fa-arrow-alt-circle-right"></i></a></li>
