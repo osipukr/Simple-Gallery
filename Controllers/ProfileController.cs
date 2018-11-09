@@ -5,9 +5,12 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Linq;
+using Microsoft.AspNet.Identity;
+using System;
 
 namespace Simply_Gallery.Controllers
 {
+    [Authorize]
     public class ProfileController : Controller
     {
         #region Helpers
@@ -19,53 +22,83 @@ namespace Simply_Gallery.Controllers
 
         // контекст бд
         private ApplicationContext db = new ApplicationContext();
-        
-        // текущий авторизованный пользователь
-        private ApplicationUser CurrentUser { get; set; }
 
-        // профиль пользователя
-        private Profile CurrentProfile { get; set; }
+        //// текущий авторизованный пользователь
+        //private ApplicationUser CurrentUser { get; set; }
+
+        //// профиль пользователя
+        //private Profile CurrentProfile { get; set; }
         #endregion
+
+        //private async Task GetCurrent()
+        //{
+        //    CurrentUser = await UserManager.FindByNameAsync(User.Identity.Name);
+        //    CurrentProfile = db.Profiles.FirstOrDefault(p => p.UserId == CurrentUser.Id);
+        //}
 
         //
         // GET: /Profile/Index
-        [Authorize]
         public async Task<ActionResult> Index()
         {
-            CurrentUser = await UserManager.FindByNameAsync(User.Identity.Name);
-            ViewBag.Roles = CurrentUser.Roles.Select(x => RoleManager.Roles.FirstOrDefault(r => r.Id == x.RoleId).Description);
-            CurrentProfile = db.Profiles.FirstOrDefault(p => p.UserId == CurrentUser.Id);
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            ViewBag.Roles = user.Roles.Select(x => RoleManager.Roles.FirstOrDefault(r => r.Id == x.RoleId).Description);
+            return View(db.Profiles.FirstOrDefault(u => u.UserId == user.Id));
+        }
 
-            return View(CurrentProfile);
+        //
+        // GET: /Profile/Album
+        public ActionResult Album(int? id)
+        {
+            if (id != null)
+            {
+                var album = db.Albums.FirstOrDefault(a => a.AlbumId == id && a.Profile.UserId == User.Identity.GetUserId());
+                if (album != null)
+                {
+                    return View(album);
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        //
+        // GET: /Profile/CreateAlbum
+        public ActionResult CreateAlbum()
+        {
+            return View();
         }
 
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateAlbum(AlbumModel albumModel)
         {
             if(ModelState.IsValid)
             {
-                var result = CurrentProfile.Albums.FirstOrDefault(a => a.Name == albumModel.Name);
+                var userId = User.Identity.GetUserId();
+                var profileId = db.Profiles.FirstOrDefault(x => x.UserId == userId).Id;
+                var result = db.Albums.FirstOrDefault(a => a.Name == albumModel.Name && a.Profile.UserId == userId);
                 if(result == null)
                 {
                     var album = new Album
                     {
                         Name = albumModel.Name,
-                        ProfileId = CurrentProfile.Id
+                        ProfileId = profileId,
                     };
 
                     db.Albums.Add(album);
                     await db.SaveChangesAsync();
+                    return RedirectToAction("Album", new { id = album.AlbumId });
                 }
-                else
-                {
-                    ModelState.AddModelError("", "Альбом с таким названием уже создан");
-                    return PartialView("Shared/_CreateAlbum");
-                }
+                ModelState.AddModelError("", "Альбом с таким названием уже создан");
             }
+            return View();
+        }
 
-            return PartialView("ProfileContent/Albums");
+        //
+        // GET: /Profile/Setting
+        public ActionResult Setting()
+        {
+            return View();
         }
 
         [HttpPost]
@@ -110,7 +143,16 @@ namespace Simply_Gallery.Controllers
         [AllowAnonymous]
         public FileContentResult GetUserPhoto()
         {
-            return File(CurrentProfile.UserImage, CurrentProfile.ImageMimeType);
+            var profile = db.Profiles.FirstOrDefault(p => p.UserId == User.Identity.GetUserId());
+            if(profile != null)
+            {
+                if (profile.UserImage != null)
+                {
+                    return File(profile.UserImage, profile.ImageMimeType);
+                }
+            }
+
+            return null;
         }
     }
 }

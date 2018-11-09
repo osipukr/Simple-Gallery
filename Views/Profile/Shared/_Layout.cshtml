@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Simply_Gallery.Models.Profile
+@{
     ViewBag.MainTitle = "Профиль";
 }
 
@@ -10,16 +11,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <link href="~/Content/home/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="~/Content/profile/css/main.css" />
 
 </head>
 <body class="is-preload">
 
-    @RenderBody()
+    <!-- Header -->
+    @*@Html.Partial("Shared/_Header", Model)*@
+
+    <!-- Main -->
+    <div id="main">
+        <div id="property">
+            @RenderBody()
+        </div>
+
+        <!-- Footer -->
+        <div id="footer">
+            <!-- Copyright -->
+            <ul class="copyright">
+                <li>&copy; Simply Gallery</li>
+                <li>Developer: Roman Osipyk</li>
+            </ul>
+        </div>
+
+    </div>
 
     <!-- Scripts -->
-    <script src="~/Content/profile/js/jquery.min.js"></script>
+    <script src="~/Content/home/vendor/jquery.min.js" type="text/javascript"></script>
     <script src="~/Content/home/vendor/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="~/Content/home/vendor/jquery.validate.min.js" type="text/javascript"></script>
     <script src="~/Content/profile/js/jquery.scrolly.min.js"></script>
     <script src="~/Content/profile/js/jquery.scrollex.min.js"></script>
     <script src="~/Content/profile/js/breakpoints.min.js"></script>

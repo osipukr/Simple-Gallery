@@ -11,17 +11,47 @@ namespace Simply_Gallery.Controllers
 {
     public class HomeController : Controller
     {
-        #region Manager
+        private ApplicationSignInManager _signInManager;
+        private ApplicationUserManager _userManager;
+
+        public HomeController()
+        {
+        }
+
+        public HomeController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        {
+            UserManager = userManager;
+            SignInManager = signInManager;
+        }
+
+        // менеджер входа
+        public ApplicationSignInManager SignInManager
+        {
+            get
+            {
+                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            }
+            private set
+            {
+                _signInManager = value;
+            }
+        }
+
         // менеджер пользователей
-        private ApplicationUserManager UserManager => HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
 
-        private ApplicationSignInManager SignInManager => HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-
-        // аунтификационный менеджер
-        private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
-
+        // контекст базы данных
         private ApplicationContext db = new ApplicationContext();
-        #endregion
 
         //
         // GET: /Home/Index
@@ -103,5 +133,35 @@ namespace Simply_Gallery.Controllers
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index");
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_userManager != null)
+                {
+                    _userManager.Dispose();
+                    _userManager = null;
+                }
+
+                if (_signInManager != null)
+                {
+                    _signInManager.Dispose();
+                    _signInManager = null;
+                }
+            }
+
+            base.Dispose(disposing);
+        }
+
+        #region Helpers
+        private IAuthenticationManager AuthenticationManager
+        {
+            get
+            {
+                return HttpContext.GetOwinContext().Authentication;
+            }
+        }
+        #endregion
     }
 }

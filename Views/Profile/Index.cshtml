@@ -1,10 +1,39 @@
-﻿@{
+﻿@model Simply_Gallery.Models.Profile
+@{
     Layout = "Shared/_Layout.cshtml";
-    ViewBag.Title = "Главная";
+    ViewBag.Title = "Мои альбомы";
 }
 
-<!-- Header -->
-@Html.Partial("ProfileContent/Header")
+<div class="title">
+    <h2>Список всех альбомов</h2>
+</div>
 
-<!-- Main -->
-@Html.Partial("ProfileContent/Main")
+@if (Model.Albums == null)
+{
+    <div class="album-null">
+        <p>У вас пока нету альбомов ;(</p>
+        <img src="~/Content/profile/images/empty-album.jpg" alt=":(" title="Альбомов нет" />
+    </div>
+}
+else
+{
+    <div class="albums">
+        @foreach (var album in Model.Albums)
+        {
+            <div class="album">
+                <div class="album-image"><img src="album-image.png" alt="Фото альбома" title="Фото альбома"></div>
+                <div class="album-name"><h3 title="Название альбома">@album.Name</h3></div>
+                <div class="album-butt">
+                    <li><a href="#" title="Пеерйти"><i class="far fa-arrow-alt-circle-right"></i></a></li>
+                    <li><a href="#" title="Изменить"><i class="far fa-edit"></i></a></li>
+                    <li><a href="#" title="Удалить"><i class="far fa-trash-alt"></i></a></li>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<div class="create-album">
+    <p>Хотите создать новый альбом ?</p>
+    @Html.ActionLink("Создать", "CreateAlbum")
+</div>

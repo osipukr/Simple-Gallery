@@ -180,7 +180,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\Startup.cs" />
+    <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
@@ -214,6 +214,7 @@
     <Compile Include="Models\ProfileViewModels.cs" />
     <Compile Include="Models\RoleModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
@@ -256,14 +257,11 @@
     <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\Roles\Shared\_Layout.cshtml" />
     <Content Include="Views\Profile\Shared\_Layout.cshtml" />
-    <Content Include="Views\Profile\ProfileContent\Header.cshtml" />
-    <Content Include="Views\Profile\ProfileContent\Main.cshtml" />
-    <Content Include="Views\Profile\ProfileContent\Footer.cshtml" />
-    <Content Include="Views\Profile\ProfileContent\Albums.cshtml" />
-    <Content Include="Views\Profile\ProfileContent\Setting.cshtml" />
-    <Content Include="Views\Profile\ProfileContent\Photos.cshtml" />
-    <Content Include="Views\Profile\Shared\_CreateAlbum.cshtml" />
-    <Content Include="Views\Profile\Shared\_AddPhoto.cshtml" />
+    <Content Include="Views\Profile\Album.cshtml" />
+    <Content Include="Views\Profile\Photo.cshtml" />
+    <Content Include="Views\Profile\Setting.cshtml" />
+    <Content Include="Views\Profile\CreateAlbum.cshtml" />
+    <Content Include="Views\Profile\Shared\_Header.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201810251032500_initial.resx">
