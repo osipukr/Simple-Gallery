@@ -17,9 +17,9 @@
         <!-- Nav -->
         <nav id="nav">
             <ul>
-                <li><a href="/Home/Index"><i class="icon fas fa-home">Домашняя</i></a></li>
-                <li><a href="/Profile"><i class="icon fas fa-images">Мои альбомы</i></a></li>
-                <li><a href="/Profile/Setting"><i class="icon fas fa-users-cog">Мои настройки</i></a></li>
+                <li><a href="@Url.Action("Index", "Home")"><i class="icon fas fa-home">Домашняя</i></a></li>
+                <li><a href="@Url.Action("Index")"><i class="icon fas fa-images">Мои альбомы</i></a></li>
+                <li><a href="@Url.Action("Setting")"><i class="icon fas fa-users-cog">Мои настройки</i></a></li>
                 @using (Html.BeginForm("LogOut", "Home", FormMethod.Post, new { id = "logOutForm" }))
                 {
                     @Html.AntiForgeryToken()

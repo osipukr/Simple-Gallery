@@ -1,15 +1,45 @@
 ﻿@using Simply_Gallery.Models.Gallery
 @model Album
 @{
-    ViewBag.Title = "Фотографии";
+    ViewBag.Title = Model.Name;
     Layout = "~/Views/Profile/Shared/_Layout.cshtml";
 }
 
-@if (Model.Photos == null)
+<div class="title">
+    <h2>Список всех фотографий альбома</h2>
+</div>
+
+@if (Model.Photos.Count() == 0)
 {
-    <h2>@string.Format("В альбоме {0} нету фотографий", Model.Name)</h2>
+    <div class="album-null">
+        <p>@string.Format("В альбоме {0} нету фотографий", Model.Name)</p>
+        <img src="~/Content/profile/img/empty-album.jpg" alt=":(" title="Фоток нет" />
+    </div>
 }
 else
 {
-    <h2>Есть!</h2>
+    <h3>Фотографии в альбоме есть!</h3>
+    <div class="photos">
+
+        @foreach (var photo in Model.Photos)
+        {
+            <div class="photo">
+                <div class="photo-img">
+                    <img src="@Url.Action("GetPhoto", new { photoId = photo.PhotoId })" />
+                </div>
+                <div class="photo-name">
+                    <h3>@photo.ImageMimeType</h3>
+                </div>
+                <div class="photo-action">
+                    <a href="@Url.Action("DeletePhoto", new { id = photo.PhotoId })">Удалить</a>
+                </div>
+            </div>
+        }
+
+    </div>
 }
+
+<div class="add">
+    <p>Хотите добавить новую фотографию ?</p>
+    @Html.ActionLink("Добавить", "AddPhoto", new { albumId = Model.AlbumId })
+</div>

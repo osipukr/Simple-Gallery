@@ -9,8 +9,11 @@ namespace Simply_Gallery.Repositories
 {
     public class AlbumRepository : IAlbumRepository
     {
-        public AlbumRepository()
+        private readonly IPhotoRepository _photoRepository;
+
+        public AlbumRepository(IPhotoRepository photoRepository)
         {
+            _photoRepository = photoRepository;
         }
 
         public async Task<IEnumerable<Album>> GetAlbumsAsync(string userId)
@@ -20,6 +23,11 @@ namespace Simply_Gallery.Repositories
             using (var galleryContext = new GalleryContext())
             {
                 result = await galleryContext.Albums.Where(x => x.UserId == userId).ToListAsync();
+
+                foreach(var album in result)
+                {
+                    album.Photos = await _photoRepository.GetPhotosAsync(album.AlbumId);
+                }
             }
 
             return result;
@@ -32,6 +40,11 @@ namespace Simply_Gallery.Repositories
             using (var galleryContext = new GalleryContext())
             {
                 result = await galleryContext.Albums.FirstOrDefaultAsync(x => x.AlbumId == albumId);
+
+                if (result != null)
+                {
+                    result.Photos = await _photoRepository.GetPhotosAsync(result.AlbumId);
+                }
             }
 
             return result;
@@ -44,6 +57,11 @@ namespace Simply_Gallery.Repositories
             using (var galleryContext = new GalleryContext())
             {
                 result = await galleryContext.Albums.FirstOrDefaultAsync(x => x.Name == albumName);
+
+                if (result != null)
+                {
+                    result.Photos = await _photoRepository.GetPhotosAsync(result.AlbumId);
+                }
             }
 
             return result;

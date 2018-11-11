@@ -26,9 +26,9 @@ namespace Simply_Gallery.Services
 
         public async Task<Album> GetAlbumAsync(int albumId, string userId)
         {
-            var album = await _albumRepository.GetAlbumAsync(albumId);
+            var album = await GetAlbumAsync(albumId);
 
-            if(album != null)
+            if (album != null)
             {
                 return album.UserId == userId ? album : null;
             }
@@ -43,9 +43,9 @@ namespace Simply_Gallery.Services
 
         public async Task<Album> GetAlbumAsync(string albumName, string userId)
         {
-            var album = await _albumRepository.GetAlbumAsync(albumName);
+            var album = await GetAlbumAsync(albumName);
 
-            if(album != null)
+            if (album != null)
             {
                 return album.UserId == userId ? album : null;
             }

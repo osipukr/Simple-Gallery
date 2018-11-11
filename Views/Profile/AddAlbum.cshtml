@@ -4,11 +4,14 @@
     ViewBag.Title = "Создание нового альбома";
     Layout = "Shared/_Layout.cshtml";
 }
-<h2>@ViewBag.Title</h2>
-@using (Html.BeginForm("CreateAlbum", "Profile", FormMethod.Post, new { @class = "form" }))
-{
 
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("AddAlbum", "Profile", FormMethod.Post, new { @class = "form" }))
+{
+    @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    
     <div class="form-froup">
         @Html.LabelFor(m => m.Name)
         @Html.TextBoxFor(m => m.Name, null, new { @class = "form-control", placeholder = "Введите название альбома" })

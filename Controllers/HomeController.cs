@@ -78,7 +78,7 @@ namespace Simply_Gallery.Controllers
                 if (result.Succeeded)
                 {
                     // добавляем пользователю роль
-                    await UserManager.AddToRoleAsync(user.Id, "user");
+                   // await UserManager.AddToRoleAsync(user.Id, "user");
 
                     // входим в аккаунт
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);

@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
 
 namespace Simply_Gallery.Models.Gallery
 {
@@ -7,6 +7,7 @@ namespace Simply_Gallery.Models.Gallery
         public int AlbumId { get; set; }
         public string Name { get; set; }
         public string UserId { get; set; }
-        public IQueryable<Photo> Photos { get; set; }
+
+        public IEnumerable<Photo> Photos { get; set; }
     }
 }

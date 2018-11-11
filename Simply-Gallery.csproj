@@ -280,7 +280,7 @@
     <Content Include="Views\Profile\Shared\_Layout.cshtml" />
     <Content Include="Views\Profile\Album.cshtml" />
     <Content Include="Views\Profile\Setting.cshtml" />
-    <Content Include="Views\Profile\CreateAlbum.cshtml" />
+    <Content Include="Views\Profile\AddAlbum.cshtml" />
     <Content Include="Views\Profile\Shared\_Header.cshtml" />
     <Content Include="Views\Profile\AddPhoto.cshtml" />
   </ItemGroup>

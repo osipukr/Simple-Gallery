@@ -1,5 +1,5 @@
 ﻿@using Simply_Gallery.Models.Gallery;
-@model List<Album>
+@model IEnumerable<Album>
 @{
     Layout = "Shared/_Layout.cshtml";
     ViewBag.Title = "Мои альбомы";
@@ -9,7 +9,7 @@
     <h2>Список всех альбомов</h2>
 </div>
 
-@if (Model == null)
+@if (Model.Count() == 0)
 {
     <div class="album-null">
         <p>У вас пока нету альбомов ;(</p>
@@ -18,23 +18,23 @@
 }
 else
 {
-    <div class="albums" style=@(Model.Count < 3 ? "justify-content:space-around" : "")>
+    <div class="albums" style=@(Model.Count() < 3 ? "justify-content:space-around" : "")>
         @foreach (var album in Model)
         {
             <div class="album">
                 <div class="album-image"><img src="~/Content/profile/img/album-image.png" alt="Фото альбома" title="Фото альбома"></div>
                 <div class="album-name"><h3 title="Название альбома">@album.Name</h3></div>
                 <div class="album-butt">
-                    <li><a href="/Profile/Album/@album.AlbumId" title="Пеерйти"><i class="far fa-arrow-alt-circle-right"></i></a></li>
+                    <li><a href="@Url.Action("Album", new { id = album.AlbumId })" title="Пеерйти"><i class="far fa-arrow-alt-circle-right"></i></a></li>
                     <li><a href="#" title="Изменить"><i class="far fa-edit"></i></a></li>
-                    <li><a href="#" title="Удалить"><i class="far fa-trash-alt"></i></a></li>
+                    <li><a href="@Url.Action("DeleteAlbum", new { id = album.AlbumId })" title="Удалить"><i class="far fa-trash-alt"></i></a></li>
                 </div>
             </div>
         }
     </div>
 }
 
-<div class="create-album">
+<div class="add">
     <p>Хотите создать новый альбом ?</p>
-    @Html.ActionLink("Создать", "CreateAlbum")
+    @Html.ActionLink("Создать", "AddAlbum")
 </div>

@@ -1,8 +1,21 @@
-﻿
+﻿@using Simply_Gallery.ViewModels
+@model PhotoViewModel
 @{
-    ViewBag.Title = "AddPhoto";
+    ViewBag.Title = "Добавление фото";
     Layout = "~/Views/Profile/Shared/_Layout.cshtml";
 }
 
-<h2>AddPhoto</h2>
+<h2>@ViewBag.Title</h2>
 
+@using (Html.BeginForm("AddPhoto", "Profile", FormMethod.Post, new { @class = "form", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    
+    <div class="form-froup">
+        @Html.HiddenFor(m => m.CurrentAlbumId)
+        @Html.TextBoxFor(m => m.Image, new { type = "file" })
+    </div>
+
+    <input type="submit" class="btn btn-primary" value="Добавить" />
+}

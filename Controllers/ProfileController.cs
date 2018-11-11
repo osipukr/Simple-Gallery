@@ -1,12 +1,6 @@
-﻿using Microsoft.AspNet.Identity.Owin;
-using Simply_Gallery.App_Start;
-using Simply_Gallery.Models;
-using System.Threading.Tasks;
-using System.Web;
+﻿using System.Threading.Tasks;
 using System.Web.Mvc;
-using System.Linq;
 using Microsoft.AspNet.Identity;
-using System;
 using Simply_Gallery.Models.Gallery;
 using Simply_Gallery.Services;
 using Simply_Gallery.ViewModels;
@@ -16,18 +10,22 @@ namespace Simply_Gallery.Controllers
     [Authorize]
     public class ProfileController : Controller
     {
-        private readonly IPhotoService _pictureService;
+        private readonly IPhotoService _photoService;
         private readonly IAlbumService _albumService;
 
-        public ProfileController(IPhotoService pictureService, IAlbumService albumService)
+        public ProfileController()
         {
-            _pictureService = pictureService;
+        }
+
+        public ProfileController(IPhotoService photoService, IAlbumService albumService)
+        {
+            _photoService = photoService;
             _albumService = albumService;
         }
 
         //
         // GET: /Profile/Index
-        public async Task<ActionResult> Index()
+        public async Task<ViewResult> Index()
         {
             var userId = User.Identity.GetUserId();
             var albums = await _albumService.GetAlbumsAsync(userId);
@@ -35,17 +33,37 @@ namespace Simply_Gallery.Controllers
         }
 
         //
-        // GET: /Profile/CreateAlbum
-        public ActionResult CreateAlbum()
+        // GET: /Profile/Album
+        public async Task<ActionResult> Album(int? id)
+        {
+            if (id != null)
+            {
+                var userId = User.Identity.GetUserId();
+                var album = await _albumService.GetAlbumAsync(id.Value, userId);
+                //album.Photos = await _photoService.GetPhotosAsync(album.AlbumId);
+
+                if (album != null)
+                {
+                    return View(album);
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        //
+        // GET: /Profile/AddAlbum
+        public ViewResult AddAlbum()
         {
             return View();
         }
 
         //
-        // POST: /Profile/CreateAlbum
+        // POST: /Profile/AddAlbum
         [HttpPost]
         [AllowAnonymous]
-        public async Task<ActionResult> CreateAlbum(AlbumViewModel albumModel)
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AddAlbum(AlbumViewModel albumModel)
         {
             if (ModelState.IsValid)
             {
@@ -58,7 +76,7 @@ namespace Simply_Gallery.Controllers
                     {
                         Name = albumModel.Name,
                         UserId = userId
-                    };
+                     };
 
                     await _albumService.AddAlbumAsync(album);
                     return RedirectToAction("Album", new { id = album.AlbumId });
@@ -71,17 +89,17 @@ namespace Simply_Gallery.Controllers
         }
 
         //
-        // GET: /Profile/Album
-        public async Task<ActionResult> Album(int? id)
+        // GET: /Profile/DeleteAlbum
+        public async Task<ActionResult> DeleteAlbum(int? id)
         {
             if (id != null)
             {
                 var userId = User.Identity.GetUserId();
-                var album = await _albumService.GetAlbumAsync(Convert.ToInt32(id), userId);
+                var album = await _albumService.GetAlbumAsync(id.Value, userId);
 
                 if (album != null)
                 {
-                    return View(album);
+                    await _albumService.DeleteAlbumAsync(id.Value);
                 }
             }
 
@@ -90,63 +108,90 @@ namespace Simply_Gallery.Controllers
 
         //
         // GET: /Profile/Setting
+        public ActionResult AddPhoto(int? albumId)
+        {
+            if(albumId == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View(new PhotoViewModel { CurrentAlbumId = albumId.Value });
+        }
+
+        //
+        // POST: /Profile/AddPhoto
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AddPhoto(PhotoViewModel photoModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var picture = new Photo
+                {
+                    ImageMimeType = photoModel.Image.ContentType,
+                    Image = new byte[photoModel.Image.ContentLength],
+                    AlbumId = photoModel.CurrentAlbumId,
+                };
+
+                photoModel.Image.InputStream.Read(picture.Image, 0, photoModel.Image.ContentLength);
+                await _photoService.AddPhotoAsync(picture);
+                // photoModel.Image.SaveAs(Server.MapPath("~/Image/" + System.IO.Path.GetFileName(photoModel.Image.FileName)));
+                return RedirectToAction("Album", new { id = photoModel.CurrentAlbumId });
+            }
+
+            return View(photoModel);
+        }
+
+        //
+        // GET: Profile/DeletePhoto
+        [AllowAnonymous]
+        public async Task<ActionResult> DeletePhoto(int? id)
+        {
+            if(id != null)
+            {
+                var userId = User.Identity.GetUserId();
+                var photo = await _photoService.GetPhotoAsync(id.Value);
+                var album = await _albumService.GetAlbumAsync(photo.AlbumId, userId);
+
+                if (album != null)
+                {
+                    await _photoService.DeletePhotoAsync(id.Value);
+                    return RedirectToAction("Album", new { id = album.AlbumId });
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
+        [AllowAnonymous]
+        public async Task<FileContentResult> GetPhoto(int? photoId)
+        {
+            if(photoId != null)
+            {
+                var userId = User.Identity.GetUserId();
+                var photo = await _photoService.GetPhotoAsync(photoId.Value);
+
+                if (photo == null)
+                {
+                    return null;
+                }
+
+                var album = await _albumService.GetAlbumAsync(photo.AlbumId, userId);
+
+                if (album != null)
+                {
+                    return File(photo.Image, photo.ImageMimeType);
+                }
+            }
+
+            return null;
+        }
+
+        //
+        // GET: /Profile/Setting
         public ActionResult Setting()
         {
             return View();
         }
-
-        //[HttpPost]
-        //[AllowAnonymous]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> AddPhoto(PhotoModel photoModel, HttpPostedFileBase photo)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var picture = new Picture
-        //        {
-        //            ImageMimeType = photo.ContentType,
-        //            Image = new byte[photo.ContentLength],
-        //            AlbumId = photoModel.CurrentAlbumId
-        //        };
-
-        //        photo.InputStream.Read(picture.Image, 0, photo.ContentLength);
-
-        //        db.Pictures.Add(picture);
-        //        await db.SaveChangesAsync();
-        //    }
-
-        //    return PartialView("ProfileContent/Photos");
-        //}
-
-        //[AllowAnonymous]
-        //public FileContentResult GetPhotoFromAlbum(int albumId, int photoId)
-        //{
-        //    var album = CurrentProfile.Albums.FirstOrDefault(a => a.AlbumId == albumId);
-        //    if (album != null)
-        //    {
-        //        var photo = album.Pictures.FirstOrDefault(p => p.PictureId == photoId);
-        //        if(photo != null)
-        //        {
-        //            return File(photo.Image, photo.ImageMimeType);
-        //        }
-        //    }
-
-        //    return null;
-        //}
-
-        //[AllowAnonymous]
-        //public FileContentResult GetUserPhoto()
-        //{
-        //    var profile = db.Profiles.FirstOrDefault(p => p.UserId == User.Identity.GetUserId());
-        //    if(profile != null)
-        //    {
-        //        if (profile.UserImage != null)
-        //        {
-        //            return File(profile.UserImage, profile.ImageMimeType);
-        //        }
-        //    }
-
-        //    return null;
-        //}
     }
 }
