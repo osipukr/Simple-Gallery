@@ -11,6 +11,7 @@ namespace Simply_Gallery
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            UnityConfig.Initialise();
         }
     }
 }

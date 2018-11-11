@@ -1,4 +1,4 @@
-﻿@using Simply_Gallery.Models;
+﻿@using Simply_Gallery.Models.Gallery;
 @model List<Album>
 @{
     Layout = "Shared/_Layout.cshtml";
@@ -25,7 +25,7 @@ else
                 <div class="album-image"><img src="~/Content/profile/img/album-image.png" alt="Фото альбома" title="Фото альбома"></div>
                 <div class="album-name"><h3 title="Название альбома">@album.Name</h3></div>
                 <div class="album-butt">
-                    <li><a href="#" title="Пеерйти"><i class="far fa-arrow-alt-circle-right"></i></a></li>
+                    <li><a href="/Profile/Album/@album.AlbumId" title="Пеерйти"><i class="far fa-arrow-alt-circle-right"></i></a></li>
                     <li><a href="#" title="Изменить"><i class="far fa-edit"></i></a></li>
                     <li><a href="#" title="Удалить"><i class="far fa-trash-alt"></i></a></li>
                 </div>

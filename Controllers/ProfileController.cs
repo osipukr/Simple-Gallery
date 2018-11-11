@@ -7,33 +7,31 @@ using System.Web.Mvc;
 using System.Linq;
 using Microsoft.AspNet.Identity;
 using System;
+using Simply_Gallery.Models.Gallery;
+using Simply_Gallery.Services;
+using Simply_Gallery.ViewModels;
 
 namespace Simply_Gallery.Controllers
 {
     [Authorize]
     public class ProfileController : Controller
     {
-        #region Helpers
-        // менеджер пользователей
-        private ApplicationUserManager UserManager => HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+        private readonly IPhotoService _pictureService;
+        private readonly IAlbumService _albumService;
 
-        // менеджер ролей
-        private ApplicationRoleManager RoleManager => HttpContext.GetOwinContext().GetUserManager<ApplicationRoleManager>();
-
-        // контекст бд
-        private ApplicationContext db = new ApplicationContext();
-        #endregion
-
+        public ProfileController(IPhotoService pictureService, IAlbumService albumService)
+        {
+            _pictureService = pictureService;
+            _albumService = albumService;
+        }
 
         //
         // GET: /Profile/Index
         public async Task<ActionResult> Index()
         {
             var userId = User.Identity.GetUserId();
-            var user = await UserManager.FindByIdAsync(userId);
-            ViewBag.Roles = user.Roles.Select(x => RoleManager.Roles.FirstOrDefault(r => r.Id == x.RoleId).Description);
-            var UserAlbum = db.Albums.Where(x => x.UserId == userId).ToList();
-            return View(UserAlbum);
+            var albums = await _albumService.GetAlbumsAsync(userId);
+            return View(albums);
         }
 
         //
@@ -43,14 +41,17 @@ namespace Simply_Gallery.Controllers
             return View();
         }
 
+        //
+        // POST: /Profile/CreateAlbum
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult CreateAlbum(AlbumModel albumModel)
+        public async Task<ActionResult> CreateAlbum(AlbumViewModel albumModel)
         {
             if (ModelState.IsValid)
             {
                 var userId = User.Identity.GetUserId();
-                var result = db.Albums.FirstOrDefault(x => x.Name == albumModel.Name && x.UserId == userId);
+                var result = await _albumService.GetAlbumAsync(albumModel.Name, userId);
+
                 if (result == null)
                 {
                     var album = new Album
@@ -58,24 +59,25 @@ namespace Simply_Gallery.Controllers
                         Name = albumModel.Name,
                         UserId = userId
                     };
-                    db.Albums.Add(album);
-                    db.SaveChanges();
-                    return RedirectToAction("Album", new { id = Convert.ToString(album.AlbumId) });
+
+                    await _albumService.AddAlbumAsync(album);
+                    return RedirectToAction("Album", new { id = album.AlbumId });
                 }
-                ModelState.AddModelError("", "Альбом с таким названием уже создан");
+
+                ModelState.AddModelError("", "Альбом с таким именем уже создан");
             }
-            return View();
+
+            return View(albumModel);
         }
 
         //
         // GET: /Profile/Album
-        public ActionResult Album(string id)
+        public async Task<ActionResult> Album(int? id)
         {
-            int? albumId = Convert.ToInt32(id);
-            if (albumId != null)
+            if (id != null)
             {
                 var userId = User.Identity.GetUserId();
-                var album = db.Albums.FirstOrDefault(a => a.AlbumId == albumId && a.UserId == userId);
+                var album = await _albumService.GetAlbumAsync(Convert.ToInt32(id), userId);
 
                 if (album != null)
                 {
@@ -93,28 +95,28 @@ namespace Simply_Gallery.Controllers
             return View();
         }
 
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> AddPhoto(PhotoModel photoModel, HttpPostedFileBase photo)
-        {
-            if (ModelState.IsValid)
-            {
-                var picture = new Picture
-                {
-                    ImageMimeType = photo.ContentType,
-                    Image = new byte[photo.ContentLength],
-                    AlbumId = photoModel.CurrentAlbumId
-                };
+        //[HttpPost]
+        //[AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> AddPhoto(PhotoModel photoModel, HttpPostedFileBase photo)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var picture = new Picture
+        //        {
+        //            ImageMimeType = photo.ContentType,
+        //            Image = new byte[photo.ContentLength],
+        //            AlbumId = photoModel.CurrentAlbumId
+        //        };
 
-                photo.InputStream.Read(picture.Image, 0, photo.ContentLength);
+        //        photo.InputStream.Read(picture.Image, 0, photo.ContentLength);
 
-                db.Pictures.Add(picture);
-                await db.SaveChangesAsync();
-            }
+        //        db.Pictures.Add(picture);
+        //        await db.SaveChangesAsync();
+        //    }
 
-            return PartialView("ProfileContent/Photos");
-        }
+        //    return PartialView("ProfileContent/Photos");
+        //}
 
         //[AllowAnonymous]
         //public FileContentResult GetPhotoFromAlbum(int albumId, int photoId)

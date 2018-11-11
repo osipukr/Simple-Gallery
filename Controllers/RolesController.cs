@@ -1,33 +1,37 @@
 ﻿using Microsoft.AspNet.Identity.Owin;
 using Simply_Gallery.App_Start;
 using Simply_Gallery.Models;
-using System.Collections.Generic;
+using Simply_Gallery.ViewModels;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
 namespace Simply_Gallery.Controllers
 {
+    //[Authorize(Roles = "admin")]
     public class RolesController : Controller
     {
         private ApplicationUserManager UserManager => HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
 
         private ApplicationRoleManager RoleManager => HttpContext.GetOwinContext().GetUserManager<ApplicationRoleManager>();
 
-         // GET: Roles
-        [Authorize(Roles = "admin")]
+        //
+        // GET: /Roles/Index
         public ActionResult Index()
         {
             return View(RoleManager.Roles);
         }
 
-        [Authorize(Roles = "admin")]
+        //
+        // GET: /Roles/Create
         public ActionResult Create()
         {
             return View();
         }
+
+        //
+        // POST: /Roles/Create
         [HttpPost]
-        [Authorize(Roles = "admin")]
         public async Task<ActionResult> Create(RoleViewModel model)
         {
             if (ModelState.IsValid)
@@ -51,7 +55,8 @@ namespace Simply_Gallery.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "admin")]
+        //
+        // GET: /Roles/Edit
         public async Task<ActionResult> Edit(string id)
         {
             var role = await RoleManager.FindByIdAsync(id);
@@ -63,8 +68,9 @@ namespace Simply_Gallery.Controllers
             return RedirectToAction("Index");
         }
 
+        //
+        // POST: /Roles/Edit
         [HttpPost]
-        [Authorize(Roles = "admin")]
         public async Task<ActionResult> Edit(RoleViewModel model)
         {
             if (ModelState.IsValid)
@@ -86,7 +92,8 @@ namespace Simply_Gallery.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "admin")]
+        //
+        // GET: /Roles/Delete
         public async Task<ActionResult> Delete(string id)
         {
             var role = await RoleManager.FindByIdAsync(id);
@@ -99,7 +106,8 @@ namespace Simply_Gallery.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize(Roles = "admin")]
+        //
+        // GET: /Roles/List
         public async Task<ActionResult> List(string id)
         {
             var role = await RoleManager.FindByIdAsync(id);

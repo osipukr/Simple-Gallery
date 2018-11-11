@@ -9,9 +9,14 @@ using System.Threading.Tasks;
 
 namespace Simply_Gallery.App_Start
 {
+    // настройка диспетчера пользователей
+    // UserManager определен в ASP.NET Identity
     public class ApplicationUserManager : UserManager<ApplicationUser>
     {
-        public ApplicationUserManager(IUserStore<ApplicationUser> store) : base(store) { }
+        public ApplicationUserManager(IUserStore<ApplicationUser> store) 
+            : base(store)
+        {
+        }
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options,
                                                 IOwinContext context)
@@ -41,6 +46,7 @@ namespace Simply_Gallery.App_Start
         }
     }
 
+    // настройка диспетчера входа
     public class ApplicationSignInManager : SignInManager<ApplicationUser, string>
     {
         public ApplicationSignInManager(ApplicationUserManager userManager, IAuthenticationManager authenticationManager)
@@ -59,9 +65,13 @@ namespace Simply_Gallery.App_Start
         }
     }
 
+    // настройка диспечера ролей
     class ApplicationRoleManager : RoleManager<ApplicationRole>
     {
-        public ApplicationRoleManager(RoleStore<ApplicationRole> store) : base(store) { }
+        public ApplicationRoleManager(RoleStore<ApplicationRole> store) 
+            : base(store)
+        {
+        }
 
         public static ApplicationRoleManager Create(IdentityFactoryOptions<ApplicationRoleManager> options,
                                                 IOwinContext context)

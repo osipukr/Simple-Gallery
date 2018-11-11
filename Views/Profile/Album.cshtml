@@ -1,10 +1,11 @@
-﻿@model Simply_Gallery.Models.Album
+﻿@using Simply_Gallery.Models.Gallery
+@model Album
 @{
     ViewBag.Title = "Фотографии";
     Layout = "~/Views/Profile/Shared/_Layout.cshtml";
 }
 
-@if (Model.Pictures == null)
+@if (Model.Photos == null)
 {
     <h2>@string.Format("В альбоме {0} нету фотографий", Model.Name)</h2>
 }

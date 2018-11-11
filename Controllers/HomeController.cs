@@ -50,9 +50,6 @@ namespace Simply_Gallery.Controllers
             }
         }
 
-        // контекст базы данных
-        private ApplicationContext db = new ApplicationContext();
-
         //
         // GET: /Home/Index
         public ActionResult Index()
@@ -65,7 +62,7 @@ namespace Simply_Gallery.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterModel model)
+        public async Task<ActionResult> Register(RegisterViewModel model)
         {
             // валидация
             if (ModelState.IsValid)
@@ -95,6 +92,7 @@ namespace Simply_Gallery.Controllers
                     }
                 }
             }
+
             return PartialView("Shared/_Register", model);
         }
 
@@ -103,21 +101,22 @@ namespace Simply_Gallery.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginModel model)
+        public async Task<ActionResult> Login(LoginViewModel model)
         {
             // валидация
             if (ModelState.IsValid)
             {
                 var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent: false, shouldLockout: false);
+                
                 switch (result)
                 {
                     case SignInStatus.Success : return JavaScript("location.reload()");
                     default:
-                        ModelState.AddModelError("", (await UserManager.FindByNameAsync(model.UserName) == null) ?
-                        "Неверное имя пользователя" : "Неверный пароль");
+                        ModelState.AddModelError("", "Неверное имя пользователя или пароль");
                         break;
                 }
             }
+
             return PartialView("Shared/_Login", model);
         }
 

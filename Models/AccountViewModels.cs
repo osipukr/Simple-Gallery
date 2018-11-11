@@ -2,7 +2,7 @@
 
 namespace Simply_Gallery.Models
 {
-    public class LoginModel
+    public class LoginViewModel
     {
         [Required(ErrorMessage = "Поле имя пользователя обязательно для ввода")]
         [Display(Name = "Имя пользователя")]
@@ -14,7 +14,7 @@ namespace Simply_Gallery.Models
         public string Password { get; set; }
     }
 
-    public class RegisterModel
+    public class RegisterViewModel
     {
         [Required(ErrorMessage = "Поле почта обязательно для ввода")]
         [Display(Name = "Почта")]

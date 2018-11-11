@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -31,10 +30,10 @@ namespace Simply_Gallery.Models
 
     public class ApplicationContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationContext() : base("DbConnection") { }
-
-        public DbSet<Picture> Pictures { get; set; }
-        public DbSet<Album> Albums { get; set; }
+        public ApplicationContext() 
+            : base("DefaultConnection", throwIfV1Schema: false)
+        {
+        }
 
         public static ApplicationContext Create()
         {

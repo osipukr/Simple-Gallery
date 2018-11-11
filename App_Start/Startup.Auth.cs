@@ -15,12 +15,13 @@ namespace Simply_Gallery
         {
             // регистрация контекста данных
             app.CreatePerOwinContext(ApplicationContext.Create);
-            // регистрация менеджера пользователей
+            // регистрация диспечера пользователей
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
-            // регистрация менеджера ролей
+            // регистрация диспечера ролей
             app.CreatePerOwinContext<ApplicationRoleManager>(ApplicationRoleManager.Create);
-            // регистрация менеджера входа
+            // регистрация диспечера входа
             app.CreatePerOwinContext<ApplicationSignInManager>(ApplicationSignInManager.Create);
+            
             // использование куки для аутентификации и авторизации
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
