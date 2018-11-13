@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
@@ -31,31 +33,27 @@ namespace Simply_Gallery.Controllers
 
         //
         // GET: /Profile/Index
-        public async Task<ViewResult> Index()
+        [HttpGet]
+        public async Task<ActionResult> Index()
         {
-            var userId = User.Identity.GetUserId();
-            var albums = await _albumService.GetAlbumsAsync(userId);
+            var albums = await _albumService.GetAlbumsAsync(User.Identity.GetUserId());
             return View(albums);
         }
 
         [ChildActionOnly]
         public ActionResult Header()
         {
-            var userId = User.Identity.GetUserId();
-            var user = UserManager.FindById(userId);
-
-            return PartialView("Shared/_Header", user);
+            return  PartialView("Shared/_Header", UserManager.FindById(User.Identity.GetUserId()));
         }
 
         //
         // GET: /Profile/Album
+        [HttpGet]
         public async Task<ActionResult> Album(int? albumId)
         {
             if (albumId != null)
             {
-                var userId = User.Identity.GetUserId();
-                var album = await _albumService.GetAlbumAsync(albumId.Value, userId);
-                //album.Photos = await _photoService.GetPhotosAsync(album.AlbumId);
+                var album = await _albumService.GetAlbumAsync(albumId.Value, User.Identity.GetUserId());
 
                 if (album != null)
                 {
@@ -68,6 +66,7 @@ namespace Simply_Gallery.Controllers
 
         //
         // GET: /Profile/AddAlbum
+        [HttpGet]
         public ViewResult AddAlbum()
         {
             return View();
@@ -76,7 +75,6 @@ namespace Simply_Gallery.Controllers
         //
         // POST: /Profile/AddAlbum
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddAlbum(AlbumViewModel albumModel)
         {
@@ -94,7 +92,7 @@ namespace Simply_Gallery.Controllers
                      };
 
                     await _albumService.AddAlbumAsync(album);
-                    return RedirectToAction("Album", new { id = album.AlbumId });
+                    return RedirectToAction("Album", new { albumId = album.AlbumId });
                 }
 
                 ModelState.AddModelError("", "Альбом с таким именем уже создан");
@@ -105,14 +103,14 @@ namespace Simply_Gallery.Controllers
 
         //
         // GET: /Profile/DeleteAlbum
+        [HttpGet]
         public async Task<ActionResult> DeleteAlbum(int? albumId)
         {
             if (albumId != null)
             {
-                var userId = User.Identity.GetUserId();
-                var album = await _albumService.GetAlbumAsync(albumId.Value, userId);
+                var result = await _albumService.GetAlbumAsync(albumId.Value, User.Identity.GetUserId());
 
-                if (album != null)
+                if (result != null)
                 {
                     await _albumService.DeleteAlbumAsync(albumId.Value);
                 }
@@ -123,17 +121,17 @@ namespace Simply_Gallery.Controllers
 
         //
         // GET: /Profile/Setting
+        [HttpGet]
         public async Task<ActionResult> AddPhoto(int? albumId)
         {
             if(albumId != null)
             {
-                var album = await _albumService.GetAlbumAsync(albumId.Value, User.Identity.GetUserId());
+                var result = await _albumService.GetAlbumAsync(albumId.Value, User.Identity.GetUserId());
 
-                if (album != null)
+                if (result != null)
                 {
                     return View(new PhotoViewModel { CurrentAlbumId = albumId.Value });
                 }
-                
             }
 
             return RedirectToAction("Index");
@@ -142,31 +140,47 @@ namespace Simply_Gallery.Controllers
         //
         // POST: /Profile/AddPhoto
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddPhoto(PhotoViewModel photoModel)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var photo = new Photo
-                {
-                    ImageMimeType = photoModel.Image.ContentType,
-                    Image = new byte[photoModel.Image.ContentLength],
-                    AlbumId = photoModel.CurrentAlbumId,
-                };
-
-                photoModel.Image.InputStream.Read(photo.Image, 0, photoModel.Image.ContentLength);
-                await _photoService.AddPhotoAsync(photo);
-
-                return RedirectToAction("Album", new { albumId = photoModel.CurrentAlbumId });
+                return View(photoModel);
             }
 
-            return View(photoModel);
+            string[] formats = new string[] { ".jpg", ".png", ".gif", ".jpeg" };
+
+            if (!photoModel.Image.ContentType.Contains("image") &&
+                !formats.Any(item => photoModel.Image.FileName.EndsWith(item, StringComparison.OrdinalIgnoreCase)))
+            {
+                ModelState.AddModelError("", "Этот файл не может быть загружен в галерею");
+
+                return View(photoModel);
+            }
+            
+            if(photoModel.Image.ContentLength > Math.Pow(5, Math.Pow(10, 6)))
+            {
+                ModelState.AddModelError("", "Привышен размер загружаемого файла");
+
+                return View(photoModel);
+            }
+
+            var photo = new Photo
+            {
+                ImageMimeType = photoModel.Image.ContentType,
+                Image = new byte[photoModel.Image.ContentLength],
+                AlbumId = photoModel.CurrentAlbumId,
+            };
+
+            await photoModel.Image.InputStream.ReadAsync(photo.Image, 0, photoModel.Image.ContentLength);
+            await _photoService.AddPhotoAsync(photo);
+
+            return RedirectToAction("Album", new { albumId = photoModel.CurrentAlbumId });
         }
 
         //
         // GET: Profile/DeletePhoto
-        [AllowAnonymous]
+        [HttpGet]
         public async Task<ActionResult> DeletePhoto(int? photoId)
         {
             if(photoId != null)
@@ -188,31 +202,35 @@ namespace Simply_Gallery.Controllers
             return RedirectToAction("Index");
         }
 
-        [AllowAnonymous]
-        public async Task<FileContentResult> GetPhoto(int? photoId)
+        //
+        // GET: Profile/GetPhoto
+        [HttpGet]
+        public async Task<ActionResult> GetPhoto(int? photoId)
         {
             if(photoId != null)
             {
                 var photo = await _photoService.GetPhotoAsync(photoId.Value);
 
-                if (photo == null)
+                if (photo != null)
                 {
-                    return null;
-                }
+                    var album = await _albumService.GetAlbumAsync(photo.AlbumId, User.Identity.GetUserId());
 
-                var album = await _albumService.GetAlbumAsync(photo.AlbumId, User.Identity.GetUserId());
-
-                if (album != null)
-                {
-                    return File(photo.Image, photo.ImageMimeType);
+                    if (album != null)
+                    {
+                        return File(photo.Image, photo.ImageMimeType);
+                    }
                 }
             }
 
-            return null;
+            Response.StatusCode = 404;
+            return View("Error");
         }
 
+        //
+        // GET: /Profile/GetUserPhoto
+        [HttpGet]
         [ChildActionOnly]
-        public async Task<FileResult> GetUserPhoto(string userId)
+        public async Task<ActionResult> GetUserPhoto(string userId)
         {
             var user = await UserManager.FindByIdAsync(userId);
 
@@ -226,6 +244,7 @@ namespace Simply_Gallery.Controllers
 
         //
         // GET: /Profile/Setting
+        [HttpGet]
         public ActionResult Setting()
         {
             return View();

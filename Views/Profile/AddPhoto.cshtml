@@ -7,7 +7,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm("AddPhoto", "Profile", FormMethod.Post, new { @class = "form", enctype = "multipart/form-data" }))
+@using (Html.BeginForm("AddPhoto", "Profile", FormMethod.Post, new { @class = "form", enctype = "multipart/form-data", style = "text-align: left" }))
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(m => m.CurrentAlbumId)

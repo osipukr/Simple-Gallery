@@ -2,7 +2,6 @@
 @model Album
 @{
     ViewBag.Title = Model.Name;
-    ViewBag.Count = 0;
     Layout = "~/Views/Profile/Shared/_Layout.cshtml";
 }
 
@@ -37,7 +36,7 @@ else
 </div>
 
 @section Style {
-    <link href="~/Content/home/vendor/magnific-popup/magnific-popup.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/home/vendor/magnific-popup/magnific-popup.min.css" rel="stylesheet" type="text/css" />
     
     <style>
         .image-source-link {
@@ -86,8 +85,8 @@ else
                 image: {
                     verticalFit: true,
                     titleSrc: function (item) {
-                        return '<a class="image-source-link" href="/Profile/DeletePhoto?' + item.el.attr('href').split('?')[1] + '" >Удалить</a> ' + 
-                        ' <a class="image-source-link" href="' + item.el.attr('href') + '" target="_blank">Открыть</a>';
+                        return '<a class="image-source-link" href="' + item.el.attr('href') + '" target="_blank">Открыть</a> ' +
+                            ' <a class="image-source-link" href="/Profile/DeletePhoto?' + item.el.attr('href').split('?')[1] + '" >Удалить</a>';
                     }
                 },
                 gallery: {
@@ -95,7 +94,7 @@ else
                 },
                 zoom: {
                     enabled: true,
-                    duration: 400, // don't foget to change the duration also in CSS
+                    duration: 400,
                     opener: function (element) {
                         return element.find('img');
                     }
@@ -104,5 +103,4 @@ else
             });
         });
     </script>
-
 }

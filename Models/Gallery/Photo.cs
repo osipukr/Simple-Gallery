@@ -7,6 +7,6 @@
         public string ImageMimeType { get; set; }
 
         public int AlbumId { get; set; }
-        public Album Album { get; set; }
+        public virtual Album Album { get; set; }
     }
 }

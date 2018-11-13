@@ -11,6 +11,10 @@ namespace Simply_Gallery.Repositories
     {
         private readonly IPhotoRepository _photoRepository;
 
+        public AlbumRepository()
+        {
+        }
+
         public AlbumRepository(IPhotoRepository photoRepository)
         {
             _photoRepository = photoRepository;

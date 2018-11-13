@@ -8,6 +8,6 @@ namespace Simply_Gallery.Models.Gallery
         public string Name { get; set; }
         public string UserId { get; set; }
 
-        public IEnumerable<Photo> Photos { get; set; }
+        public virtual IEnumerable<Photo> Photos { get; set; }
     }
 }

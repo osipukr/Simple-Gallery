@@ -10,7 +10,7 @@ namespace Simply_Gallery.ViewModels
         [Display(Name = "Фотография")]
         public HttpPostedFileBase Image { get; set; }
 
-        [HiddenInput(DisplayValue = false)]
+        [ScaffoldColumn(false)]
         public int CurrentAlbumId { get; set; }
     }
 }

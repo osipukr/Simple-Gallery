@@ -124,7 +124,6 @@ namespace Simply_Gallery.Controllers
         //
         // POST: /Home/LogOut
         [HttpPost]
-        [AllowAnonymous]
         public ActionResult LogOut()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
