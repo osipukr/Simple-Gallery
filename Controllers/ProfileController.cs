@@ -1,6 +1,9 @@
 ﻿using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Simply_Gallery.App_Start;
 using Simply_Gallery.Models.Gallery;
 using Simply_Gallery.Services;
 using Simply_Gallery.ViewModels;
@@ -23,6 +26,9 @@ namespace Simply_Gallery.Controllers
             _albumService = albumService;
         }
 
+        // менеджер пользователей
+        public ApplicationUserManager UserManager => HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+
         //
         // GET: /Profile/Index
         public async Task<ViewResult> Index()
@@ -32,14 +38,23 @@ namespace Simply_Gallery.Controllers
             return View(albums);
         }
 
+        [ChildActionOnly]
+        public ActionResult Header()
+        {
+            var userId = User.Identity.GetUserId();
+            var user = UserManager.FindById(userId);
+
+            return PartialView("Shared/_Header", user);
+        }
+
         //
         // GET: /Profile/Album
-        public async Task<ActionResult> Album(int? id)
+        public async Task<ActionResult> Album(int? albumId)
         {
-            if (id != null)
+            if (albumId != null)
             {
                 var userId = User.Identity.GetUserId();
-                var album = await _albumService.GetAlbumAsync(id.Value, userId);
+                var album = await _albumService.GetAlbumAsync(albumId.Value, userId);
                 //album.Photos = await _photoService.GetPhotosAsync(album.AlbumId);
 
                 if (album != null)
@@ -90,16 +105,16 @@ namespace Simply_Gallery.Controllers
 
         //
         // GET: /Profile/DeleteAlbum
-        public async Task<ActionResult> DeleteAlbum(int? id)
+        public async Task<ActionResult> DeleteAlbum(int? albumId)
         {
-            if (id != null)
+            if (albumId != null)
             {
                 var userId = User.Identity.GetUserId();
-                var album = await _albumService.GetAlbumAsync(id.Value, userId);
+                var album = await _albumService.GetAlbumAsync(albumId.Value, userId);
 
                 if (album != null)
                 {
-                    await _albumService.DeleteAlbumAsync(id.Value);
+                    await _albumService.DeleteAlbumAsync(albumId.Value);
                 }
             }
 
@@ -108,14 +123,20 @@ namespace Simply_Gallery.Controllers
 
         //
         // GET: /Profile/Setting
-        public ActionResult AddPhoto(int? albumId)
+        public async Task<ActionResult> AddPhoto(int? albumId)
         {
-            if(albumId == null)
+            if(albumId != null)
             {
-                return RedirectToAction("Index");
+                var album = await _albumService.GetAlbumAsync(albumId.Value, User.Identity.GetUserId());
+
+                if (album != null)
+                {
+                    return View(new PhotoViewModel { CurrentAlbumId = albumId.Value });
+                }
+                
             }
 
-            return View(new PhotoViewModel { CurrentAlbumId = albumId.Value });
+            return RedirectToAction("Index");
         }
 
         //
@@ -127,17 +148,17 @@ namespace Simply_Gallery.Controllers
         {
             if (ModelState.IsValid)
             {
-                var picture = new Photo
+                var photo = new Photo
                 {
                     ImageMimeType = photoModel.Image.ContentType,
                     Image = new byte[photoModel.Image.ContentLength],
                     AlbumId = photoModel.CurrentAlbumId,
                 };
 
-                photoModel.Image.InputStream.Read(picture.Image, 0, photoModel.Image.ContentLength);
-                await _photoService.AddPhotoAsync(picture);
-                // photoModel.Image.SaveAs(Server.MapPath("~/Image/" + System.IO.Path.GetFileName(photoModel.Image.FileName)));
-                return RedirectToAction("Album", new { id = photoModel.CurrentAlbumId });
+                photoModel.Image.InputStream.Read(photo.Image, 0, photoModel.Image.ContentLength);
+                await _photoService.AddPhotoAsync(photo);
+
+                return RedirectToAction("Album", new { albumId = photoModel.CurrentAlbumId });
             }
 
             return View(photoModel);
@@ -146,20 +167,24 @@ namespace Simply_Gallery.Controllers
         //
         // GET: Profile/DeletePhoto
         [AllowAnonymous]
-        public async Task<ActionResult> DeletePhoto(int? id)
+        public async Task<ActionResult> DeletePhoto(int? photoId)
         {
-            if(id != null)
+            if(photoId != null)
             {
-                var userId = User.Identity.GetUserId();
-                var photo = await _photoService.GetPhotoAsync(id.Value);
-                var album = await _albumService.GetAlbumAsync(photo.AlbumId, userId);
+                var photo = await _photoService.GetPhotoAsync(photoId.Value);
 
-                if (album != null)
+                if (photo != null)
                 {
-                    await _photoService.DeletePhotoAsync(id.Value);
-                    return RedirectToAction("Album", new { id = album.AlbumId });
+                    var album = await _albumService.GetAlbumAsync(photo.AlbumId, User.Identity.GetUserId());
+
+                    if (album != null)
+                    {
+                        await _photoService.DeletePhotoAsync(photoId.Value);
+                        return RedirectToAction("Album", new { albumId = album.AlbumId });
+                    }
                 }
             }
+                
             return RedirectToAction("Index");
         }
 
@@ -168,7 +193,6 @@ namespace Simply_Gallery.Controllers
         {
             if(photoId != null)
             {
-                var userId = User.Identity.GetUserId();
                 var photo = await _photoService.GetPhotoAsync(photoId.Value);
 
                 if (photo == null)
@@ -176,12 +200,25 @@ namespace Simply_Gallery.Controllers
                     return null;
                 }
 
-                var album = await _albumService.GetAlbumAsync(photo.AlbumId, userId);
+                var album = await _albumService.GetAlbumAsync(photo.AlbumId, User.Identity.GetUserId());
 
                 if (album != null)
                 {
                     return File(photo.Image, photo.ImageMimeType);
                 }
+            }
+
+            return null;
+        }
+
+        [ChildActionOnly]
+        public async Task<FileResult> GetUserPhoto(string userId)
+        {
+            var user = await UserManager.FindByIdAsync(userId);
+
+            if(user != null)
+            {
+                return File(user.Image, user.ImageMimeType);
             }
 
             return null;

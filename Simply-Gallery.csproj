@@ -216,7 +216,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Gallery\Album.cs" />
     <Compile Include="Models\Gallery\Photo.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -231,7 +230,10 @@
     <Compile Include="Services\PhotoService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AlbumViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\PhotoViewModel.cs" />
+    <Compile Include="ViewModels\ProfileViewModel.cs" />
+    <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\RoleViewModel.cs" />
     <Compile Include="ViewModels\UsersRoleViewModel.cs" />
   </ItemGroup>

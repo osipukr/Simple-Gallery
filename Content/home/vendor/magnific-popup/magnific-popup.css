@@ -113,6 +113,7 @@ button.mfp-close, button.mfp-arrow {
   outline: none;
   padding: 0;
   z-index: 1046;
+  border-radius: 10px;
   -webkit-box-shadow: none;
   box-shadow: none; }
 button::-moz-focus-inner {
@@ -120,12 +121,12 @@ button::-moz-focus-inner {
   border: 0; }
 
 .mfp-close {
-  width: 35px;
-  height: 35px;
+  width: 50px;
+  height: 50px;
   line-height: 1.4;
   position: absolute;
-  right: 0;
-  top: 0;
+  right: 10px;
+  top: 10px;
   text-decoration: none;
   text-align: center;
   opacity: 0.65;
@@ -157,8 +158,8 @@ button::-moz-focus-inner {
   position: absolute;
   top: 0;
   right: 0;
-  color: #CCC;
-  font-size: 12px;
+  color: #fff;
+  font-size: 14px;
   line-height: 18px;
   white-space: nowrap; }
 
@@ -168,11 +169,11 @@ button::-moz-focus-inner {
   filter: alpha(opacity=65);
   margin: 0;
   top: 50%;
-  margin-top: -15px;
+  margin-top: -30px;
   padding: 2px;
-  width: 35px;
-  height: 35px;
-  border-radius: 3px;
+  width: 60px;
+  height: 60px;
+  border-radius: 5px;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
   .mfp-arrow:hover, .mfp-arrow:focus {
     opacity: 1;
@@ -266,7 +267,7 @@ img.mfp-img {
     margin: 0; }
 
 .mfp-bottom-bar {
-  margin-top: -36px;
+  margin-top: -30px;
   position: absolute;
   top: 100%;
   left: 0;

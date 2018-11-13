@@ -13,11 +13,12 @@
     <link href="~/Content/home/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="~/Content/profile/css/main.css" />
 
+    @RenderSection("Style", required: false)
+
 </head>
 <body class="is-preload">
 
-    <!-- Header -->
-    @Html.Partial("Shared/_Header")
+    @Html.Action("Header")
 
     <!-- Main -->
     <div id="main">
@@ -45,6 +46,8 @@
     <script src="~/Content/profile/js/breakpoints.min.js"></script>
     <script src="~/Content/profile/js/util.js"></script>
     <script src="~/Content/profile/js/main.js"></script>
+
+    @RenderSection("Script", required: false)
 
 </body>
 </html>

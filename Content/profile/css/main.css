@@ -106,17 +106,18 @@ input, select, textarea {
 	a {
 		text-decoration: none;
 		color: inherit;
-		border-bottom: dotted 1px rgba(128, 128, 128, 0.5);
+		/*border-bottom: dotted 1px rgba(128, 128, 128, 0.5);*/
 		-moz-transition: color 0.35s ease-in-out, border-bottom-color 0.35s ease-in-out;
 		-webkit-transition: color 0.35s ease-in-out, border-bottom-color 0.35s ease-in-out;
 		-ms-transition: color 0.35s ease-in-out, border-bottom-color 0.35s ease-in-out;
 		transition: color 0.35s ease-in-out, border-bottom-color 0.35s ease-in-out;
 		outline: 0;
+        display: inline-block;
 	}
 
 		a:hover {
 			color: #E27689;
-			border-bottom-color: rgba(255, 255, 255, 0);
+			/*border-bottom-color: rgba(255, 255, 255, 0);*/
 		}
 
 	p, ul, ol, dl, table {
@@ -360,6 +361,10 @@ input, select, textarea {
     text-align: center;
 }
 
+.title {
+    margin-bottom: 50px;
+}
+
 .album-null p {
     margin-bottom: 0;
     font-size: 15px;
@@ -437,6 +442,15 @@ input, select, textarea {
 	        display: block;
 	        margin: 0 20px;
         }
+
+.photo-link {
+    margin: 16px;
+}
+
+    .photo-link img {
+        width: 200px;
+        height: 150px;
+    }
 
 /* Wide */
 
@@ -710,9 +724,14 @@ input, select, textarea {
 		    .album {
 			    flex-basis: 45%;
 		    }
+
+        .photo-link img {
+            width: 400px;
+            height: 350px;
+        }
 	}
 
-	@media screen and (max-width: 580px) {
+	@media screen and (max-width: 520px) {
 		.albums {
 			justify-content: center;
 		}
@@ -725,5 +744,9 @@ input, select, textarea {
             }
         
         .create-album p { font-size: 18px;}
-	}
 
+        .photo-link img {
+            width: 300px;
+            height: 250px;
+        }
+	}

@@ -21,7 +21,7 @@
                         <li class="js_nav-item nav-item"><a class="nav-item-child nav-item-hover" href="#home">Домашняя</a></li>
                         <li class="js_nav-item nav-item"><a class="nav-item-child nav-item-hover" href="#about">О нас</a></li>
                         <li class="js_nav-item nav-item"><a class="nav-item-child nav-item-hover" href="#contact">Контакты</a></li>
-                        @Html.Partial("Shared/_LogOut")
+                        @{ Html.RenderPartial("Shared/_LogOut"); }
                     </ul>
                 </div>
             </div>

@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Simply_Gallery.App_Start;
+using Simply_Gallery.ViewModels;
 
 namespace Simply_Gallery.Controllers
 {

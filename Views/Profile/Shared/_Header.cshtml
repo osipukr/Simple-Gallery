@@ -1,16 +1,27 @@
-﻿<div id="header">
+﻿@using Microsoft.AspNet.Identity
+@using Simply_Gallery.Models
+@model ApplicationUser
+
+<div id="header">
     <div class="top">
         <!-- Logo -->
         <div id="logo">
             <span class="image">
-                <img src="~/Content/profile/img/avatar.jpg" alt="аватар" title="default" />
+                @if (Model.Image == null)
+                {
+                    <img src="~/Content/profile/img/avatar.jpg" alt="аватар" title="default" />
+                }
+                else
+                {
+                    <img src="@Url.Action("GetUserPhoto", new { userId = User.Identity.GetUserId() })" alt="аватар" title="@Model.UserName" />
+                }
+
             </span>
-            <h1>@User.Identity.Name</h1>
-            @*@foreach (var role in ViewBag.Roles)
+            <h1>@Model.UserName</h1>
+            @foreach (var role in Model.Roles)
             {
-                <p>@role</p>
-            }*@
-            <p>Мои роли</p>
+                <p>@role.RoleId</p>
+            }
 
         </div>
 
