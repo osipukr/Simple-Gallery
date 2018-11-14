@@ -28,9 +28,9 @@ namespace Simply_Gallery.Repositories
             {
                 result = await galleryContext.Albums.Where(x => x.UserId == userId).ToListAsync();
 
-                foreach(var album in result)
+                foreach (var album in result)
                 {
-                    album.Photos = await _photoRepository.GetPhotosAsync(album.AlbumId);
+                    album.Photos = await _photoRepository.GetPhotosAsync(album.Id);
                 }
             }
 
@@ -43,11 +43,11 @@ namespace Simply_Gallery.Repositories
 
             using (var galleryContext = new GalleryContext())
             {
-                result = await galleryContext.Albums.FirstOrDefaultAsync(x => x.AlbumId == albumId);
+                result = await galleryContext.Albums.FirstOrDefaultAsync(x => x.Id == albumId);
 
                 if (result != null)
                 {
-                    result.Photos = await _photoRepository.GetPhotosAsync(result.AlbumId);
+                    result.Photos = await _photoRepository.GetPhotosAsync(result.Id);
                 }
             }
 
@@ -64,7 +64,7 @@ namespace Simply_Gallery.Repositories
 
                 if (result != null)
                 {
-                    result.Photos = await _photoRepository.GetPhotosAsync(result.AlbumId);
+                    result.Photos = await _photoRepository.GetPhotosAsync(result.Id);
                 }
             }
 
@@ -88,7 +88,7 @@ namespace Simply_Gallery.Repositories
         {
             using (var galleryContext = new GalleryContext())
             {
-                var album = await galleryContext.Albums.FirstOrDefaultAsync(x => x.AlbumId == albumId);
+                var album = await galleryContext.Albums.FirstOrDefaultAsync(x => x.Id == albumId);
 
                 galleryContext.Entry(album).State = EntityState.Deleted;
 

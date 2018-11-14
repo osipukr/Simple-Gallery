@@ -31,7 +31,7 @@ namespace Simply_Gallery.Models
     public class ApplicationContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationContext() 
-            : base("DbConnection", throwIfV1Schema: false)
+            : base("DefaultConnection", false)
         {
         }
 

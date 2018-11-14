@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -92,7 +93,7 @@ namespace Simply_Gallery.Controllers
                      };
 
                     await _albumService.AddAlbumAsync(album);
-                    return RedirectToAction("Album", new { albumId = album.AlbumId });
+                    return RedirectToAction("Album", new { albumId = album.Id });
                 }
 
                 ModelState.AddModelError("", "Альбом с таким именем уже создан");
@@ -194,7 +195,7 @@ namespace Simply_Gallery.Controllers
                     if (album != null)
                     {
                         await _photoService.DeletePhotoAsync(photoId.Value);
-                        return RedirectToAction("Album", new { albumId = album.AlbumId });
+                        return RedirectToAction("Album", new { albumId = album.Id });
                     }
                 }
             }

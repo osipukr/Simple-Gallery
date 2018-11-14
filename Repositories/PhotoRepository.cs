@@ -31,7 +31,7 @@ namespace Simply_Gallery.Repositories
 
             using (var galleryContext = new GalleryContext())
             {
-                result = await galleryContext.Photos.FirstOrDefaultAsync(x => x.PhotoId == photoId);
+                result = await galleryContext.Photos.FirstOrDefaultAsync(x => x.Id == photoId);
             }
 
             return result;
@@ -54,7 +54,7 @@ namespace Simply_Gallery.Repositories
         {
             using (var galleryContext = new GalleryContext())
             {
-                var picture = await galleryContext.Photos.FirstOrDefaultAsync(x => x.PhotoId == photoId);
+                var picture = await galleryContext.Photos.FirstOrDefaultAsync(x => x.Id == photoId);
 
                 galleryContext.Entry(picture).State = EntityState.Deleted;
 

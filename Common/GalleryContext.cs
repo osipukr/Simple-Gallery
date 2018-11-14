@@ -6,7 +6,7 @@ namespace Simply_Gallery.Common
     public class GalleryContext : DbContext
     {
         public GalleryContext()
-            : base("DbConnection")
+            : base("DefaultConnection")
         {
         }
 

@@ -22,8 +22,8 @@ else
         <div class="zoom-gallery">
             @foreach (var photo in Model.Photos)
             {
-                <a href="@Url.Action("GetPhoto", new { photoId = photo.PhotoId })" class="photo-link">
-                    <img src="@Url.Action("GetPhoto", new { photoId = photo.PhotoId })">
+                <a href="@Url.Action("GetPhoto", new { photoId = photo.Id })" class="photo-link">
+                    <img src="@Url.Action("GetPhoto", new { photoId = photo.Id })">
                 </a>
             }
         </div>
@@ -32,7 +32,7 @@ else
 
 <div class="add">
     <p>Хотите добавить новую фотографию ?</p>
-    @Html.ActionLink("Добавить", "AddPhoto", new { albumId = Model.AlbumId })
+    @Html.ActionLink("Добавить", "AddPhoto", new { albumId = Model.Id })
 </div>
 
 @section Style {
