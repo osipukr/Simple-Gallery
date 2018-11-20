@@ -1,24 +1,30 @@
 ﻿@using Simply_Gallery.ViewModels
 @model UsersRoleViewModel
-
 @{
-    ViewBag.Title = "Список";
+    Layout = "~/Views/Profile/Shared/_Layout.cshtml";
+    ViewBag.Title = "Список пользователей";
 }
 
-<h2>Список всех пользователей с ролью @Model.Name</h2>
+<h2>@ViewBag.Title с ролью "@Model.Name"</h2>
+<hr />
 
-<table class="table">
-    <tr>
-        <th>Почта</th>
-        <th>Имя пользователя</th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model.Users)
-    {
+<table class="table" style="text-align:left">
+    <thead>
         <tr>
-            <td>@item.Email</td>
-            <td>@item.UserName</td>
+            <th>Почта</th>
+            <th>Имя пользователя</th>
         </tr>
-    }
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Users)
+        {
+            <tr>
+                <td>@item.Email</td>
+                <td>@item.UserName</td>
+            </tr>
+        }
+    </tbody>
 </table>
+
+<hr />
+<button class="btn btn-primary" onclick="location.href='@Url.Action("Index")'" style="float:left">Вернуться назад</button>

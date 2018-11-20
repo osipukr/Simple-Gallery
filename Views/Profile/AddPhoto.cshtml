@@ -13,13 +13,15 @@
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(m => m.CurrentAlbumId)
-    
+
     <div class="form-group">
         @Html.LabelFor(m => m.Image, new { @class = "control-label" })
         @Html.TextBoxFor(m => m.Image, new { type = "file" })
     </div>
 
-    <input type="submit" class="btn btn-primary" value="Загрузить" />
+    <div class="form-group">
+        <input type="submit" class="btn btn-primary" value="Загрузить" />
+    </div>
 }
 
-<hr />
+<button class="btn btn-primary" onclick="location.href='@Url.Action("Album", new { albumId = Model.CurrentAlbumId })'" style="float:left">Вернуться назад</button>

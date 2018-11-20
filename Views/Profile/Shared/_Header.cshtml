@@ -30,6 +30,10 @@
                 <li><a href="@Url.Action("Index", "Home")"><i class="icon fas fa-home">Домашняя</i></a></li>
                 <li><a href="@Url.Action("Index")"><i class="icon fas fa-images">Мои альбомы</i></a></li>
                 <li><a href="@Url.Action("Setting")"><i class="icon fas fa-users-cog">Мои настройки</i></a></li>
+                @if (Model.UserRoles.FirstOrDefault(x => x == "admin") != null)
+                {
+                    <li><a href="@Url.Action("Index", "Roles")"><i class="icon fas fa-chess-queen">Admin панель</i></a></li>
+                }
                 @using (Html.BeginForm("LogOut", "Home", FormMethod.Post, new { id = "logOutForm" }))
                 {
                     @Html.AntiForgeryToken()

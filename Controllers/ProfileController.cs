@@ -84,25 +84,27 @@ namespace Simply_Gallery.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddAlbum(AlbumViewModel albumModel)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var userId = User.Identity.GetUserId();
-                var result = await _albumService.GetAlbumAsync(albumModel.Name, userId);
-
-                if (result == null)
-                {
-                    var album = new Album
-                    {
-                        Name = albumModel.Name,
-                        UserId = userId
-                     };
-
-                    await _albumService.AddAlbumAsync(album);
-                    return RedirectToAction("Album", new { albumId = album.Id });
-                }
-
-                ModelState.AddModelError("", "Альбом с таким именем уже создан");
+                return View(albumModel);
             }
+
+            var userId = User.Identity.GetUserId();
+            var result = await _albumService.GetAlbumAsync(albumModel.Name, userId);
+
+            if (result == null)
+            {
+                var album = new Album
+                {
+                    Name = albumModel.Name,
+                    UserId = userId
+                };
+
+                await _albumService.AddAlbumAsync(album);
+                return RedirectToAction("Album", new { albumId = album.Id });
+            }
+
+            ModelState.AddModelError("", "Альбом с таким именем уже создан");
 
             return View(albumModel);
         }
@@ -158,14 +160,12 @@ namespace Simply_Gallery.Controllers
                 !formats.Any(item => photoModel.Image.FileName.EndsWith(item, StringComparison.OrdinalIgnoreCase)))
             {
                 ModelState.AddModelError("", "Этот файл не может быть загружен в галерею");
-
                 return View(photoModel);
             }
             
             if(photoModel.Image.ContentLength > Math.Pow(5, Math.Pow(10, 6)))
             {
                 ModelState.AddModelError("", "Привышен размер загружаемого файла");
-
                 return View(photoModel);
             }
 

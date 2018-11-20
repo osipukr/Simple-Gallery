@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity.Owin;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using Simply_Gallery.App_Start;
 using Simply_Gallery.Models;
 using Simply_Gallery.ViewModels;
@@ -11,8 +12,31 @@ namespace Simply_Gallery.Controllers
     [Authorize(Roles = "admin")]
     public class RolesController : Controller
     {
-        private ApplicationUserManager UserManager => HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+        private ApplicationUserManager _userManager;
 
+        public RolesController()
+        {
+        }
+
+        public RolesController(ApplicationUserManager userManager)
+        {
+            UserManager = userManager;
+        }
+
+        // менеджер пользователей
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+
+        // менеджер ролей
         private ApplicationRoleManager RoleManager => HttpContext.GetOwinContext().GetUserManager<ApplicationRoleManager>();
 
         //
@@ -32,26 +56,32 @@ namespace Simply_Gallery.Controllers
         //
         // POST: /Roles/Create
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(CreateRoleViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                if(await RoleManager.RoleExistsAsync(model.Name) == false)
-                {
-                    var result = await RoleManager.CreateAsync(new ApplicationRole
-                    {
-                        Name = model.Name,
-                        Description = model.Description
-                    });
-
-                    if (result.Succeeded)
-                        return RedirectToAction("Index");
-                    else
-                        ModelState.AddModelError("", "Ошибка при создании новой роли");
-                }
-                else
-                    ModelState.AddModelError("", "Роль " + model.Name + " уже существует");
+                return View(model);
             }
+
+            if (await RoleManager.RoleExistsAsync(model.Name))
+            {
+                ModelState.AddModelError("", "Роль '" + model.Name + "' уже существует");
+                return View(model);
+            }
+
+            var result = await RoleManager.CreateAsync(new ApplicationRole
+            {
+                Name = model.Name,
+                Description = model.Description
+            });
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index");
+            }
+
+            ModelState.AddModelError("", "Ошибка при создании новой роли");
             return View(model);
         }
 
@@ -63,7 +93,7 @@ namespace Simply_Gallery.Controllers
 
             if (role != null)
             {
-                return View(new EditRoleViewModel { Id = roleId, Name = role.Name, Description = role.Description });
+                return View(new EditRoleViewModel { Name = role.Name, Description = role.Description });
             }
             return RedirectToAction("Index");
         }
@@ -71,6 +101,7 @@ namespace Simply_Gallery.Controllers
         //
         // POST: /Roles/Edit
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(EditRoleViewModel model)
         {
             if (!ModelState.IsValid)
@@ -79,6 +110,7 @@ namespace Simply_Gallery.Controllers
             }
 
             var role = await RoleManager.FindByNameAsync(model.Name);
+
             if (role != null)
             {
                 role.Name = model.Name;
@@ -91,7 +123,7 @@ namespace Simply_Gallery.Controllers
                     return RedirectToAction("Index");
                 }
 
-                ModelState.AddModelError("", "Произошла ошибка при изменении роли");
+                AddErrors(result);
             }
 
             return View(model);
@@ -102,12 +134,14 @@ namespace Simply_Gallery.Controllers
         public async Task<ActionResult> Delete(string roleId)
         {
             var role = await RoleManager.FindByIdAsync(roleId);
+
             if (role != null)
             {
                 var result = await RoleManager.DeleteAsync(role);
-                if (result.Succeeded == false)
+
+                if (!result.Succeeded)
                 {
-                    ModelState.AddModelError("", "Произоша ошибка при удалении роли");
+                    AddErrors(result);
                 }
             }
             return RedirectToAction("Index");
@@ -128,6 +162,7 @@ namespace Simply_Gallery.Controllers
             foreach (var item in role.Users)
             {
                 var user = await UserManager.FindByIdAsync(item.UserId);
+
                 if (user != null)
                 {
                     roleModel.Users.Add(user);
@@ -136,5 +171,31 @@ namespace Simply_Gallery.Controllers
 
             return View(roleModel);
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_userManager != null)
+                {
+                    _userManager.Dispose();
+                    _userManager = null;
+                }
+            }
+
+            base.Dispose(disposing);
+        }
+
+        #region Helper
+
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error);
+            }
+        }
+
+        #endregion
     }
 }

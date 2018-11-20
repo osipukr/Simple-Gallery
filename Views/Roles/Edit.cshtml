@@ -1,17 +1,31 @@
 ﻿@using Simply_Gallery.ViewModels
 @model EditRoleViewModel
+@{
+    Layout = "~/Views/Profile/Shared/_Layout.cshtml";
+    ViewBag.Title = "Редактирование роли";
+}
 
-<h2>Редактирование роли</h2>
+<h2>@ViewBag.Title</h2>
+<hr />
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "Roles", FormMethod.Post, new { @class = "form-horizontal", role = "form", style = "text-align: left" }))
 {
     @Html.AntiForgeryToken()
-
-    <div>
-        @Html.ValidationSummary(true, "")
-        @Html.HiddenFor(model => model.Id)
-        <p>Название:  @Html.EditorFor(model => model.Name)</p>
-        <p>Описание: @Html.EditorFor(model => model.Description)</p>
-        <p><input type="submit" value="Изменить" /></p>
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name, new { @class = "control-label" })
+        @Html.EditorFor(m => m.Name, new { @class = "form-control"})
+    </div>
+    
+    <div class="form-group">
+        @Html.LabelFor(m => m.Description, new { @class = "control-label" })
+        @Html.EditorFor(m => m.Description, new { @class = "form-control"})
+    </div>
+    
+    <div class="form-group">
+        <input type="submit" value="Изменить" class="btn btn-primary" />
     </div>
 }
+
+<button class="btn btn-primary" onclick="location.href='@Url.Action("Index")'" style="float:left">Вернуться назад</button>

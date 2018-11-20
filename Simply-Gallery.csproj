@@ -258,7 +258,6 @@
     <Content Include="Views\Roles\Index.cshtml" />
     <Content Include="Views\Roles\Create.cshtml" />
     <Content Include="Views\Roles\Edit.cshtml" />
-    <Content Include="Views\Roles\Shared\_Roles.cshtml" />
     <Content Include="Views\Roles\Users.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -278,7 +277,6 @@
     <Content Include="Views\Home\HomeContent\Footer.cshtml" />
     <Content Include="Views\Home\HomeContent\Banner.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
-    <Content Include="Views\Roles\Shared\_Layout.cshtml" />
     <Content Include="Views\Profile\Shared\_Layout.cshtml" />
     <Content Include="Views\Profile\Album.cshtml" />
     <Content Include="Views\Profile\Setting.cshtml" />

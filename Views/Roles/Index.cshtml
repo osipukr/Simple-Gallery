@@ -1,29 +1,39 @@
 ﻿@using Simply_Gallery.Models;
 @model IEnumerable<ApplicationRole>
-
 @{
-    Layout = "Shared/_Layout.cshtml";
+    Layout = "~/Views/Profile/Shared/_Layout.cshtml";
     ViewBag.Title = "Список ролей";
 }
 
-<h2>Роли</h2>
-<table class="table">
-    <tr>
-        <th>Название</th>
-        <th>Описание</th>
-        <th></th>
-    </tr>
+<h2>@ViewBag.Title </h2>
+<hr />
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>@item.Name</td>
-            <td>@item.Description</td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { roleId = item.Id }) |
-                @Html.ActionLink("Users", "Users", new { roleId = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { roleId = item.Id })
-            </td>
+<table class="table" style="text-align:left;font-size: 1.8rem;">
+    <thead>
+        <tr style="color:black">
+            <th>Название</th>
+            <th>Описание</th>
+            <th>Действие</th>
         </tr>
-    }
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Description</td>
+                <td>
+                    @Html.ActionLink("Изменить", "Edit", new { roleId = item.Id }) |
+                    @Html.ActionLink("Пользователи", "Users", new { roleId = item.Id }) |
+                    @Html.ActionLink("Удалить", "Delete", new { roleId = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
+
+<hr />
+<div class="add">
+    <p>Хотите добавить новую роль?</p>
+    <button class="btn btn-primary" onclick="location.href='@Url.Action("Create")'">Добавить</button>
+</div>

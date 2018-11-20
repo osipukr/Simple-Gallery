@@ -6,8 +6,6 @@ namespace Simply_Gallery.ViewModels
 {
     public class EditRoleViewModel
     {
-        public string Id { get; set; }
-
         [Display(Name = "Название")]
         [StringLength(15, MinimumLength = 3)]
         public string Name { get; set; }

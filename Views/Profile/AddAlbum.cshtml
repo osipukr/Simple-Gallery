@@ -19,7 +19,9 @@
         @Html.ValidationMessageFor(m => m.Name, "", new { @class = "form-text text-muted text-danger" })
     </div>
 
-    <input type="submit" class="btn btn-primary" value="Создать" />
+    <div class="form-group">
+        <input type="submit" class="btn btn-primary" value="Создать" />
+    </div>
 }
 
-<hr />
+<button class="btn btn-primary" onclick="location.href='@Url.Action("Index")'" style="float:left">Вернуться назад</button>

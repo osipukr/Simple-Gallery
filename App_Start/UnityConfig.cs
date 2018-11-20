@@ -26,6 +26,7 @@ namespace Simply_Gallery
             container.RegisterType<IAlbumService, AlbumService>();
 
             container.RegisterType<HomeController>(new InjectionConstructor());
+            container.RegisterType<RolesController>(new InjectionConstructor());
 
             RegisterTypes(container);
             return container;
