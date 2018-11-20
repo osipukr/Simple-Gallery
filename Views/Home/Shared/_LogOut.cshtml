@@ -10,7 +10,7 @@
             @Html.ActionLink(User.Identity.GetUserName(), "Index", "Profile", null, new { @class = "nav-item-child nav-item-hover" })
         </li>
         <li class="js_nav-item nav-item">
-            <a class="nav-item-child nav-item-hover" href="javascript:document.getElementById('logOutForm').submit()">Выйти</a>
+            <a class="nav-item-child nav-item-hover" href="javascript:void(0);" onclick="javascript:document.getElementById('logOutForm').submit()">Выйти</a>
         </li>
     }
 }

@@ -249,12 +249,12 @@ namespace Simply_Gallery.Controllers
         public ActionResult Setting(ProfileMessageId? message)
         {
             ViewBag.StatusMessage =
-                message == ProfileMessageId.AddPhoneSuccess ? "Номер телефона успешно добавлен."
-                : message == ProfileMessageId.RemovePhoneSuccess ? "Номер телефона был удалён."
-                : message == ProfileMessageId.ChangePasswordSuccess ? "Пароль успешно изменен."
-                : message == ProfileMessageId.ChangeEmailSuccess ? "Почта успешно изменена."
-                : message == ProfileMessageId.ChangeNameSuccess ? "Имя успешно изменено."
-                : message == ProfileMessageId.ChangeAvatarSuccess ? "Фотография успешно изменена."
+                message == ProfileMessageId.AddPhoneSuccess ? "Номер телефона успешно добавлен"
+                : message == ProfileMessageId.RemovePhoneSuccess ? "Номер телефона был удалён"
+                : message == ProfileMessageId.ChangePasswordSuccess ? "Пароль успешно изменен"
+                : message == ProfileMessageId.ChangeEmailSuccess ? "Почта успешно изменена"
+                : message == ProfileMessageId.ChangeNameSuccess ? "Имя успешно изменено"
+                : message == ProfileMessageId.ChangeAvatarSuccess ? "Фотография успешно изменена"
                 : message == ProfileMessageId.Error ? "Произошла ошибка"
                 : "";
 

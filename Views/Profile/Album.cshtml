@@ -42,7 +42,7 @@ else
 </div>
 
 @section Style {
-    <link href="~/Content/home/vendor/magnific-popup/magnific-popup.css" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/home/vendor/magnific-popup/magnific-popup.css")" rel="stylesheet" type="text/css" />
     
     <style>
         .image-source-link {
@@ -77,8 +77,8 @@ else
    
 
 @section Script {
-    <script src="~/Content/home/vendor/magnific-popup/jquery.magnific-popup.min.js" type="text/javascript"></script>
-    <script src="~/Content/home/js/components/maginific-popup.min.js" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/home/vendor/magnific-popup/jquery.magnific-popup.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/home/js/components/maginific-popup.min.js")" type="text/javascript"></script>
     
     <script>
         $(document).ready(function () {
