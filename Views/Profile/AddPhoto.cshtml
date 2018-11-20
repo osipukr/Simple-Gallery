@@ -6,18 +6,20 @@
 }
 
 <h2>@ViewBag.Title</h2>
+<hr />
 
 @using (Html.BeginForm("AddPhoto", "Profile", FormMethod.Post, new { @class = "form", enctype = "multipart/form-data", style = "text-align: left" }))
 {
     @Html.AntiForgeryToken()
-    @Html.HiddenFor(m => m.CurrentAlbumId)
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(m => m.CurrentAlbumId)
     
-    <div class="form-froup">
-        @Html.LabelFor(m => m.Image)
+    <div class="form-group">
+        @Html.LabelFor(m => m.Image, new { @class = "control-label" })
         @Html.TextBoxFor(m => m.Image, new { type = "file" })
-        @Html.ValidationMessageFor(m => m.Image, "", new { @class = "form-text text-muted text-danger" })
     </div>
 
-    <input type="submit" class="btn btn-primary" value="Добавить" />
+    <input type="submit" class="btn btn-primary" value="Загрузить" />
 }
+
+<hr />

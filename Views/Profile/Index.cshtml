@@ -8,6 +8,7 @@
 <div class="title">
     <h2>Список всех альбомов</h2>
 </div>
+<hr />
 
 @if (Model.Count() == 0)
 {
@@ -34,7 +35,8 @@ else
     </div>
 }
 
+<hr />
 <div class="add">
     <p>Хотите создать новый альбом ?</p>
-    @Html.ActionLink("Создать", "AddAlbum")
+    <button class="btn btn-primary" onclick="location.href='@Url.Action("AddAlbum")'">Создать</button>
 </div>

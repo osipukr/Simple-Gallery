@@ -8,6 +8,7 @@
 <div class="title">
     <h2>Список всех фотографий альбома</h2>
 </div>
+<hr />
 
 @if (Model.Photos.Count() == 0)
 {
@@ -30,9 +31,10 @@ else
     </div>
 }
 
+<hr />
 <div class="add">
     <p>Хотите добавить новую фотографию ?</p>
-    @Html.ActionLink("Добавить", "AddPhoto", new { albumId = Model.Id })
+    <button class="btn btn-primary" onclick="location.href='@Url.Action("AddPhoto", new { albumId = Model.Id })'">Добавить</button>
 </div>
 
 @section Style {
@@ -85,8 +87,8 @@ else
                 image: {
                     verticalFit: true,
                     titleSrc: function (item) {
-                        return '<a class="image-source-link" href="' + item.el.attr('href') + '" target="_blank">Открыть</a> ' +
-                            ' <a class="image-source-link" href="/Profile/DeletePhoto?' + item.el.attr('href').split('?')[1] + '" >Удалить</a>';
+                        return '<a class="image-source-link" href="' + item.el.attr('href') + '" target="_blank">открыть</a> ' +
+                            ' <a class="image-source-link" href="/Profile/DeletePhoto?' + item.el.attr('href').split('?')[1] + '" >удалить</a>';
                     }
                 },
                 gallery: {

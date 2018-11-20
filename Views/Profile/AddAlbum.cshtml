@@ -6,17 +6,20 @@
 }
 
 <h2>@ViewBag.Title</h2>
+<hr />
 
-@using (Html.BeginForm("AddAlbum", "Profile", FormMethod.Post, new { @class = "form" }))
+@using (Html.BeginForm("AddAlbum", "Profile", FormMethod.Post, new { @class = "form", style = "text-align: left" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    
-    <div class="form-froup">
-        @Html.LabelFor(m => m.Name)
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name, new { @class = "control-label" })
         @Html.TextBoxFor(m => m.Name, null, new { @class = "form-control", placeholder = "Введите название альбома" })
         @Html.ValidationMessageFor(m => m.Name, "", new { @class = "form-text text-muted text-danger" })
     </div>
 
     <input type="submit" class="btn btn-primary" value="Создать" />
 }
+
+<hr />

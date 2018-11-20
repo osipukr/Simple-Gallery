@@ -32,7 +32,7 @@ namespace Simply_Gallery.Controllers
         //
         // POST: /Roles/Create
         [HttpPost]
-        public async Task<ActionResult> Create(RoleViewModel model)
+        public async Task<ActionResult> Create(CreateRoleViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -57,13 +57,13 @@ namespace Simply_Gallery.Controllers
 
         //
         // GET: /Roles/Edit
-        public async Task<ActionResult> Edit(string id)
+        public async Task<ActionResult> Edit(string roleId)
         {
-            var role = await RoleManager.FindByIdAsync(id);
+            var role = await RoleManager.FindByIdAsync(roleId);
 
             if (role != null)
             {
-                return View(new RoleViewModel { Name = role.Name, Description = role.Description });
+                return View(new EditRoleViewModel { Id = roleId, Name = role.Name, Description = role.Description });
             }
             return RedirectToAction("Index");
         }
@@ -71,59 +71,70 @@ namespace Simply_Gallery.Controllers
         //
         // POST: /Roles/Edit
         [HttpPost]
-        public async Task<ActionResult> Edit(RoleViewModel model)
+        public async Task<ActionResult> Edit(EditRoleViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var role = await RoleManager.FindByNameAsync(model.Name);
-                if (role != null)
-                {
-                    role.Name = model.Name;
-                    role.Description = model.Description;
-
-                    var result = await RoleManager.UpdateAsync(role);
-
-                    if (result.Succeeded)
-                        return RedirectToAction("Index");
-                    else
-                        ModelState.AddModelError("", "Ошибка при изменении роли");
-                }
+                return View(model);
             }
+
+            var role = await RoleManager.FindByNameAsync(model.Name);
+            if (role != null)
+            {
+                role.Name = model.Name;
+                role.Description = model.Description;
+
+                var result = await RoleManager.UpdateAsync(role);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+
+                ModelState.AddModelError("", "Произошла ошибка при изменении роли");
+            }
+
             return View(model);
         }
 
         //
         // GET: /Roles/Delete
-        public async Task<ActionResult> Delete(string id)
+        public async Task<ActionResult> Delete(string roleId)
         {
-            var role = await RoleManager.FindByIdAsync(id);
+            var role = await RoleManager.FindByIdAsync(roleId);
             if (role != null)
             {
                 var result = await RoleManager.DeleteAsync(role);
                 if (result.Succeeded == false)
-                    ModelState.AddModelError("", "Ошибка при удалении роли");
+                {
+                    ModelState.AddModelError("", "Произоша ошибка при удалении роли");
+                }
             }
             return RedirectToAction("Index");
         }
 
         //
-        // GET: /Roles/List
-        public async Task<ActionResult> List(string id)
+        // GET: /Roles/Users
+        public async Task<ActionResult> Users(string roleId)
         {
-            var role = await RoleManager.FindByIdAsync(id);
+            var role = await RoleManager.FindByIdAsync(roleId);
 
-            if (role != null)
+            if (role == null)
             {
-                var roleModel = new UsersRoleViewModel { Name = role.Name};
-                foreach(var item in role.Users)
-                {
-                    var user = await UserManager.FindByIdAsync(item.UserId);
-                    if(user != null)
-                        roleModel.Users.Add(user);
-                }
-                return View(roleModel);
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
+
+            var roleModel = new UsersRoleViewModel { Name = role.Name };
+            foreach (var item in role.Users)
+            {
+                var user = await UserManager.FindByIdAsync(item.UserId);
+                if (user != null)
+                {
+                    roleModel.Users.Add(user);
+                }
+            }
+
+            return View(roleModel);
         }
     }
 }

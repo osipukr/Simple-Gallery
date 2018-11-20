@@ -229,13 +229,11 @@
     <Compile Include="Services\IPhotoService.cs" />
     <Compile Include="Services\PhotoService.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\AlbumViewModel.cs" />
-    <Compile Include="ViewModels\LoginViewModel.cs" />
-    <Compile Include="ViewModels\PhotoViewModel.cs" />
+    <Compile Include="ViewModels\AccountViewModels.cs" />
+    <Compile Include="ViewModels\GalleryViewModels.cs" />
     <Compile Include="ViewModels\ProfileViewModel.cs" />
-    <Compile Include="ViewModels\RegisterViewModel.cs" />
-    <Compile Include="ViewModels\RoleViewModel.cs" />
-    <Compile Include="ViewModels\UsersRoleViewModel.cs" />
+    <Compile Include="ViewModels\RoleViewModels.cs" />
+    <Compile Include="ViewModels\SettingViewModels.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
@@ -243,7 +241,9 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -259,7 +259,7 @@
     <Content Include="Views\Roles\Create.cshtml" />
     <Content Include="Views\Roles\Edit.cshtml" />
     <Content Include="Views\Roles\Shared\_Roles.cshtml" />
-    <Content Include="Views\Roles\List.cshtml" />
+    <Content Include="Views\Roles\Users.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -285,6 +285,9 @@
     <Content Include="Views\Profile\AddAlbum.cshtml" />
     <Content Include="Views\Profile\Shared\_Header.cshtml" />
     <Content Include="Views\Profile\AddPhoto.cshtml" />
+    <Content Include="Views\Profile\ChangePassword.cshtml" />
+    <Content Include="Views\Profile\ChangeName.cshtml" />
+    <Content Include="Views\Profile\ChangeEmail.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

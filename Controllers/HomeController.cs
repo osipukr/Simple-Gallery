@@ -78,20 +78,15 @@ namespace Simply_Gallery.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    // добавляем пользователю роль
-                   // await UserManager.AddToRoleAsync(user.Id, "user");
+                    //добавляем пользователю роль
+                    await UserManager.AddToRoleAsync(user.Id, "user");
 
                     // входим в аккаунт
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                     return JavaScript("location.reload()");
                 }
-                else
-                {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError("", error);
-                    }
-                }
+
+                AddErrors(result);
             }
 
             return PartialView("Shared/_Register", model);
@@ -151,6 +146,15 @@ namespace Simply_Gallery.Controllers
         }
 
         #region Helpers
+
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error);
+            }
+        }
+
         private IAuthenticationManager AuthenticationManager
         {
             get
@@ -158,6 +162,7 @@ namespace Simply_Gallery.Controllers
                 return HttpContext.GetOwinContext().Authentication;
             }
         }
+
         #endregion
     }
 }

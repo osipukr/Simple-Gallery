@@ -1,0 +1,28 @@
+﻿@using Simply_Gallery.ViewModels
+@model ChangeEmailViewModel
+@{
+    ViewBag.Title = "Изменение почты";
+    Layout = "~/Views/Profile/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+
+@using (Html.BeginForm("ChangeEmail", "Profile", FormMethod.Post, new { @class = "form-horizontal", role = "form", style = "text-align: left" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.CurrentEmail, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.CurrentEmail, new { @class = "form-control", @readonly = "" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.NewEmail, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.NewEmail, new { @class = "form-control", placeholder = "Введите новый e-mail адрес" })
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Изменить" class="btn btn-primary" />
+        </div>
+    </div>
+}

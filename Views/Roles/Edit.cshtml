@@ -1,17 +1,17 @@
-﻿<div class="row">
-    <div class="col-md-8">
-        <section id="editRole">
-            @using (Html.BeginForm("Edit", "Roles", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-            {
-                <h4>Редактирование роли</h4>
-                <hr />
-                @Html.Partial("_Roles")
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Изменить" class="btn btn-default" />
-                    </div>
-                </div>
-            }
-        </section>
+﻿@using Simply_Gallery.ViewModels
+@model EditRoleViewModel
+
+<h2>Редактирование роли</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div>
+        @Html.ValidationSummary(true, "")
+        @Html.HiddenFor(model => model.Id)
+        <p>Название:  @Html.EditorFor(model => model.Name)</p>
+        <p>Описание: @Html.EditorFor(model => model.Description)</p>
+        <p><input type="submit" value="Изменить" /></p>
     </div>
-</div>
+}

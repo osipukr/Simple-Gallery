@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -29,12 +28,12 @@ namespace Simply_Gallery.Controllers
             _albumService = albumService;
         }
 
-        // менеджер пользователей
-        public ApplicationUserManager UserManager => HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+        private ApplicationUserManager UserManager => HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+
+        private ApplicationSignInManager SignInManager => HttpContext.GetOwinContext().GetUserManager<ApplicationSignInManager>();
 
         //
         // GET: /Profile/Index
-        [HttpGet]
         public async Task<ActionResult> Index()
         {
             var albums = await _albumService.GetAlbumsAsync(User.Identity.GetUserId());
@@ -44,12 +43,19 @@ namespace Simply_Gallery.Controllers
         [ChildActionOnly]
         public ActionResult Header()
         {
-            return  PartialView("Shared/_Header", UserManager.FindById(User.Identity.GetUserId()));
+            var currentProfile = new ProfileViewModel
+            {
+                UserId = User.Identity.GetUserId(),
+                UserName = User.Identity.GetUserName(),
+                UserRoles = UserManager.GetRoles(User.Identity.GetUserId()),
+                UserImage = UserManager.FindById(User.Identity.GetUserId()).Image
+            };
+
+            return  PartialView("Shared/_Header", currentProfile);
         }
 
         //
         // GET: /Profile/Album
-        [HttpGet]
         public async Task<ActionResult> Album(int? albumId)
         {
             if (albumId != null)
@@ -67,7 +73,6 @@ namespace Simply_Gallery.Controllers
 
         //
         // GET: /Profile/AddAlbum
-        [HttpGet]
         public ViewResult AddAlbum()
         {
             return View();
@@ -104,7 +109,6 @@ namespace Simply_Gallery.Controllers
 
         //
         // GET: /Profile/DeleteAlbum
-        [HttpGet]
         public async Task<ActionResult> DeleteAlbum(int? albumId)
         {
             if (albumId != null)
@@ -122,7 +126,6 @@ namespace Simply_Gallery.Controllers
 
         //
         // GET: /Profile/Setting
-        [HttpGet]
         public async Task<ActionResult> AddPhoto(int? albumId)
         {
             if(albumId != null)
@@ -181,7 +184,6 @@ namespace Simply_Gallery.Controllers
 
         //
         // GET: Profile/DeletePhoto
-        [HttpGet]
         public async Task<ActionResult> DeletePhoto(int? photoId)
         {
             if(photoId != null)
@@ -205,7 +207,6 @@ namespace Simply_Gallery.Controllers
 
         //
         // GET: Profile/GetPhoto
-        [HttpGet]
         public async Task<ActionResult> GetPhoto(int? photoId)
         {
             if(photoId != null)
@@ -229,7 +230,6 @@ namespace Simply_Gallery.Controllers
 
         //
         // GET: /Profile/GetUserPhoto
-        [HttpGet]
         [ChildActionOnly]
         public async Task<ActionResult> GetUserPhoto(string userId)
         {
@@ -245,10 +245,162 @@ namespace Simply_Gallery.Controllers
 
         //
         // GET: /Profile/Setting
-        [HttpGet]
-        public ActionResult Setting()
+        public ActionResult Setting(ProfileMessageId? message)
+        {
+            ViewBag.StatusMessage =
+                message == ProfileMessageId.AddPhoneSuccess ? "Номер телефона успешно добавлен."
+                : message == ProfileMessageId.RemovePhoneSuccess ? "Номер телефона был удалён."
+                : message == ProfileMessageId.ChangePasswordSuccess ? "Пароль успешно изменен."
+                : message == ProfileMessageId.ChangeEmailSuccess ? "Почта успешно изменена."
+                : message == ProfileMessageId.ChangeNameSuccess ? "Имя успешно изменено."
+                : message == ProfileMessageId.Error ? "Произошла ошибка"
+                : "";
+
+            return View();
+        }
+
+        //
+        // GET: /Profile/ChangePassword
+        public ActionResult ChangePassword()
         {
             return View();
         }
+
+        //
+        // POST: /Profile/ChangePassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+
+            if (result.Succeeded)
+            {
+                var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                if (user != null)
+                {
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                }
+
+                return RedirectToAction("Setting", new { Message = ProfileMessageId.ChangePasswordSuccess });
+            }
+
+            AddErrors(result);
+
+            return View(model);
+        }
+
+        //
+        // GET: /Profile/ChangeName
+        public ActionResult ChangeName()
+        {
+            return View(new ChangeNameViewModel { CurrentUserName = User.Identity.GetUserName() });
+        }
+
+        //
+        // POST: /Profile/ChangeName
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangeName(ChangeNameViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            if (model.NewUserName.ToLower().Contains("admin") || model.NewUserName.ToLower().Contains("админ"))
+            {
+                ModelState.AddModelError("", "Имя пользователя не должно содердать слова 'admin'");
+                return View(model);
+            }
+
+            if(await UserManager.FindByNameAsync(model.NewUserName) != null)
+            {
+                ModelState.AddModelError("", "Пользователя с таким именем уже зарегистрирован");
+                return View(model);
+            }
+
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+            if (user != null)
+            {
+                user.UserName = model.NewUserName;
+                await UserManager.UpdateAsync(user);
+                await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
+                return RedirectToAction("Setting", new { Message = ProfileMessageId.ChangeNameSuccess });
+            }
+
+            ModelState.AddModelError("", "Произошла ошибка при изменении имени, попробуйте обновите страницу");
+
+            return View(model);
+        }
+
+        //
+        // GET: /Profile/ChangeEmail
+        public async Task<ActionResult> ChangeEmail()
+        {
+            return View(new ChangeEmailViewModel { CurrentEmail = await UserManager.GetEmailAsync(User.Identity.GetUserId()) });
+        }
+
+        //
+        // POST: /Profile/ChangeEmail
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangeEmail(ChangeEmailViewModel model)
+        {
+            if(!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            if(await UserManager.FindByEmailAsync(model.NewEmail) != null)
+            {
+                ModelState.AddModelError("", "Пользователь с таким e-mail уже зарегистрирован");
+                return View(model);
+            }
+
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+            if(user != null)
+            {
+                user.Email = model.NewEmail;
+                await UserManager.UpdateAsync(user);
+                await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
+                return RedirectToAction("Setting", new { Message = ProfileMessageId.ChangeEmailSuccess });
+            }
+
+            ModelState.AddModelError("", "Произошла ошибка при изменении e-mail, попробуйте обновите страницу");
+
+            return View(model);
+        }
+ 
+        #region Helpers
+
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error);
+            }
+        }
+
+        public enum ProfileMessageId
+        {
+            AddPhoneSuccess,
+            RemovePhoneSuccess,
+            ChangePasswordSuccess,
+            ChangeEmailSuccess,
+            ChangeNameSuccess,
+            Error
+        }
+
+        #endregion
     }
 }
