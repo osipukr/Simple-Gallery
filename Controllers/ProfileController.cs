@@ -28,9 +28,11 @@ namespace Simply_Gallery.Controllers
             _albumService = albumService;
         }
 
-        private ApplicationUserManager UserManager => HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+        // менеджер входа
+        public ApplicationSignInManager SignInManager => HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
 
-        private ApplicationSignInManager SignInManager => HttpContext.GetOwinContext().GetUserManager<ApplicationSignInManager>();
+        // менеджер пользователей
+        public ApplicationUserManager UserManager => HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
 
         //
         // GET: /Profile/Index
@@ -154,7 +156,7 @@ namespace Simply_Gallery.Controllers
                 return View(photoModel);
             }
 
-            string[] formats = new string[] { ".jpg", ".png", ".gif", ".jpeg" };
+            string[] formats = new string[] { "jpg", "png", "gif", "jpeg" };
 
             if (!photoModel.Image.ContentType.Contains("image") &&
                 !formats.Any(item => photoModel.Image.FileName.EndsWith(item, StringComparison.OrdinalIgnoreCase)))
@@ -230,10 +232,9 @@ namespace Simply_Gallery.Controllers
 
         //
         // GET: /Profile/GetUserPhoto
-        [ChildActionOnly]
-        public async Task<ActionResult> GetUserPhoto(string userId)
+        public async Task<ActionResult> GetUserPhoto()
         {
-            var user = await UserManager.FindByIdAsync(userId);
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
             if(user != null)
             {
@@ -253,6 +254,7 @@ namespace Simply_Gallery.Controllers
                 : message == ProfileMessageId.ChangePasswordSuccess ? "Пароль успешно изменен."
                 : message == ProfileMessageId.ChangeEmailSuccess ? "Почта успешно изменена."
                 : message == ProfileMessageId.ChangeNameSuccess ? "Имя успешно изменено."
+                : message == ProfileMessageId.ChangeAvatarSuccess ? "Фотография успешно изменена."
                 : message == ProfileMessageId.Error ? "Произошла ошибка"
                 : "";
 
@@ -287,7 +289,7 @@ namespace Simply_Gallery.Controllers
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 }
 
-                return RedirectToAction("Setting", new { Message = ProfileMessageId.ChangePasswordSuccess });
+                return RedirectToAction("Setting", new { message = ProfileMessageId.ChangePasswordSuccess });
             }
 
             AddErrors(result);
@@ -333,7 +335,7 @@ namespace Simply_Gallery.Controllers
                 await UserManager.UpdateAsync(user);
                 await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
-                return RedirectToAction("Setting", new { Message = ProfileMessageId.ChangeNameSuccess });
+                return RedirectToAction("Setting", new { message = ProfileMessageId.ChangeNameSuccess });
             }
 
             ModelState.AddModelError("", "Произошла ошибка при изменении имени, попробуйте обновите страницу");
@@ -373,14 +375,72 @@ namespace Simply_Gallery.Controllers
                 await UserManager.UpdateAsync(user);
                 await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
-                return RedirectToAction("Setting", new { Message = ProfileMessageId.ChangeEmailSuccess });
+                return RedirectToAction("Setting", new { message = ProfileMessageId.ChangeEmailSuccess });
             }
 
             ModelState.AddModelError("", "Произошла ошибка при изменении e-mail, попробуйте обновите страницу");
 
             return View(model);
         }
- 
+
+        //
+        // GET: /Profile/ChangeAvatar
+        public ActionResult ChangeAvatar()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Profile/ChangeAvatar
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangeAvatar(ChangeAvatarViewModel model)
+        {
+            if(!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            string[] formats = new string[] { "jpg", "png", "gif", "jpeg" };
+
+            var types = model.Image.ContentType.Split('/');
+
+            if (types[0] != "image" &&
+                !formats.Any(item => model.Image.FileName.EndsWith(item, StringComparison.OrdinalIgnoreCase)))
+            {
+                ModelState.AddModelError("", string.Format("Файл типа {0} не может быть загружен", types[1]));
+                return View(model);
+            }
+
+            if (model.Image.ContentLength > Math.Pow(5, Math.Pow(10, 6)))
+            {
+                ModelState.AddModelError("", "Привышен размер загружаемого файла");
+                return View(model);
+            }
+
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+            if(user != null)
+            {
+                user.Image = new byte[model.Image.ContentLength];
+                user.ImageMimeType = model.Image.ContentType;
+
+                await model.Image.InputStream.ReadAsync(user.Image, 0, model.Image.ContentLength);
+
+                var result = await UserManager.UpdateAsync(user);
+
+                if(result.Succeeded)
+                {
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    return RedirectToAction("Setting", new { message = ProfileMessageId.ChangeAvatarSuccess });
+                }
+
+                AddErrors(result);
+            }
+
+            return View(model);
+        }
+
         #region Helpers
 
         private void AddErrors(IdentityResult result)
@@ -398,6 +458,7 @@ namespace Simply_Gallery.Controllers
             ChangePasswordSuccess,
             ChangeEmailSuccess,
             ChangeNameSuccess,
+            ChangeAvatarSuccess,
             Error
         }
 

@@ -53,8 +53,9 @@ namespace Simply_Gallery.Controllers
 
         //
         // GET: /Home/Index
-        public ActionResult Index()
+        public ActionResult Index(string returnUrl)
         {
+            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
@@ -63,7 +64,7 @@ namespace Simply_Gallery.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(RegisterViewModel model, string returnUrl = "/Profile")
         {
             // валидация
             if (ModelState.IsValid)
@@ -83,7 +84,7 @@ namespace Simply_Gallery.Controllers
 
                     // входим в аккаунт
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                    return JavaScript("location.reload()");
+                    return JavaScript(string.Format("location.href='{0}'", returnUrl));
                 }
 
                 AddErrors(result);
@@ -97,7 +98,7 @@ namespace Simply_Gallery.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model)
+        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl = "/Profile")
         {
             // валидация
             if (ModelState.IsValid)
@@ -106,7 +107,8 @@ namespace Simply_Gallery.Controllers
                 
                 switch (result)
                 {
-                    case SignInStatus.Success : return JavaScript("location.reload()");
+                    case SignInStatus.Success :
+                        return JavaScript(string.Format("location.href='{0}'", returnUrl));
                     default:
                         ModelState.AddModelError("", "Неверное имя пользователя или пароль");
                         break;
@@ -153,6 +155,15 @@ namespace Simply_Gallery.Controllers
             {
                 ModelState.AddModelError("", error);
             }
+        }
+
+        private ActionResult RedirectToLocal(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            return RedirectToAction("Index", "Home");
         }
 
         private IAuthenticationManager AuthenticationManager

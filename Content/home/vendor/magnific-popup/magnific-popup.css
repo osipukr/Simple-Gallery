@@ -188,7 +188,6 @@ button::-moz-focus-inner {
     top: 0;
     border: medium inset transparent; }
   .mfp-arrow:after, .mfp-arrow .mfp-a {
-    font-family: FontAwesome;
     font-size: 18px;
     line-height: 1.7;
     color: #fff;
@@ -197,12 +196,12 @@ button::-moz-focus-inner {
 .mfp-arrow-left {
   left: 60px; }
   .mfp-arrow-left:after, .mfp-arrow-left .mfp-a {
-    content: "\f104"; }
+    content: "Previous"; }
 
 .mfp-arrow-right {
   right: 60px; }
   .mfp-arrow-right:after, .mfp-arrow-right .mfp-a {
-    content: "\f105"; }
+    content: "Next"; }
 
 .mfp-iframe-holder {
   padding-top: 40px;

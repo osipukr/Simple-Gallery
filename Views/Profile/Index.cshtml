@@ -23,8 +23,12 @@ else
         @foreach (var album in Model)
         {
             <div class="album">
-                <div class="album-image"><img src="~/Content/profile/img/album-image.png" alt="Фото альбома" title="Фото альбома"></div>
-                <div class="album-name"><h3 title="Название альбома">@album.Name</h3></div>
+                <div class="album-image">
+                    <a href="@Url.Action("Album", new { albumId = album.Id })">
+                        <img src="~/Content/profile/img/album-image.png" alt="Фото альбома" title="Фото альбома">
+                    </a>
+                </div>
+                <div class="album-name" style="cursor:default"><h3 title="Название альбома">@album.Name</h3></div>
                 <div class="album-butt">
                     <a href="@Url.Action("Album", new { albumId = album.Id })" title="Перейти к альбому"><i class="far fa-arrow-alt-circle-right"></i></a>
                     <a href="#" title="Изменить альбом"><i class="far fa-edit"></i></a>

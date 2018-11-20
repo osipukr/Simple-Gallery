@@ -8,9 +8,10 @@
 <h2>@ViewBag.Title </h2>
 <hr />
 
-<table class="table" style="text-align:left;font-size: 1.8rem;">
-    <thead>
-        <tr style="color:black">
+<table class="table table-bordered table-hover">
+    <caption>Список всех ролей</caption>
+    <thead style="color:black">
+        <tr>
             <th>Название</th>
             <th>Описание</th>
             <th>Действие</th>
@@ -23,9 +24,13 @@
                 <td>@item.Name</td>
                 <td>@item.Description</td>
                 <td>
-                    @Html.ActionLink("Изменить", "Edit", new { roleId = item.Id }) |
-                    @Html.ActionLink("Пользователи", "Users", new { roleId = item.Id }) |
-                    @Html.ActionLink("Удалить", "Delete", new { roleId = item.Id })
+                    <a href="@Url.Action("Edit", new { roleId = item.Id })" title="Изменить роль"><i class="icons fas fa-edit"></i></a>
+                    <a href="@Url.Action("Users", new { roleId = item.Id })" title="Список пользователей"><i class="icons fas fa-users"></i></a>
+                    <a href="@Url.Action("Delete", new { roleId = item.Id })" title="Удалить роль"><i class="icons fas fa-trash-alt"></i></a>
+                    
+                    @*@Html.ActionLink("Изменить", "Edit", new { roleId = item.Id }) |*@
+                    @*@Html.ActionLink("Пользователи", "Users", new { roleId = item.Id }) |
+                    @Html.ActionLink("Удалить", "Delete", new { roleId = item.Id })*@
                 </td>
             </tr>
         }

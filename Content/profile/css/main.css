@@ -238,6 +238,7 @@ input, select, textarea {
 		margin: 1.75em 1.5em 1.5em 1.5em;
 		min-height: 48px;
 		cursor: default;
+        margin-top: 60px;
 	}
 
 		#logo h1 {
@@ -266,6 +267,7 @@ input, select, textarea {
 	#nav ul {
 		list-style: none;
 		padding-left: 0;
+        margin-top: 60px;
 		margin-bottom: 0;
 	}
 
@@ -321,7 +323,7 @@ input, select, textarea {
 	#footer {
 		text-align: center;
 		background-color: #dce3e2;
-		padding: 3em 0 4em 0;
+		padding: 2em 0;
 		box-shadow: inset 0 1px 0 0 rgba(0, 0, 0, 0.05), inset 0 0.1em 0.1em 0 rgba(0, 0, 0, 0.025);
 		font-size: 0.8em;
 	}
@@ -349,6 +351,10 @@ input, select, textarea {
 
 	#main {
 		margin-left: 375px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100vh;
 	}
 
 /* Main */
@@ -371,7 +377,6 @@ input, select, textarea {
 
 .add {
     margin-top: 50px;
-    margin-bottom: 10px;
 }
     .add p {
 	    margin-bottom: 10px;
@@ -757,3 +762,13 @@ input, select, textarea {
             font-size: 1.8rem;
         }
 	}
+
+    input[type="file"] {
+        font-size: 1.8rem;
+    }
+
+table {
+    font-size: 1.8rem;
+    text-align: left;
+    cursor:default;
+}

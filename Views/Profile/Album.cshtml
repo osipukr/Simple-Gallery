@@ -37,8 +37,12 @@ else
     <button class="btn btn-primary" onclick="location.href='@Url.Action("AddPhoto", new { albumId = Model.Id })'">Добавить</button>
 </div>
 
+<div style="margin-top: 10px">
+    <button class="btn btn-primary" onclick="location.href='@Url.Action("Index")'">Вернуться назад</button>
+</div>
+
 @section Style {
-    <link href="~/Content/home/vendor/magnific-popup/magnific-popup.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/home/vendor/magnific-popup/magnific-popup.css" rel="stylesheet" type="text/css" />
     
     <style>
         .image-source-link {
@@ -87,7 +91,7 @@ else
                 image: {
                     verticalFit: true,
                     titleSrc: function (item) {
-                        return '<a class="image-source-link" href="' + item.el.attr('href') + '" target="_blank">открыть</a> ' +
+                        return '<a class="image-source-link" href="' + item.el.attr('href') + '" target="_blank">оригинал</a> ' +
                             ' <a class="image-source-link" href="/Profile/DeletePhoto?' + item.el.attr('href').split('?')[1] + '" >удалить</a>';
                     }
                 },

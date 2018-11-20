@@ -6,15 +6,16 @@
         <!-- Logo -->
         <div id="logo">
             <span class="image">
-                @if (Model.UserImage == null)
-                {
-                    <img src="~/Content/profile/img/avatar.jpg" alt="аватар" title="default" />
-                }
-                else
-                {
-                    <img src="@Url.Action("GetUserPhoto", new { userId = Model.UserId })" alt="аватар" title="@Model.UserName" />
-                }
-
+                <a href="@Url.Action("ChangeAvatar")">
+                    @if (Model.UserImage == null)
+                    {
+                        <img src="~/Content/profile/img/avatar.jpg" alt="аватар" title="default" />
+                    }
+                    else
+                    {
+                        <img src="@Url.Action("GetUserPhoto")" alt="аватар" title="@Model.UserName" style="width:60px;height:60px;" />
+                    }
+                </a>
             </span>
             <h1>@Model.UserName</h1>
             @foreach (var role in Model.UserRoles)

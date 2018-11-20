@@ -1,0 +1,26 @@
+﻿@model Simply_Gallery.ViewModels.ChangeAvatarViewModel
+
+@{
+    ViewBag.Title = "Изменение фотографии";
+    Layout = "~/Views/Profile/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+
+@using (Html.BeginForm("ChangeAvatar", "Profile", FormMethod.Post, new { @class = "form", enctype = "multipart/form-data", style = "text-align: left" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Image, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.Image, new { type = "file" })
+    </div>
+
+    <div class="form-group">
+        <input type="submit" class="btn btn-primary" value="Загрузить" />
+    </div>
+}
+
+<button class="btn btn-primary" onclick="location.href='@Url.Action("Setting")'" style="float:left">Вернуться назад</button>

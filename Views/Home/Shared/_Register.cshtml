@@ -13,7 +13,7 @@
             <h4 class="modal-title" id="registerModalTitle">@ViewBag.ModalTitle</h4>
         </div>
         <div class="modal-body">
-            @using (Ajax.BeginForm("Register", null, new AjaxOptions { UpdateTargetId = "register", HttpMethod = "Post" }, new { @class = "form" }))
+            @using (Ajax.BeginForm("Register", new { ReturnUrl = ViewBag.ReturnUrl }, new AjaxOptions { UpdateTargetId = "register", HttpMethod = "Post" }, new { @class = "form" }))
             {
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary()

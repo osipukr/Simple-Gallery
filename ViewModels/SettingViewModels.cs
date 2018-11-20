@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Web;
 
 namespace Simply_Gallery.ViewModels
 {
@@ -41,5 +42,12 @@ namespace Simply_Gallery.ViewModels
         [Display(Name = "Новая почта")]
         [EmailAddress]
         public string NewEmail { get; set; }
+    }
+
+    public class ChangeAvatarViewModel
+    {
+        [Required(ErrorMessage = "Выберите фотографию")]
+        [Display(Name = "Фотография пользователя")]
+        public HttpPostedFileBase Image { get; set; }
     }
 }
