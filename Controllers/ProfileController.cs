@@ -246,26 +246,23 @@ namespace Simply_Gallery.Controllers
 
         //
         // GET: /Profile/Setting
-        public ActionResult Setting(ProfileMessageId? message)
+        public async Task<ActionResult> Setting(string act, ProfileMessageId? messeage)
         {
             ViewBag.StatusMessage =
-                message == ProfileMessageId.AddPhoneSuccess ? "Номер телефона успешно добавлен"
-                : message == ProfileMessageId.RemovePhoneSuccess ? "Номер телефона был удалён"
-                : message == ProfileMessageId.ChangePasswordSuccess ? "Пароль успешно изменен"
-                : message == ProfileMessageId.ChangeEmailSuccess ? "Почта успешно изменена"
-                : message == ProfileMessageId.ChangeNameSuccess ? "Имя успешно изменено"
-                : message == ProfileMessageId.ChangeAvatarSuccess ? "Фотография успешно изменена"
-                : message == ProfileMessageId.Error ? "Произошла ошибка"
+                messeage == ProfileMessageId.AddPhoneSuccess ? "Номер телефона успешно добавлен"
+                : messeage == ProfileMessageId.RemovePhoneSuccess ? "Номер телефона был удалён"
+                : messeage == ProfileMessageId.ChangePasswordSuccess ? "Пароль успешно изменен"
+                : messeage == ProfileMessageId.ChangeEmailSuccess ? "Почта успешно изменена"
+                : messeage == ProfileMessageId.ChangeNameSuccess ? "Имя успешно изменено"
+                : messeage == ProfileMessageId.ChangeAvatarSuccess ? "Фотография успешно изменена"
+                : messeage == ProfileMessageId.Error ? "Произошла ошибка"
                 : "";
-
-            return View();
-        }
-
-        //
-        // GET: /Profile/ChangePassword
-        public ActionResult ChangePassword()
-        {
-            return View();
+            return
+                act == "changeName" ? PartialView("Setting/_ChangeName", new ChangeNameViewModel { CurrentUserName = User.Identity.GetUserName() })
+                : act == "changeEmail" ? PartialView("Setting/_ChangeEmail", new ChangeEmailViewModel { CurrentEmail = await UserManager.GetEmailAsync(User.Identity.GetUserId()) })
+                : act == "changePassword" ? PartialView("Setting/_ChangePassword")
+                : act == "changeAvatar" ? PartialView("Setting/_ChangeAvatar")
+                : PartialView("Setting/_Index");
         }
 
         //
@@ -276,7 +273,7 @@ namespace Simply_Gallery.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return PartialView("Setting/_ChangePassword", model);
             }
 
             var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
@@ -289,19 +286,11 @@ namespace Simply_Gallery.Controllers
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 }
 
-                return RedirectToAction("Setting", new { message = ProfileMessageId.ChangePasswordSuccess });
+                return JavaScript(string.Format("location.href='{0}'", Url.Action("Setting", new { messeage = ProfileMessageId.ChangePasswordSuccess })));
             }
 
             AddErrors(result);
-
-            return View(model);
-        }
-
-        //
-        // GET: /Profile/ChangeName
-        public ActionResult ChangeName()
-        {
-            return View(new ChangeNameViewModel { CurrentUserName = User.Identity.GetUserName() });
+            return PartialView("Setting/_ChangePassword", model);
         }
 
         //
@@ -312,19 +301,19 @@ namespace Simply_Gallery.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return PartialView("Setting/_ChangeName", model);
             }
 
             if (model.NewUserName.ToLower().Contains("admin") || model.NewUserName.ToLower().Contains("админ"))
             {
                 ModelState.AddModelError("", "Имя пользователя не должно содердать слова 'admin'");
-                return View(model);
+                return PartialView("Setting/_ChangeName", model);
             }
 
             if(await UserManager.FindByNameAsync(model.NewUserName) != null)
             {
                 ModelState.AddModelError("", "Пользователя с таким именем уже зарегистрирован");
-                return View(model);
+                return PartialView("Setting/_ChangeName", model);
             }
 
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
@@ -332,22 +321,18 @@ namespace Simply_Gallery.Controllers
             if (user != null)
             {
                 user.UserName = model.NewUserName;
-                await UserManager.UpdateAsync(user);
-                await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                var result = await UserManager.UpdateAsync(user);
+                
+                if(result.Succeeded)
+                {
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    return JavaScript(string.Format("location.href='{0}'", Url.Action("Setting", new { messeage = ProfileMessageId.ChangeNameSuccess })));
+                }
 
-                return RedirectToAction("Setting", new { message = ProfileMessageId.ChangeNameSuccess });
+                AddErrors(result);
             }
 
-            ModelState.AddModelError("", "Произошла ошибка при изменении имени, попробуйте обновите страницу");
-
-            return View(model);
-        }
-
-        //
-        // GET: /Profile/ChangeEmail
-        public async Task<ActionResult> ChangeEmail()
-        {
-            return View(new ChangeEmailViewModel { CurrentEmail = await UserManager.GetEmailAsync(User.Identity.GetUserId()) });
+            return PartialView("Setting/_ChangeName", model);
         }
 
         //
@@ -358,13 +343,13 @@ namespace Simply_Gallery.Controllers
         {
             if(!ModelState.IsValid)
             {
-                return View(model);
+                return PartialView("Setting/_ChangeEmail", model);
             }
 
             if(await UserManager.FindByEmailAsync(model.NewEmail) != null)
             {
                 ModelState.AddModelError("", "Пользователь с таким e-mail уже зарегистрирован");
-                return View(model);
+                return PartialView("Setting/_ChangeEmail", model);
             }
 
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
@@ -372,73 +357,85 @@ namespace Simply_Gallery.Controllers
             if(user != null)
             {
                 user.Email = model.NewEmail;
-                await UserManager.UpdateAsync(user);
-                await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                var result = await UserManager.UpdateAsync(user);
+                
+                if(result.Succeeded)
+                {
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    return JavaScript(string.Format("location.href='{0}'", Url.Action("Setting", new { messeage = ProfileMessageId.ChangeEmailSuccess })));
+                }
 
-                return RedirectToAction("Setting", new { message = ProfileMessageId.ChangeEmailSuccess });
+                AddErrors(result);
             }
 
-            ModelState.AddModelError("", "Произошла ошибка при изменении e-mail, попробуйте обновите страницу");
-
-            return View(model);
-        }
-
-        //
-        // GET: /Profile/ChangeAvatar
-        public ActionResult ChangeAvatar()
-        {
-            return View();
+            return PartialView("Setting/_ChangeEmail", model);
         }
 
         //
         // POST: /Profile/ChangeAvatar
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ChangeAvatar(ChangeAvatarViewModel model)
+        public async Task<ActionResult> ChangeAvatar()
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                return View(model);
+                return PartialView("Setting/_ChangeAvatar");
             }
 
-            string[] formats = new string[] { "jpg", "png", "gif", "jpeg" };
+            // получаем изображения
+            var image = Request.Files["image"];
 
-            var types = model.Image.ContentType.Split('/');
-
-            if (types[0] != "image" &&
-                !formats.Any(item => model.Image.FileName.EndsWith(item, StringComparison.OrdinalIgnoreCase)))
+            if(image == null)
             {
-                ModelState.AddModelError("", string.Format("Файл типа {0} не может быть загружен", types[1]));
-                return View(model);
+                ModelState.AddModelError("", "Выберите изображение");
+                return PartialView("Setting/_ChangeAvatar");
             }
 
-            if (model.Image.ContentLength > Math.Pow(5, Math.Pow(10, 6)))
+            // максимальный размер файла 2 Мб
+            int maxSizeFile = 2 * 1024 * 1024;
+
+            // допустимые MIME-типы для файлов
+            var mimes = new string[]
             {
-                ModelState.AddModelError("", "Привышен размер загружаемого файла");
-                return View(model);
+                "image/jpeg", "image/jpg", "image/png"
+            };
+
+            // проверки на допустимый размер файла
+            if (image.ContentLength > maxSizeFile)
+            {
+                ModelState.AddModelError("", "Размер изображения больше 2мб");
+                return PartialView("Setting/_ChangeAvatar");
             }
 
+            // проверки на допустимый формат файла
+            if (mimes.FirstOrDefault(x => x == image.ContentType) == null)
+            {
+                ModelState.AddModelError("", "Не допустимый формат изображения");
+                return PartialView("Setting/_ChangeAvatar");
+            }
+
+            // получаем пользователя
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
-            if(user != null)
+            if (user != null)
             {
-                user.Image = new byte[model.Image.ContentLength];
-                user.ImageMimeType = model.Image.ContentType;
+                user.Image = new byte[image.ContentLength];
+                user.ImageMimeType = image.ContentType;
 
-                await model.Image.InputStream.ReadAsync(user.Image, 0, model.Image.ContentLength);
+                await image.InputStream.ReadAsync(user.Image, 0, image.ContentLength);
 
                 var result = await UserManager.UpdateAsync(user);
 
-                if(result.Succeeded)
+                if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                    return RedirectToAction("Setting", new { message = ProfileMessageId.ChangeAvatarSuccess });
+                    return JavaScript(string.Format("location.href='{0}'", Url.Action("Setting", new { messeage = ProfileMessageId.ChangeAvatarSuccess })));
                 }
 
                 AddErrors(result);
             }
 
-            return View(model);
+            return PartialView("Setting/_ChangeAvatar");
         }
 
         #region Helpers

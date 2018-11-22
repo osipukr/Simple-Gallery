@@ -6,7 +6,7 @@
         <!-- Logo -->
         <div id="logo">
             <span class="image">
-                <a href="@Url.Action("ChangeAvatar")">
+                <a href="@Url.Action("Setting", new { act = "changeAvatar" })">
                     @if (Model.UserImage == null)
                     {
                         <img src="~/Content/profile/img/avatar.jpg" alt="аватар" title="default" />

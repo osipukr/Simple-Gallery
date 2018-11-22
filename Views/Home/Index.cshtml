@@ -9,6 +9,7 @@
         Html.RenderPartial("Shared/_Login");
     }
 </div>
+
 <div class="modal fade" id="register" tabindex="-1" role="dialog" aria-labelledby="registerModalTitle" aria-hidden="true">
     @{
         Html.RenderPartial("Shared/_Register");
@@ -18,26 +19,26 @@
 
 @{
     <!-- Header section -->
-    Html.RenderPartial("HomeContent/Header");
+    Html.RenderPartial("HomeContent/_Header");
     <!-- End Header section -->
 
     <!-- About section -->
-    Html.RenderPartial("HomeContent/About");
+    Html.RenderPartial("HomeContent/_About");
     <!-- End About section -->
 
     <!-- Banner section -->
-    Html.RenderPartial("HomeContent/Banner");
+    Html.RenderPartial("HomeContent/_Banner");
     <!-- End Banner section -->
 
     <!-- Gallery section -->
-    Html.RenderPartial("HomeContent/Gallery");
+    Html.RenderPartial("HomeContent/_Gallery");
     <!-- End Gallery section -->
 
     <!-- Contact section -->
-    Html.RenderPartial("HomeContent/Contact");
+    Html.RenderPartial("HomeContent/_Contact");
     <!-- End Contact section -->
 
     <!-- Footer section -->
-    Html.RenderPartial("HomeContent/Footer");
+    Html.RenderPartial("HomeContent/_Footer");
     <!-- End Footer section -->
 }

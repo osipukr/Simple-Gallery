@@ -270,23 +270,23 @@
     </None>
     <Content Include="Views\Home\Shared\_Login.cshtml" />
     <Content Include="Views\Home\Shared\_Register.cshtml" />
-    <Content Include="Views\Home\HomeContent\Header.cshtml" />
-    <Content Include="Views\Home\HomeContent\About.cshtml" />
-    <Content Include="Views\Home\HomeContent\Gallery.cshtml" />
-    <Content Include="Views\Home\HomeContent\Contact.cshtml" />
-    <Content Include="Views\Home\HomeContent\Footer.cshtml" />
-    <Content Include="Views\Home\HomeContent\Banner.cshtml" />
+    <Content Include="Views\Home\HomeContent\_Header.cshtml" />
+    <Content Include="Views\Home\HomeContent\_About.cshtml" />
+    <Content Include="Views\Home\HomeContent\_Gallery.cshtml" />
+    <Content Include="Views\Home\HomeContent\_Contact.cshtml" />
+    <Content Include="Views\Home\HomeContent\_Footer.cshtml" />
+    <Content Include="Views\Home\HomeContent\_Banner.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\Profile\Shared\_Layout.cshtml" />
     <Content Include="Views\Profile\Album.cshtml" />
-    <Content Include="Views\Profile\Setting.cshtml" />
     <Content Include="Views\Profile\AddAlbum.cshtml" />
     <Content Include="Views\Profile\Shared\_Header.cshtml" />
     <Content Include="Views\Profile\AddPhoto.cshtml" />
-    <Content Include="Views\Profile\ChangePassword.cshtml" />
-    <Content Include="Views\Profile\ChangeName.cshtml" />
-    <Content Include="Views\Profile\ChangeEmail.cshtml" />
-    <Content Include="Views\Profile\ChangeAvatar.cshtml" />
+    <Content Include="Views\Profile\Setting\_ChangePassword.cshtml" />
+    <Content Include="Views\Profile\Setting\_ChangeEmail.cshtml" />
+    <Content Include="Views\Profile\Setting\_ChangeAvatar.cshtml" />
+    <Content Include="Views\Profile\Setting\_ChangeName.cshtml" />
+    <Content Include="Views\Profile\Setting\_Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -782,3 +782,7 @@ table {
     text-align: left;
     cursor:default;
 }
+
+.form {
+    text-align:left;
+}
