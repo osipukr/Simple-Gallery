@@ -84,7 +84,7 @@ namespace Simply_Gallery.Controllers
         // POST: /Profile/AddAlbum
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> AddAlbum(AlbumViewModel albumModel)
+        public async Task<ActionResult> AddAlbum(CreateAlbumViewModel albumModel)
         {
             if (!ModelState.IsValid)
             {
@@ -109,6 +109,65 @@ namespace Simply_Gallery.Controllers
             ModelState.AddModelError("", "Альбом с таким именем уже создан");
 
             return View(albumModel);
+        }
+
+        //
+        // GET: /Profile/EditAlbum
+        public async Task<ActionResult> EditAlbum(int? albumId)
+        {
+            if (albumId != null)
+            {
+                var result = await _albumService.GetAlbumAsync(albumId.Value, User.Identity.GetUserId());
+
+                if (result != null)
+                {
+                    var model = new EditAlbumViewModel
+                    {
+                        OldName = result.Name,
+                        NewName = result.Name
+                    };
+
+                    return View(model);
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        //
+        // POST: /Profile/AddAlbum
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EditAlbum(EditAlbumViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            if(model.OldName != model.NewName)
+            {
+                var result = await _albumService.GetAlbumAsync(model.NewName, User.Identity.GetUserId());
+
+                if(result != null)
+                {
+                    ModelState.AddModelError("", "Альбом с таким названием уже существуте");
+                    return View(model);
+                }
+
+                var album = await _albumService.GetAlbumAsync(model.OldName, User.Identity.GetUserId());
+
+                if(album == null)
+                {
+                    ModelState.AddModelError("", string.Format("Альбома '{0}' уже не существует", model.OldName));
+                    return View(model);
+                }
+
+                album.Name = model.NewName;
+                await _albumService.UpdateAlbumAsync(album);
+            }
+
+            return RedirectToAction("Index");
         }
 
         //
@@ -246,16 +305,16 @@ namespace Simply_Gallery.Controllers
 
         //
         // GET: /Profile/Setting
-        public async Task<ActionResult> Setting(string act, ProfileMessageId? messeage)
+        public async Task<ActionResult> Setting(string act, ProfileMessageId? message)
         {
             ViewBag.StatusMessage =
-                messeage == ProfileMessageId.AddPhoneSuccess ? "Номер телефона успешно добавлен"
-                : messeage == ProfileMessageId.RemovePhoneSuccess ? "Номер телефона был удалён"
-                : messeage == ProfileMessageId.ChangePasswordSuccess ? "Пароль успешно изменен"
-                : messeage == ProfileMessageId.ChangeEmailSuccess ? "Почта успешно изменена"
-                : messeage == ProfileMessageId.ChangeNameSuccess ? "Имя успешно изменено"
-                : messeage == ProfileMessageId.ChangeAvatarSuccess ? "Фотография успешно изменена"
-                : messeage == ProfileMessageId.Error ? "Произошла ошибка"
+                message == ProfileMessageId.AddPhoneSuccess ? "Номер телефона успешно добавлен"
+                : message == ProfileMessageId.RemovePhoneSuccess ? "Номер телефона был удалён"
+                : message == ProfileMessageId.ChangePasswordSuccess ? "Пароль успешно изменен"
+                : message == ProfileMessageId.ChangeEmailSuccess ? "Почта успешно изменена"
+                : message == ProfileMessageId.ChangeNameSuccess ? "Имя успешно изменено"
+                : message == ProfileMessageId.ChangeAvatarSuccess ? "Фотография успешно изменена"
+                : message == ProfileMessageId.Error ? "Произошла ошибка"
                 : "";
             return
                 act == "changeName" ? PartialView("Setting/_ChangeName", new ChangeNameViewModel { CurrentUserName = User.Identity.GetUserName() })
@@ -286,7 +345,7 @@ namespace Simply_Gallery.Controllers
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 }
 
-                return JavaScript(string.Format("location.href='{0}'", Url.Action("Setting", new { messeage = ProfileMessageId.ChangePasswordSuccess })));
+                return JavaScript(string.Format("location.href='{0}'", Url.Action("Setting", new { message = ProfileMessageId.ChangePasswordSuccess })));
             }
 
             AddErrors(result);
@@ -326,7 +385,7 @@ namespace Simply_Gallery.Controllers
                 if(result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                    return JavaScript(string.Format("location.href='{0}'", Url.Action("Setting", new { messeage = ProfileMessageId.ChangeNameSuccess })));
+                    return JavaScript(string.Format("location.href='{0}'", Url.Action("Setting", new { message = ProfileMessageId.ChangeNameSuccess })));
                 }
 
                 AddErrors(result);
@@ -362,7 +421,7 @@ namespace Simply_Gallery.Controllers
                 if(result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                    return JavaScript(string.Format("location.href='{0}'", Url.Action("Setting", new { messeage = ProfileMessageId.ChangeEmailSuccess })));
+                    return JavaScript(string.Format("location.href='{0}'", Url.Action("Setting", new { message = ProfileMessageId.ChangeEmailSuccess })));
                 }
 
                 AddErrors(result);
@@ -429,7 +488,7 @@ namespace Simply_Gallery.Controllers
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                    return JavaScript(string.Format("location.href='{0}'", Url.Action("Setting", new { messeage = ProfileMessageId.ChangeAvatarSuccess })));
+                    return JavaScript(string.Format("location.href='{0}'", Url.Action("Setting", new { message = ProfileMessageId.ChangeAvatarSuccess })));
                 }
 
                 AddErrors(result);

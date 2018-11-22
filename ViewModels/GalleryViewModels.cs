@@ -3,12 +3,22 @@ using System.Web;
 
 namespace Simply_Gallery.ViewModels
 {
-    public class AlbumViewModel
+    public class CreateAlbumViewModel
     {
         [Required(ErrorMessage = "Поле название альбома обязательно для ввода")]
         [Display(Name = "Название альбома")]
         [StringLength(20, MinimumLength = 4)]
         public string Name { get; set; }
+    }
+
+    public class EditAlbumViewModel
+    {
+        [ScaffoldColumn(false)]
+        public string OldName { get; set; }
+
+        [Display(Name = "Название альбома")]
+        [StringLength(20, MinimumLength = 4)]
+        public string NewName { get; set; }
     }
 
     public class PhotoViewModel
