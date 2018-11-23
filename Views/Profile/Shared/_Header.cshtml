@@ -5,6 +5,7 @@
     <div class="top">
         <!-- Logo -->
         <div id="logo">
+            
             <span class="image">
                 <a href="@Url.Action("Setting", new { act = "changeAvatar" })">
                     @if (Model.UserImage == null)
@@ -17,6 +18,7 @@
                     }
                 </a>
             </span>
+            
             <h1>@Model.UserName</h1>
             @foreach (var role in Model.UserRoles)
             {
@@ -33,7 +35,7 @@
                 <li><a href="@Url.Action("Setting")"><i class="icon fas fa-users-cog">Мои настройки</i></a></li>
                 @if (User.IsInRole("admin"))
                 {
-                    <li><a href="@Url.Action("Index", "Roles")"><i class="icon fas fa-chess-queen">Admin панель</i></a></li>
+                    <li><a href="@Url.Action("Index", "Admin")"><i class="icon fas fa-chess-queen">Admin панель</i></a></li>
                 }
                 @using (Html.BeginForm("LogOut", "Home", FormMethod.Post, new { id = "logOutForm" }))
                 {
@@ -54,5 +56,6 @@
             <li><a href="http://www.bstu.by/" class="icon"><i class="fas fa-university"></i><span class="label">University</span></a></li>
             <li><a href="mailto:fredstone624@gmail.com" class="icon"><i class="fas fa-envelope"></i><span class="label">Email</span></a></li>
         </ul>
+
     </div>
 </div>

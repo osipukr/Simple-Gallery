@@ -8,7 +8,7 @@
 <h2>@ViewBag.Title</h2>
 <hr />
 
-@using (Html.BeginForm("AddPhoto", "Profile", FormMethod.Post, new { @class = "form", enctype = "multipart/form-data", style = "text-align: left" }))
+@using (Html.BeginForm("AddPhoto", "Profile", FormMethod.Post, new { @class = "form", enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })

@@ -8,7 +8,7 @@
 <h2>@ViewBag.Title</h2>
 <hr />
 
-@using (Html.BeginForm("Edit", "Roles", FormMethod.Post, new { @class = "form-horizontal", role = "form", style = "text-align: left" }))
+@using (Html.BeginForm("Edit", "Admin", FormMethod.Post, new { @class = "form form-horizontal" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary("", new { @class = "text-danger" })

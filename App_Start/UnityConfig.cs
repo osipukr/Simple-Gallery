@@ -16,6 +16,7 @@ namespace Simply_Gallery
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
             return container;
         }
+
         private static IUnityContainer BuildUnityContainer()
         {
             var container = new UnityContainer();
@@ -26,11 +27,12 @@ namespace Simply_Gallery
             container.RegisterType<IAlbumService, AlbumService>();
 
             container.RegisterType<HomeController>(new InjectionConstructor());
-            container.RegisterType<RolesController>(new InjectionConstructor());
+            container.RegisterType<AdminController>(new InjectionConstructor());
 
             RegisterTypes(container);
             return container;
         }
+
         public static void RegisterTypes(IUnityContainer container)
         {
         }

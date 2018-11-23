@@ -14,28 +14,33 @@
 <p class="text-success" style="text-align:left">@ViewBag.StatusMessage</p>
 
 <div style="text-align:left">
+
     <dl class="dl-horizontal">
         <dt>Имя:</dt>
         <dd>
             @Ajax.ActionLink("изменить имя пользователя", "Setting", new { act = "changeName" }, ViewBag.AjaxOptions as AjaxOptions)
         </dd>
     </dl>
+
     <dl class="dl-horizontal">
         <dt>Почта:</dt>
         <dd>
             @Ajax.ActionLink("изменить адрес почты", "Setting", new { act = "changeEmail" }, ViewBag.AjaxOptions as AjaxOptions)
         </dd>
     </dl>
+
     <dl class="dl-horizontal">
         <dt>Пароль:</dt>
         <dd>
             @Ajax.ActionLink("изменить пароль", "Setting", new { act = "changePassword" }, ViewBag.AjaxOptions as AjaxOptions)
         </dd>
     </dl>
+
     <dl class="dl-horizontal">
         <dt>Аватар:</dt>
         <dd>
             @Ajax.ActionLink("изменить фотографию", "Setting", new { act = "changeAvatar" }, ViewBag.AjaxOptions as AjaxOptions)
         </dd>
     </dl>
+
 </div>

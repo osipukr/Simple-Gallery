@@ -1,6 +1,4 @@
-﻿@*@using Simply_Gallery.ViewModels
-    @model ChangeAvatarViewModel*@
-@{
+﻿@{
     ViewBag.Title = "Изменение фотографии";
 
     if (!IsAjax)
@@ -12,15 +10,12 @@
 <h2>@ViewBag.Title</h2>
 <hr />
 
-@*@using (Html.BeginForm("ChangeAvatar", "Profile", FormMethod.Post, new { @class = "form form-horizontal", enctype = "multipart/form-data" }))*@
 @using (Ajax.BeginForm("ChangeAvatar", null, new AjaxOptions { UpdateTargetId = "property" }, new { @class = "form form-horizontal", enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
     <div class="form-group">
-        @*@Html.LabelFor(m => m.Image, new { @class = "control-label" })
-            @Html.TextBoxFor(m => m.Image, new { type = "file" })*@
         <input id="image-upload" name="image" type="file" />
     </div>
 

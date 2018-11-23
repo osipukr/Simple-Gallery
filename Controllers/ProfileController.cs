@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -107,7 +106,6 @@ namespace Simply_Gallery.Controllers
             }
 
             ModelState.AddModelError("", "Альбом с таким именем уже создан");
-
             return View(albumModel);
         }
 
@@ -121,13 +119,11 @@ namespace Simply_Gallery.Controllers
 
                 if (result != null)
                 {
-                    var model = new EditAlbumViewModel
+                    return View(new EditAlbumViewModel
                     {
                         OldName = result.Name,
                         NewName = result.Name
-                    };
-
-                    return View(model);
+                    });
                 }
             }
 
@@ -215,18 +211,32 @@ namespace Simply_Gallery.Controllers
                 return View(photoModel);
             }
 
-            string[] formats = new string[] { "jpg", "png", "gif", "jpeg" };
-
-            if (!photoModel.Image.ContentType.Contains("image") &&
-                !formats.Any(item => photoModel.Image.FileName.EndsWith(item, StringComparison.OrdinalIgnoreCase)))
+            if (photoModel.Image == null)
             {
-                ModelState.AddModelError("", "Этот файл не может быть загружен в галерею");
+                ModelState.AddModelError("", "Выберите изображение");
                 return View(photoModel);
             }
-            
-            if(photoModel.Image.ContentLength > Math.Pow(5, Math.Pow(10, 6)))
+
+            // максимальный размер файла 2 Мб
+            int maxSizeFile = 2 * 1024 * 1024;
+
+            // допустимые MIME-типы для файлов
+            var mimes = new string[]
             {
-                ModelState.AddModelError("", "Привышен размер загружаемого файла");
+                "image/jpeg", "image/jpg", "image/png"
+            };
+
+            // проверки на допустимый размер файла
+            if (photoModel.Image.ContentLength > maxSizeFile)
+            {
+                ModelState.AddModelError("", "Размер изображения больше 2мб");
+                return View(photoModel);
+            }
+
+            // проверки на допустимый формат файла
+            if (mimes.FirstOrDefault(x => x == photoModel.Image.ContentType) == null)
+            {
+                ModelState.AddModelError("", "Не допустимый формат изображения");
                 return View(photoModel);
             }
 

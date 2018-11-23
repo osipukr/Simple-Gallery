@@ -10,15 +10,15 @@ using System.Web.Mvc;
 namespace Simply_Gallery.Controllers
 {
     [Authorize(Roles = "admin")]
-    public class RolesController : Controller
+    public class AdminController : Controller
     {
         private ApplicationUserManager _userManager;
 
-        public RolesController()
+        public AdminController()
         {
         }
 
-        public RolesController(ApplicationUserManager userManager)
+        public AdminController(ApplicationUserManager userManager)
         {
             UserManager = userManager;
         }
@@ -41,8 +41,15 @@ namespace Simply_Gallery.Controllers
 
         //
         // GET: /Roles/Index
-        public ActionResult Index()
+        public ActionResult Index(RoleMessageId? message)
         {
+            ViewBag.StatusMessage =
+                message == RoleMessageId.AddRoleSuccess ? "Новая роль успешно добавлена"
+                : message == RoleMessageId.RemoveRoleSuccess ? "Роль успешно удалена"
+                : message == RoleMessageId.ChangeRoleSuccess ? "Роль успешно изменена"
+                : message == RoleMessageId.Error ? "Произошла ошибка"
+                : "";
+
             return View(RoleManager.Roles);
         }
 
@@ -78,7 +85,7 @@ namespace Simply_Gallery.Controllers
 
             if (result.Succeeded)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { message = RoleMessageId.AddRoleSuccess });
             }
 
             ModelState.AddModelError("", "Ошибка при создании новой роли");
@@ -120,7 +127,7 @@ namespace Simply_Gallery.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index", new { message = RoleMessageId.ChangeRoleSuccess });
                 }
 
                 AddErrors(result);
@@ -144,7 +151,7 @@ namespace Simply_Gallery.Controllers
                     AddErrors(result);
                 }
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { message = RoleMessageId.RemoveRoleSuccess });
         }
 
         //
@@ -194,6 +201,14 @@ namespace Simply_Gallery.Controllers
             {
                 ModelState.AddModelError("", error);
             }
+        }
+
+        public enum RoleMessageId
+        {
+            AddRoleSuccess,
+            RemoveRoleSuccess,
+            ChangeRoleSuccess,
+            Error
         }
 
         #endregion

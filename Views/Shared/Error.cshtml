@@ -1,24 +1,27 @@
 ﻿@model HandleErrorInfo
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>404 Not Found</title>
 
-    <link type="text/css" rel="stylesheet" href="~/Content/errors/css/style.min.css" />
+    <link href="@Url.Content("~/Content/errors/css/style.min.css")" rel="stylesheet" type="text/css"/>
 
 </head>
 <body>
     <div id="notfound">
+
         <div class="notfound">
             <div class="notfound-404">
                 <h3>Упссс! Старинца не найдена ;(</h3>
                 <a href=""><h1><span>4</span><span>0</span><span>4</span></h1></a>
             </div>
+
             <h2>мы сожалеем, но запрошенная вами страница не была найдена</h2>
         </div>
+
     </div>
 </body>
 </html>

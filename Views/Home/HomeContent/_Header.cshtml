@@ -37,7 +37,7 @@
         </div>
         @if (Request.IsAuthenticated)
         {
-            @Html.ActionLink("Перейти к галлереи", "Index", "Profile", routeValues: null, htmlAttributes: new { @class = "btn-theme btn-theme-md btn-white-bg text-uppercase", title = "Переход к галлереи" })
+            @Html.ActionLink("Перейти к галереи", "Index", "Profile", null, new { @class = "btn-theme btn-theme-md btn-white-bg text-uppercase", title = "Переход к галереи" })
         }
         else
         {

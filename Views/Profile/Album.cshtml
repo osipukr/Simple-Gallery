@@ -13,7 +13,7 @@
 @if (Model.Photos.Count() == 0)
 {
     <div class="album-null">
-        <p>@string.Format("В альбоме {0} нету фотографий", Model.Name)</p>
+        <p>@string.Format("В альбоме '{0}' нету фотографий", Model.Name)</p>
         <img src="~/Content/profile/img/empty-album.jpg" alt=":(" title="Фоток нет" />
     </div>
 }
@@ -91,8 +91,8 @@ else
                 image: {
                     verticalFit: true,
                     titleSrc: function (item) {
-                        return '<a class="image-source-link" href="' + item.el.attr('href') + '" target="_blank">оригинал</a> ' +
-                            ' <a class="image-source-link" href="/Profile/DeletePhoto?' + item.el.attr('href').split('?')[1] + '" >удалить</a>';
+                        return '<a class="image-source-link" href="' + item.el.attr('href') + '" target="_blank">original</a> ' +
+                            ' <a class="image-source-link" href="/Profile/DeletePhoto?' + item.el.attr('href').split('?')[1] + '" >remove</a>';
                     }
                 },
                 gallery: {

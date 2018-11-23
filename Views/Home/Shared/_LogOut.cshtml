@@ -9,6 +9,7 @@
         <li class="js_nav-item nav-item">
             @Html.ActionLink(User.Identity.GetUserName(), "Index", "Profile", null, new { @class = "nav-item-child nav-item-hover" })
         </li>
+
         <li class="js_nav-item nav-item">
             <a class="nav-item-child nav-item-hover" href="javascript:void(0);" onclick="javascript:document.getElementById('logOutForm').submit()">Выйти</a>
         </li>
@@ -19,6 +20,7 @@ else
     <li class="js_nav-item nav-item">
         <a class="nav-item-child nav-item-hover" data-toggle="modal" data-target="#login" cursor="pointer" href="">Вход</a>
     </li>
+
     <li class="js_nav-item nav-item">
         <a class="nav-item-child nav-item-hover" data-toggle="modal" data-target="#register" cursor="pointer" href="">Регистрация</a>
     </li>

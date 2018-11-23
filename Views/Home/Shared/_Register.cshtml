@@ -6,36 +6,47 @@
 
 <div class="modal-dialog" role="document">
     <div class="modal-content">
+
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span class="fweight-700 color-heading" aria-hidden="true">&Chi;</span>
             </button>
             <h4 class="modal-title" id="registerModalTitle">@ViewBag.ModalTitle</h4>
         </div>
+
         <div class="modal-body">
-            @using (Ajax.BeginForm("Register", new { ReturnUrl = ViewBag.ReturnUrl }, new AjaxOptions { UpdateTargetId = "register", HttpMethod = "Post" }, new { @class = "form" }))
+            @using (Ajax.BeginForm("Register", new { ReturnUrl = ViewBag.ReturnUrl }, new AjaxOptions { UpdateTargetId = "register" }, new { @class = "form" }))
             {
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary()
+
                 <div class="form-froup">
                     @Html.LabelFor(m => m.Email)
                     @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Введите e-mail адрес" })
                 </div>
+
                 <div class="form-froup margin-t-20">
                     @Html.LabelFor(m => m.UserName)
                     @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "Введите имя пользователя"})
                 </div>
+
                 <div class="form-froup margin-t-20">
                     @Html.LabelFor(m => m.Password)
                     @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Введите пароль" })
                 </div>
+
                 <div class="form-froup margin-t-20">
                     @Html.LabelFor(m => m.ConfirmPassword)
                     @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Введите повторно пароль" })
                 </div>
+
                 <input type="submit" class="btn btn-primary pull-right margin-t-10" value="Зарегистрировать" />
             }
-            <p class="margin-t-10">У вас уже есть аккаунт? <a class="js_nav-item" data-dismiss="modal" data-toggle="modal" data-target="#login" href="">Войти в учётную запись</a></p>
+
+            <p class="margin-t-10">
+                У вас уже есть аккаунт? <a class="js_nav-item" data-dismiss="modal" data-toggle="modal" data-target="#login" href="">Войти в учётную запись</a>
+            </p>
         </div>
+
     </div>
 </div>
