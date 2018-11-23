@@ -13,14 +13,17 @@
     @Html.AntiForgeryToken()
     @Html.ValidationSummary("", new { @class = "text-danger" })
 
+    @Html.HiddenFor(m => m.OldName)
+    @Html.HiddenFor(m => m.OldDescription)
+
     <div class="form-group">
-        @Html.LabelFor(m => m.Name, new { @class = "control-label" })
-        @Html.EditorFor(m => m.Name)
+        @Html.LabelFor(m => m.NewName, new { @class = "control-label" })
+        @Html.EditorFor(m => m.NewName)
     </div>
-    
+
     <div class="form-group">
-        @Html.LabelFor(m => m.Description, new { @class = "control-label" })
-        @Html.EditorFor(m => m.Description)
+        @Html.LabelFor(m => m.NewDescription, new { @class = "control-label" })
+        @Html.EditorFor(m => m.NewDescription)
     </div>
 
     <div class="form-group">

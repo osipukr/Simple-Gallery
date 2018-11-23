@@ -40,7 +40,7 @@ namespace Simply_Gallery.Controllers
         private ApplicationRoleManager RoleManager => HttpContext.GetOwinContext().GetUserManager<ApplicationRoleManager>();
 
         //
-        // GET: /Roles/Index
+        // GET: /Admin/Index
         public ActionResult Index(RoleMessageId? message)
         {
             ViewBag.StatusMessage =
@@ -54,14 +54,14 @@ namespace Simply_Gallery.Controllers
         }
 
         //
-        // GET: /Roles/Create
+        // GET: /Admin/Create
         public ActionResult Create()
         {
             return View();
         }
 
         //
-        // POST: /Roles/Create
+        // POST: /Admin/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(CreateRoleViewModel model)
@@ -93,20 +93,26 @@ namespace Simply_Gallery.Controllers
         }
 
         //
-        // GET: /Roles/Edit
+        // GET: /Admin/Edit
         public async Task<ActionResult> Edit(string roleId)
         {
             var role = await RoleManager.FindByIdAsync(roleId);
 
             if (role != null)
             {
-                return View(new EditRoleViewModel { Name = role.Name, Description = role.Description });
+                return View(new EditRoleViewModel
+                {
+                    OldName = role.Name,
+                    NewName = role.Name,
+                    OldDescription = role.Description,
+                    NewDescription = role.Description
+                });
             }
             return RedirectToAction("Index");
         }
 
         //
-        // POST: /Roles/Edit
+        // POST: /Admin/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(EditRoleViewModel model)
@@ -116,12 +122,18 @@ namespace Simply_Gallery.Controllers
                 return View(model);
             }
 
-            var role = await RoleManager.FindByNameAsync(model.Name);
+            var role = await RoleManager.FindByNameAsync(model.OldName);
 
             if (role != null)
             {
-                role.Name = model.Name;
-                role.Description = model.Description;
+                if(model.OldName == model.NewName &&
+                    model.OldDescription == model.NewDescription)
+                {
+                    return RedirectToAction("Index");
+                }
+
+                role.Name = model.NewName;
+                role.Description = model.NewDescription;
 
                 var result = await RoleManager.UpdateAsync(role);
 
@@ -137,7 +149,7 @@ namespace Simply_Gallery.Controllers
         }
 
         //
-        // GET: /Roles/Delete
+        // GET: /Admin/Delete
         public async Task<ActionResult> Delete(string roleId)
         {
             var role = await RoleManager.FindByIdAsync(roleId);
@@ -155,7 +167,7 @@ namespace Simply_Gallery.Controllers
         }
 
         //
-        // GET: /Roles/Users
+        // GET: /Admin/Users
         public async Task<ActionResult> Users(string roleId)
         {
             var role = await RoleManager.FindByIdAsync(roleId);

@@ -18,13 +18,19 @@ namespace Simply_Gallery.ViewModels
 
     public class EditRoleViewModel
     {
+        [ScaffoldColumn(false)]
+        public string OldName { get; set; }
+
         [Display(Name = "Название")]
         [StringLength(15, MinimumLength = 3)]
-        public string Name { get; set; }
+        public string NewName { get; set; }
+
+        [ScaffoldColumn(false)]
+        public string OldDescription { get; set; }
 
         [Display(Name = "Описание")]
         [StringLength(30)]
-        public string Description { get; set; }
+        public string NewDescription { get; set; }
     }
 
     public class UsersRoleViewModel
