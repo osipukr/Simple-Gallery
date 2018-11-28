@@ -194,14 +194,19 @@ button::-moz-focus-inner {
     margin-left: 12px; }
 
 .mfp-arrow-left {
-  left: 60px; }
-  .mfp-arrow-left:after, .mfp-arrow-left .mfp-a {
-    content: "Previous"; }
+  left: 60px; 
+}
+
+    .mfp-arrow-left:after, .mfp-arrow-right:after {
+        content: '';
+        width: 60px;
+        height: 60px;
+    }
 
 .mfp-arrow-right {
-  right: 60px; }
-  .mfp-arrow-right:after, .mfp-arrow-right .mfp-a {
-    content: "Next"; }
+  right: 60px; 
+}
+
 
 .mfp-iframe-holder {
   padding-top: 40px;

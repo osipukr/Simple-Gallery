@@ -96,6 +96,11 @@ namespace Simply_Gallery.Controllers
         // GET: /Admin/Edit
         public async Task<ActionResult> Edit(string roleId)
         {
+            if(roleId == null)
+            {
+                return RedirectToAction("Index", new { message = RoleMessageId.Error });
+            }
+
             var role = await RoleManager.FindByIdAsync(roleId);
 
             if (role != null)
@@ -108,6 +113,7 @@ namespace Simply_Gallery.Controllers
                     NewDescription = role.Description
                 });
             }
+
             return RedirectToAction("Index");
         }
 
@@ -152,6 +158,11 @@ namespace Simply_Gallery.Controllers
         // GET: /Admin/Delete
         public async Task<ActionResult> Delete(string roleId)
         {
+            if (roleId == null)
+            {
+                return RedirectToAction("Index", new { message = RoleMessageId.Error });
+            }
+
             var role = await RoleManager.FindByIdAsync(roleId);
 
             if (role != null)
@@ -163,6 +174,7 @@ namespace Simply_Gallery.Controllers
                     AddErrors(result);
                 }
             }
+
             return RedirectToAction("Index", new { message = RoleMessageId.RemoveRoleSuccess });
         }
 
@@ -170,6 +182,11 @@ namespace Simply_Gallery.Controllers
         // GET: /Admin/Users
         public async Task<ActionResult> Users(string roleId)
         {
+            if (roleId == null)
+            {
+                return RedirectToAction("Index", new { message = RoleMessageId.Error });
+            }
+
             var role = await RoleManager.FindByIdAsync(roleId);
 
             if (role == null)

@@ -47,7 +47,7 @@ else
     <style>
         .image-source-link {
             color: #98C3D1;
-            font-size: 20px;
+            font-size: 17px;
         }
 
         .mfp-with-zoom .mfp-container,
@@ -88,15 +88,22 @@ else
                 closeOnContentClick: false,
                 closeBtnInside: false,
                 mainClass: 'mfp-with-zoom mfp-img-mobile',
+                tClose: 'Закрыть',
+                tLoading: 'Подождите пожалуйста, идёт загрузка...',
                 image: {
                     verticalFit: true,
                     titleSrc: function (item) {
-                        return '<a class="image-source-link" href="' + item.el.attr('href') + '" target="_blank">original</a> ' +
-                            ' <a class="image-source-link" href="/Profile/DeletePhoto?' + item.el.attr('href').split('?')[1] + '" >remove</a>';
+                        return '<a class="image-source-link" href="' + item.el.attr('href') + '" target="_blank">оригинал</a> ' + ' | ' +
+                            ' <a class="image-source-link" href="/Profile/DeletePhoto?' + item.el.attr('href').split('?')[1] + '" >удалить</a>';
                     }
                 },
                 gallery: {
-                    enabled: true
+                    enabled: true,
+                    tPrev: 'Предыдущая',
+                    tNext: 'Следующая',
+                    tCounter: '<span class="mfp-counter">%curr% из %total%</span>',
+                    tError: '<a href="%url%">Данное изображение</a> не удалось загрузить...',
+                    arrowMarkup: '<button title="%title%" class="mfp-arrow mfp-arrow-%dir%"><i class="fas fa-arrow-%dir%"></i></button>',
                 },
                 zoom: {
                     enabled: true,
