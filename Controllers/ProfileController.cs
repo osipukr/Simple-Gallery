@@ -35,10 +35,15 @@ namespace Simply_Gallery.Controllers
 
         //
         // GET: /Profile/Index
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(AlbumMessageId? message)
         {
-            var albums = await _albumService.GetAlbumsAsync(User.Identity.GetUserId());
-            return View(albums);
+            ViewBag.StatusMessage =
+                message == AlbumMessageId.ChangeAlbumSuccess ? "Альбом успешно изменён"
+                : message == AlbumMessageId.RemoveAlbumSuccess ? "Альбом успешно удалён"
+                : message == AlbumMessageId.Error ? "Произошла ошибка"
+                : "";
+
+            return View(await _albumService.GetAlbumsAsync(User.Identity.GetUserId()));
         }
 
         [ChildActionOnly]
@@ -163,7 +168,7 @@ namespace Simply_Gallery.Controllers
                 await _albumService.UpdateAlbumAsync(album);
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { message = AlbumMessageId.ChangeAlbumSuccess });
         }
 
         //
@@ -180,7 +185,7 @@ namespace Simply_Gallery.Controllers
                 }
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { message = AlbumMessageId.RemoveAlbumSuccess });
         }
 
         //
@@ -315,16 +320,16 @@ namespace Simply_Gallery.Controllers
 
         //
         // GET: /Profile/Setting
-        public async Task<ActionResult> Setting(string act, ProfileMessageId? message)
+        public async Task<ActionResult> Setting(string act, SettingMessageId? message)
         {
             ViewBag.StatusMessage =
-                message == ProfileMessageId.AddPhoneSuccess ? "Номер телефона успешно добавлен"
-                : message == ProfileMessageId.RemovePhoneSuccess ? "Номер телефона был удалён"
-                : message == ProfileMessageId.ChangePasswordSuccess ? "Пароль успешно изменен"
-                : message == ProfileMessageId.ChangeEmailSuccess ? "Почта успешно изменена"
-                : message == ProfileMessageId.ChangeNameSuccess ? "Имя успешно изменено"
-                : message == ProfileMessageId.ChangeAvatarSuccess ? "Фотография успешно изменена"
-                : message == ProfileMessageId.Error ? "Произошла ошибка"
+                message == SettingMessageId.AddPhoneSuccess ? "Номер телефона успешно добавлен"
+                : message == SettingMessageId.RemovePhoneSuccess ? "Номер телефона был удалён"
+                : message == SettingMessageId.ChangePasswordSuccess ? "Пароль успешно изменен"
+                : message == SettingMessageId.ChangeEmailSuccess ? "Почта успешно изменена"
+                : message == SettingMessageId.ChangeNameSuccess ? "Имя успешно изменено"
+                : message == SettingMessageId.ChangeAvatarSuccess ? "Фотография успешно изменена"
+                : message == SettingMessageId.Error ? "Произошла ошибка"
                 : "";
             return
                 act == "changeName" ? PartialView("Setting/_ChangeName", new ChangeNameViewModel { CurrentUserName = User.Identity.GetUserName() })
@@ -355,7 +360,7 @@ namespace Simply_Gallery.Controllers
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 }
 
-                return JavaScript(string.Format("location.href='{0}'", Url.Action("Setting", new { message = ProfileMessageId.ChangePasswordSuccess })));
+                return JavaScript(string.Format("location.href='{0}'", Url.Action("Setting", new { message = SettingMessageId.ChangePasswordSuccess })));
             }
 
             AddErrors(result);
@@ -395,7 +400,7 @@ namespace Simply_Gallery.Controllers
                 if(result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                    return JavaScript(string.Format("location.href='{0}'", Url.Action("Setting", new { message = ProfileMessageId.ChangeNameSuccess })));
+                    return JavaScript(string.Format("location.href='{0}'", Url.Action("Setting", new { message = SettingMessageId.ChangeNameSuccess })));
                 }
 
                 AddErrors(result);
@@ -431,7 +436,7 @@ namespace Simply_Gallery.Controllers
                 if(result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                    return JavaScript(string.Format("location.href='{0}'", Url.Action("Setting", new { message = ProfileMessageId.ChangeEmailSuccess })));
+                    return JavaScript(string.Format("location.href='{0}'", Url.Action("Setting", new { message = SettingMessageId.ChangeEmailSuccess })));
                 }
 
                 AddErrors(result);
@@ -498,7 +503,7 @@ namespace Simply_Gallery.Controllers
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                    return JavaScript(string.Format("location.href='{0}'", Url.Action("Setting", new { message = ProfileMessageId.ChangeAvatarSuccess })));
+                    return JavaScript(string.Format("location.href='{0}'", Url.Action("Setting", new { message = SettingMessageId.ChangeAvatarSuccess })));
                 }
 
                 AddErrors(result);
@@ -517,7 +522,14 @@ namespace Simply_Gallery.Controllers
             }
         }
 
-        public enum ProfileMessageId
+        public enum AlbumMessageId
+        {
+            ChangeAlbumSuccess,
+            RemoveAlbumSuccess,
+            Error
+        }
+
+        public enum SettingMessageId
         {
             AddPhoneSuccess,
             RemovePhoneSuccess,
