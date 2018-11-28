@@ -995,6 +995,9 @@ if (typeof jQuery === 'undefined') {
 
       that.$element
         .show()
+        .css('display', 'flex')
+        .css('justify-content', 'center')
+        .css('align-items', 'center')
         .scrollTop(0)
 
       that.adjustDialog()
@@ -1152,19 +1155,19 @@ if (typeof jQuery === 'undefined') {
   }
 
   Modal.prototype.adjustDialog = function () {
-    var modalIsOverflowing = this.$element[0].scrollHeight > document.documentElement.clientHeight
+    //var modalIsOverflowing = this.$element[0].scrollHeight > document.documentElement.clientHeight
 
-    this.$element.css({
-      paddingLeft:  !this.bodyIsOverflowing && modalIsOverflowing ? this.scrollbarWidth : '',
-      paddingRight: this.bodyIsOverflowing && !modalIsOverflowing ? this.scrollbarWidth : ''
-    })
+    //this.$element.css({
+    //  paddingLeft:  !this.bodyIsOverflowing && modalIsOverflowing ? this.scrollbarWidth : '',
+    //  paddingRight: this.bodyIsOverflowing && !modalIsOverflowing ? this.scrollbarWidth : ''
+    //})
   }
 
   Modal.prototype.resetAdjustments = function () {
-    this.$element.css({
-      paddingLeft: '',
-      paddingRight: ''
-    })
+    //this.$element.css({
+    //  paddingLeft: '',
+    //  paddingRight: ''
+    //})
   }
 
   Modal.prototype.checkScrollbar = function () {
@@ -1451,7 +1454,7 @@ if (typeof jQuery === 'undefined') {
 
       $tip
         .detach()
-        .css({ top: 0, left: 0, display: 'block' })
+        .css({ top: 0, left: 0, display: 'flex' })
         .addClass(placement)
         .data('bs.' + this.type, this)
 
@@ -1621,10 +1624,10 @@ if (typeof jQuery === 'undefined') {
   }
 
   Tooltip.prototype.getCalculatedOffset = function (placement, pos, actualWidth, actualHeight) {
-    return placement == 'bottom' ? { top: pos.top + pos.height,   left: pos.left + pos.width / 2 - actualWidth / 2 } :
-           placement == 'top'    ? { top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2 } :
-           placement == 'left'   ? { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth } :
-        /* placement == 'right' */ { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width }
+      return placement == 'bottom' ? { top: pos.top + pos.height, left: pos.left + pos.width / 2 - actualWidth / 2 } :
+          placement == 'top' ? { top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2 } :
+              placement == 'left' ? { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth } :
+                  placement == 'right' ? { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width } : 0;
 
   }
 

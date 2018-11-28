@@ -47,3 +47,9 @@
 				});
 
 })(jQuery);
+
+function deleteAction(action) {
+    $('#delete').click(function () {
+        location.href = action;
+    });
+}

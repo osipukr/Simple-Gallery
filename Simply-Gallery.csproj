@@ -288,6 +288,7 @@
     <Content Include="Views\Profile\Setting\_ChangeName.cshtml" />
     <Content Include="Views\Profile\Setting\_Index.cshtml" />
     <Content Include="Views\Profile\EditAlbum.cshtml" />
+    <Content Include="Views\Profile\Shared\_Delete.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

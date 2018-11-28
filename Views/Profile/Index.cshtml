@@ -3,6 +3,7 @@
 @{
     Layout = "~/Views/Profile/Shared/_Layout.cshtml";
     ViewBag.Title = "Мои альбомы";
+    ViewBag.TitleDelete = "альбом";
 }
 
 <div class="title">
@@ -14,7 +15,7 @@
 {
     <div class="album-null">
         <p>У вас пока нету альбомов ;(</p>
-        <img src="~/Content/profile/img/empty-album.jpg" alt=":(" title="Альбомов нет" />
+        <img src="@Url.Content("~/Content/profile/img/empty-album.jpg")" alt=":(" title="Альбомов нет" />
     </div>
 }
 else
@@ -26,18 +27,17 @@ else
 
                 <div class="album-image">
                     <a href="@Url.Action("Album", new { albumId = album.Id })">
-                        <img src="~/Content/profile/img/album-image.png" alt="Фото альбома" title="Фото альбома">
+                        <img src="@Url.Content("~/Content/profile/img/album-image.png")" alt="Фото альбома" title="Фото альбома">
                     </a>
                 </div>
 
                 <div class="album-name" style="cursor:default">
                     <h3 title="Название альбома">@album.Name</h3>
                 </div>
-
                 <div class="album-butt">
                     <a href="@Url.Action("Album", new { albumId = album.Id })" title="Перейти к альбому"><i class="far fa-arrow-alt-circle-right"></i></a>
                     <a href="@Url.Action("EditAlbum", new { albumId = album.Id })" title="Изменить альбом"><i class="far fa-edit"></i></a>
-                    <a href="@Url.Action("DeleteAlbum", new { albumId = album.Id })" title="Удалить альбом"><i class="far fa-trash-alt"></i></a>
+                    <a onclick="deleteAction('@Url.Action("DeleteAlbum", new { albumId = album.Id })')" data-toggle="modal" data-target="#deleteModal" title="Удалить альбом" style="cursor:pointer"><i class="far fa-trash-alt"></i></a>
                 </div>
 
             </div>
@@ -50,3 +50,5 @@ else
     <p>Хотите создать новый альбом ?</p>
     <button class="btn btn-primary" onclick="location.href='@Url.Action("AddAlbum")'">Создать</button>
 </div>
+
+@Html.Partial("Shared/_Delete")

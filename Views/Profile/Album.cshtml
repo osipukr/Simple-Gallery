@@ -2,6 +2,7 @@
 @model Album
 @{
     ViewBag.Title = Model.Name;
+    ViewBag.TitleDelete = "фотографию";
     Layout = "~/Views/Profile/Shared/_Layout.cshtml";
 }
 
@@ -42,8 +43,8 @@ else
 </div>
 
 @section Style {
+
     <link href="@Url.Content("~/Content/home/vendor/magnific-popup/magnific-popup.css")" rel="stylesheet" type="text/css" />
-    
     <style>
         .image-source-link {
             color: #98C3D1;
@@ -74,12 +75,11 @@ else
         }
     </style>
 }
-   
 
 @section Script {
+
     <script src="@Url.Content("~/Content/home/vendor/magnific-popup/jquery.magnific-popup.min.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Content/home/js/components/maginific-popup.min.js")" type="text/javascript"></script>
-    
     <script>
         $(document).ready(function () {
             $('.zoom-gallery').magnificPopup({

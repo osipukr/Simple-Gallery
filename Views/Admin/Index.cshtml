@@ -3,6 +3,7 @@
 @{
     Layout = "~/Views/Profile/Shared/_Layout.cshtml";
     ViewBag.Title = "Список ролей";
+    ViewBag.TitleDelete = "роль";
 }
 
 <h2>@ViewBag.Title </h2>
@@ -27,7 +28,7 @@
                 <td>
                     <a href="@Url.Action("Edit", new { roleId = item.Id })" title="Изменить роль"><i class="icons fas fa-edit"></i></a>
                     <a href="@Url.Action("Users", new { roleId = item.Id })" title="Список пользователей"><i class="icons fas fa-users"></i></a>
-                    <a href="@Url.Action("Delete", new { roleId = item.Id })" title="Удалить роль"><i class="icons fas fa-trash-alt"></i></a>
+                    <a onclick="deleteAction('@Url.Action("Delete", new { roleId = item.Id })')" data-toggle="modal" data-target="#deleteModal" title="Удалить роль" style="cursor:pointer"><i class="far fa-trash-alt"></i></a>
                 </td>
             </tr>
         }
@@ -39,3 +40,5 @@
     <p>Хотите добавить новую роль?</p>
     <button class="btn btn-primary" onclick="location.href='@Url.Action("Create")'">Добавить</button>
 </div>
+
+@Html.Partial("~/Views/Profile/Shared/_Delete.cshtml")
