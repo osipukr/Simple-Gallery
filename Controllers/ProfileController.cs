@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -186,6 +187,21 @@ namespace Simply_Gallery.Controllers
             }
 
             return RedirectToAction("Index", new { message = AlbumMessageId.RemoveAlbumSuccess });
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> SearchAlbum()
+        {
+            var requests = Request.Params["Search"];
+            var albums = await _albumService.GetAlbumsAsync(User.Identity.GetUserId());
+
+            if(!string.IsNullOrEmpty(requests))
+            {
+                //var word = requests.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                return PartialView("Shared/_Albums", albums.Where(x => x.Name.Contains(requests)).Select(x => x));
+            }
+
+            return PartialView("Shared/_Albums", albums);
         }
 
         //

@@ -1,0 +1,5 @@
+﻿@using (Ajax.BeginForm("SearchAlbum", null, new AjaxOptions { UpdateTargetId = "album-conteiner" }, new { @class = "form form-inline", style = "text-align:right" }))
+{
+    <input class="form-control" type="search" name="Search" placeholder="Поиск" aria-label="Search">
+    <button class="btn btn-outline-success" type="submit">Найти</button>
+}
