@@ -1,0 +1,47 @@
+﻿@{ 
+    ViewBag.MainTitle = "Simply Gallery";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.MainTitle - @ViewBag.Title</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link href="@Url.Content("~/Content/home/vendor/bootstrap/css/bootstrap.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/home/css/animate.min.css")" rel="stylesheet" type="text/css"> <!-- cross-browser animations -->
+    <link href="@Url.Content("~/Content/home/vendor/swiper/css/swiper.min.css")" rel="stylesheet" type="text/css" /> <!-- mobile touch slider -->
+    <link href="@Url.Content("~/Content/home/vendor/magnific-popup/magnific-popup.min.css")" rel="stylesheet" type="text/css" /> <!-- for image gallery -->
+    <link href="@Url.Content("~/Content/home/css/layout.min.css")" rel="stylesheet" type="text/css" />  <!-- layout style -->
+
+</head>
+<body id="home" data-spy="scroll" data-target=".header">
+
+    <!-- Render body -->
+    @RenderBody()
+
+    <!-- Back To Top -->
+    <a href="javascript:void(0);" class="js-back-to-top back-to-top">Вверх</a>
+
+    <script src="@Url.Content("~/Content/home/vendor/jquery.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/home/vendor/jquery-migrate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/home/vendor/bootstrap/js/bootstrap.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Content/home/vendor/jquery.back-to-top.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/home/vendor/jquery.wow.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/home/vendor/swiper/js/swiper.jquery.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/home/vendor/magnific-popup/jquery.magnific-popup.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/home/vendor/masonry/jquery.masonry.pkgd.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/home/vendor/masonry/imagesloaded.pkgd.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/home/vendor/jquery.unobtrusive-ajax.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/home/vendor/jquery.validate.min.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Content/home/js/layout.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/home/js/components/wow.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/home/js/components/swiper.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/home/js/components/maginific-popup.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/home/js/components/masonry.min.js")" type="text/javascript"></script>
+
+</body>
+</html>

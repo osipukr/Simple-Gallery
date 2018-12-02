@@ -1,0 +1,44 @@
+﻿@{
+    Layout = "Shared/_Layout.cshtml";
+    ViewBag.Title = "Главная";
+}
+
+<!-- Modal forms -->
+<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="loginModalTitle" aria-hidden="true">
+    @{ 
+        Html.RenderPartial("Shared/_Login");
+    }
+</div>
+
+<div class="modal fade" id="register" tabindex="-1" role="dialog" aria-labelledby="registerModalTitle" aria-hidden="true">
+    @{
+        Html.RenderPartial("Shared/_Register");
+    }
+</div>
+<!-- End Modal forms -->
+
+@{
+    <!-- Header section -->
+    Html.RenderPartial("HomeContent/_Header");
+    <!-- End Header section -->
+
+    <!-- About section -->
+    Html.RenderPartial("HomeContent/_About");
+    <!-- End About section -->
+
+    <!-- Banner section -->
+    Html.RenderPartial("HomeContent/_Banner");
+    <!-- End Banner section -->
+
+    <!-- Gallery section -->
+    Html.RenderPartial("HomeContent/_Gallery");
+    <!-- End Gallery section -->
+
+    <!-- Contact section -->
+    Html.RenderPartial("HomeContent/_Contact");
+    <!-- End Contact section -->
+
+    <!-- Footer section -->
+    Html.RenderPartial("HomeContent/_Footer");
+    <!-- End Footer section -->
+}

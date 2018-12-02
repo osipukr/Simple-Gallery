@@ -1,0 +1,44 @@
+﻿@using Simply_Gallery.Models;
+@model IEnumerable<ApplicationRole>
+@{
+    Layout = "~/Views/Profile/Shared/_Layout.cshtml";
+    ViewBag.Title = "Список ролей";
+    ViewBag.TitleDelete = "роль";
+}
+
+<h2>@ViewBag.Title </h2>
+<hr />
+<p class="text-success" style="text-align:left">@TempData["Message"]</p>
+
+<table class="table table-bordered table-hover">
+    <caption>Список всех ролей</caption>
+    <thead style="color:black">
+        <tr>
+            <th>Название</th>
+            <th>Описание</th>
+            <th>Действие</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Description</td>
+                <td>
+                    <a href="@Url.Action("Edit", new { roleId = item.Id })" title="Изменить роль"><i class="icons fas fa-edit"></i></a>
+                    <a href="@Url.Action("Users", new { roleId = item.Id })" title="Список пользователей"><i class="icons fas fa-users"></i></a>
+                    <a onclick="deleteAction('@Url.Action("Delete", new { roleId = item.Id })')" data-toggle="modal" data-target="#deleteModal" title="Удалить роль" style="cursor:pointer"><i class="far fa-trash-alt"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<hr />
+<div class="add">
+    <p>Хотите добавить новую роль?</p>
+    <button class="btn btn-primary" onclick="location.href='@Url.Action("Create")'">Добавить</button>
+</div>
+
+@Html.Partial("~/Views/Profile/Shared/_Delete.cshtml")

@@ -1,0 +1,34 @@
+﻿@using Simply_Gallery.ViewModels
+@model EditAlbumViewModel
+@{
+    Layout = "~/Views/Profile/Shared/_Layout.cshtml";
+    ViewBag.Title = "Редактирование альбома";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+
+@using (Html.BeginForm("EditAlbum", "Profile", FormMethod.Post, new { @class = "form form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+
+    @Html.HiddenFor(m => m.OldName)
+    @Html.HiddenFor(m => m.OldDescription)
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.NewName, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.NewName, null, new { @class = "form-control", placeholder = "Введите название альбома" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.NewDescription, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.NewDescription, null, new { @class = "form-control", placeholder = "Введите описание альбома" })
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Изменить" class="btn btn-primary" />
+    </div>
+}
+
+<button class="btn btn-primary" onclick="location.href='@Url.Action("Index")'" style="float:left">Вернуться назад</button>

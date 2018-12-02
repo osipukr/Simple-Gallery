@@ -1,0 +1,43 @@
+﻿@using Simply_Gallery.Models.Gallery;
+@model IEnumerable<Album>
+@{
+    Layout = "~/Views/Profile/Shared/_Layout.cshtml";
+
+    ViewBag.Title = "Мои альбомы";
+    ViewBag.TitleDelete = "альбом";
+}
+
+<div class="title">
+    <h2>Список всех альбомов</h2>
+</div>
+
+<div class="nav-action">
+    @Html.Partial("Shared/_Search")
+
+    <div class="dropdown show">
+        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Сортировка <i class="fas fa-chevron-circle-down"></i>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <a class="dropdown-item" href="#">По дате создания (сначала старые)</a>
+            <a class="dropdown-item" href="#">По дате создания (сначала новые)</a>
+            <a class="dropdown-item" href="#">По имени (по алфавиту)</a>
+        </div>
+    </div>
+</div>
+
+<hr />
+
+<p class="text-success" style="text-align:left">@TempData["Message"]</p>
+
+<div id="album-conteiner">
+    @Html.Partial("Shared/_Albums", Model)
+</div>
+
+<hr />
+<div class="add">
+    <p>Хотите создать новый альбом ?</p>
+    <button class="btn btn-primary" onclick="location.href='@Url.Action("AddAlbum")'">Создать</button>
+</div>
+
+@Html.Partial("Shared/_Delete")

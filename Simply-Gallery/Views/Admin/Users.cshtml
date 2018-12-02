@@ -1,0 +1,38 @@
+﻿@using Simply_Gallery.ViewModels
+@model UsersRoleViewModel
+@{
+    Layout = "~/Views/Profile/Shared/_Layout.cshtml";
+    ViewBag.Title = "Список пользователей";
+}
+
+<h2>@ViewBag.Title с ролью "@Model.Name"</h2>
+<hr />
+
+<table class="table table-bordered table-hover">
+    <caption>Список пользователей</caption>
+    <thead style="color:black">
+        <tr>
+            <th>Почта</th>
+            <th>Имя пользователя</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Users.Count == 0)
+        {
+            <tr><td colspan="2">Список пользователей пуст</td></tr>
+        }
+        else
+        {
+            foreach (var item in Model.Users)
+            {
+                <tr>
+                    <td>@item.Email</td>
+                    <td>@item.UserName</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<hr />
+<button class="btn btn-primary" onclick="location.href='@Url.Action("Index")'" style="float:left">Вернуться назад</button>

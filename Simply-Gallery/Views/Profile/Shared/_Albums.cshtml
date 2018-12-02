@@ -1,0 +1,55 @@
+﻿@using Simply_Gallery.Models.Gallery;
+@model IEnumerable<Album>
+
+@if (Model.Count() == 0)
+{
+    <div class="album-null">
+        @if(!IsAjax)
+        {
+            <p>У вас пока нету альбомов ;(</p>
+        }
+        else
+        {
+            <p>Таких альбомов не найдено ;(</p>
+        }
+        <img src="@Url.Content("~/Content/profile/img/empty-album.jpg")" alt=":(" title="Альбомов нет" />
+    </div>
+}
+else
+{
+    <div id="albums" class="albums" style=@(Model.Count() < 3 ? "justify-content:space-around" : "")>
+        @foreach (var album in Model)
+        {
+            <div class="album">
+
+                <div class="album-image">
+                    <a href="@Url.Action("Album", new { albumId = album.Id })">
+                        <img src="@Url.Content("~/Content/profile/img/album-image.png")" alt="Фото альбома" title="Фото альбома">
+                    </a>
+                </div>
+
+                <div class="album-name" style="cursor:default">
+                    <h3 title="Название альбома">@album.Name</h3>
+                </div>
+
+                <div class="album-description">
+                    <p title="Описание альбома">@album.Description</p>
+                </div>
+
+                <div class="album-butt">
+                    <a href="@Url.Action("Album", new { albumId = album.Id })" data-toggle="tooltip" data-placement="top" title="Перейти к альбому"><i class="far fa-arrow-alt-circle-right"></i></a>
+                    <a href="@Url.Action("EditAlbum", new { albumId = album.Id })" data-toggle="tooltip" data-placement="top" title="Изменить альбом"><i class="far fa-edit"></i></a>
+                    <a onclick="deleteAction('@Url.Action("DeleteAlbum", new { albumId = album.Id })')" data-toggle="modal" data-target="#deleteModal" title="Удалить альбом" style="cursor:pointer"><i class="far fa-trash-alt"></i></a>
+                </div>
+
+                @if(album.Date != null)
+                {
+                    <div class="album-dateCreate">
+                        <small>@album.Date.Value.ToLongDateString()</small>
+                    </div>
+                }
+
+            </div>
+        }
+    </div>
+}

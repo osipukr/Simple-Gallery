@@ -1,0 +1,126 @@
+﻿@using Simply_Gallery.Models.Gallery
+@model Album
+@{
+    ViewBag.Title = Model.Name;
+    Layout = "~/Views/Profile/Shared/_Layout.cshtml";
+}
+
+<div class="title">
+    <h2>Список всех фотографий альбома</h2>
+</div>
+@TempData["mess"]
+<hr />
+
+@if (Model.Photos.Count() == 0)
+{
+    <div class="album-null">
+        <p>@string.Format("В альбоме '{0}' нету фотографий", Model.Name)</p>
+        <img src="~/Content/profile/img/empty-album.jpg" alt=":(" title="Фоток нет" />
+    </div>
+}
+else
+{
+    <div class="photos">
+        <div class="zoom-gallery">
+            @foreach (var photo in Model.Photos)
+            {
+                <a href="@Url.Action("GetPhoto", new { photoId = photo.Id })" class="photo-link">
+                    <img src="@Url.Action("GetPhoto", new { photoId = photo.Id })">
+                </a>
+            }
+        </div>
+    </div>
+}
+
+<hr />
+<div class="add">
+    <p>Хотите добавить новую фотографию ?</p>
+    <button class="btn btn-primary" onclick="location.href='@Url.Action("AddPhoto", new { albumId = Model.Id })'">Добавить</button>
+</div>
+
+<button class="btn btn-primary" onclick="location.href='@Url.Action("Index")'">Вернуться назад</button>
+
+@section Style {
+
+    <link href="@Url.Content("~/Content/home/vendor/magnific-popup/magnific-popup.css")" rel="stylesheet" type="text/css" />
+    <style>
+        .zoom-gallery {
+            -moz-transition: 0.6s;
+            -o-transition: 0.6s;
+            -webkit-transition: 0.6s;
+            transition: 0.6s;
+        }
+        .image-source-link {
+            color: #98C3D1;
+            font-size: 17px;
+        }
+
+        .mfp-with-zoom .mfp-container,
+        .mfp-with-zoom.mfp-bg {
+            opacity: 0;
+            -webkit-backface-visibility: hidden;
+            -webkit-transition: all 0.4s ease-out;
+            -moz-transition: all 0.4s ease-out;
+            -o-transition: all 0.4s ease-out;
+            transition: all 0.4s ease-out;
+        }
+
+        .mfp-with-zoom.mfp-ready .mfp-container {
+            opacity: 1;
+        }
+
+        .mfp-with-zoom.mfp-ready.mfp-bg {
+            opacity: 0.8;
+        }
+
+        .mfp-with-zoom.mfp-removing .mfp-container,
+        .mfp-with-zoom.mfp-removing.mfp-bg {
+            opacity: 0;
+        }
+    </style>
+}
+
+@section Script {
+
+    <script src="@Url.Content("~/Content/home/vendor/magnific-popup/jquery.magnific-popup.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/home/js/components/maginific-popup.min.js")" type="text/javascript"></script>
+    <script>
+        $(document).ready(function () {
+            $('.zoom-gallery').magnificPopup({
+                delegate: 'a',
+                type: 'image',
+                closeOnContentClick: false,
+                closeBtnInside: false,
+                mainClass: 'mfp-with-zoom mfp-img-mobile',
+                tClose: 'Закрыть',
+                
+                image: {
+                    verticalFit: true,
+                    tLoading: 'Подождите пожалуйста, идёт загрузка...',
+                    titleSrc: function (item) {
+                        return '<a class="image-source-link" href="' + item.el.attr('href') + '" target="_blank">оригинал</a> ' + ' | ' +
+                            ' <a class="image-source-link" href="/Profile/DeletePhoto?' + item.el.attr('href').split('?')[1] + '" >удалить</a>';
+                    }
+                },
+                gallery: {
+                    enabled: true,
+                    preload: [0, 2],
+                    navigateByImgClick: true,
+                    tPrev: 'Предыдущая',
+                    tNext: 'Следующая',
+                    tCounter: '<span class="mfp-counter">%curr% из %total%</span>',
+                    tError: '<a href="%url%">Данное изображение</a> не удалось загрузить...',
+                    arrowMarkup: '<button title="%title%" class="mfp-arrow mfp-arrow-%dir%"><i class="fas fa-arrow-%dir%"></i></button>',
+                },
+                zoom: {
+                    enabled: true,
+                    duration: 400,
+                    opener: function (element) {
+                        return element.find('img');
+                    }
+                }
+
+            });
+        });
+    </script>
+}
