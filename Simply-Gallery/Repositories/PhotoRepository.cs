@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Simply_Gallery.Interfaces;
 using Simply_Gallery.Models;
@@ -8,71 +10,83 @@ using Simply_Gallery.Models.Gallery;
 
 namespace Simply_Gallery.Repositories
 {
-    public class PhotoRepository : IPhotoRepository
+    public class PhotoRepository : IRepository<Photo>
     {
         public PhotoRepository()
         {
         }
 
-        public async Task<IQueryable<Photo>> GetPhotosAsync(int albumId)
+        public async Task<IQueryable<Photo>> GetAllAsync(Expression<Func<Photo, bool>> predicate)
         {
             var result = new List<Photo>();
 
             using (var applicationContext = new ApplicationContext())
             {
-                result = await applicationContext.Photos.Where(x => x.AlbumId == albumId).ToListAsync();
+                result = await applicationContext.Photos.Where(predicate).ToListAsync();
             }
 
             return result.AsQueryable();
         }
 
-        public async Task<Photo> GetPhotoAsync(int photoId)
+        public async Task<Photo> GetAsync(Expression<Func<Photo, bool>> predicate)
         {
             Photo result = null;
 
             using (var applicationContext = new ApplicationContext())
             {
-                result = await applicationContext.Photos.FirstOrDefaultAsync(x => x.Id == photoId);
+                result = await applicationContext.Photos.FirstOrDefaultAsync(predicate);
             }
 
             return result;
         }
 
-        public async Task<Photo> AddPhotoAsync(Photo photo)
+        public async Task<Photo> AddAsync(Photo item)
         {
             Photo result = null;
 
             using (var applicationContext = new ApplicationContext())
             {
-                result = applicationContext.Photos.Add(photo);
+                result = applicationContext.Photos.Add(item);
                 await applicationContext.SaveChangesAsync();
             }
 
             return result;
         }
 
-        public async Task DeletePhotoAsync(int photoId)
+        public async Task<Photo> UpdateAsync(Photo item)
         {
             using (var applicationContext = new ApplicationContext())
             {
-                var picture = await applicationContext.Photos.FirstOrDefaultAsync(x => x.Id == photoId);
+                applicationContext.Entry(item).State = EntityState.Modified;
 
-                applicationContext.Entry(picture).State = EntityState.Deleted;
+                await applicationContext.SaveChangesAsync();
+            }
+
+            return item;
+        }
+
+        public async Task DeleteAsync(Expression<Func<Photo, bool>> predicate)
+        {
+            using (var applicationContext = new ApplicationContext())
+            {
+                var album = await applicationContext.Photos.FirstOrDefaultAsync(predicate);
+
+                applicationContext.Entry(album).State = EntityState.Deleted;
 
                 await applicationContext.SaveChangesAsync();
             }
         }
 
-        public async Task<Photo> UpdatePhotoAsync(Photo photo)
+        public async Task<bool> IsFindAsync(Expression<Func<Photo, bool>> predicate)
         {
+            bool result;
+
             using (var applicationContext = new ApplicationContext())
             {
-                applicationContext.Entry(photo).State = EntityState.Modified;
-
-                await applicationContext.SaveChangesAsync();
+                result = await applicationContext.Photos.AnyAsync(predicate);
             }
 
-            return photo;
+            return result;
         }
     }
 }

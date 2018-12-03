@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Simply_Gallery.Interfaces;
 using Simply_Gallery.Models;
@@ -8,88 +10,83 @@ using Simply_Gallery.Models.Gallery;
 
 namespace Simply_Gallery.Repositories
 {
-    public class AlbumRepository : IAlbumRepository
+    public class AlbumRepository : IRepository<Album>
     {
-        private readonly IPhotoRepository _photoRepository;
+        private readonly IRepository<Photo> _photoRepository;
 
         public AlbumRepository()
         {
         }
 
-        public AlbumRepository(IPhotoRepository photoRepository)
+        public AlbumRepository(IRepository<Photo> photoRepository)
         {
             _photoRepository = photoRepository;
         }
 
-        public async Task<IQueryable<Album>> GetAlbumsAsync(string userId)
+        public async Task<IQueryable<Album>> GetAllAsync(Expression<Func<Album, bool>> predicate)
         {
             var result = new List<Album>();
 
             using (var applicationContext = new ApplicationContext())
             {
-                result = await applicationContext.Albums.Where(x => x.UserId == userId).ToListAsync();
+                result = await applicationContext.Albums.Where(predicate).ToListAsync();
 
                 foreach (var album in result)
                 {
-                    album.Photos = await _photoRepository.GetPhotosAsync(album.Id);
+                    album.Photos = await _photoRepository.GetAllAsync(x => x.AlbumId == album.Id);
                 }
             }
 
             return result.AsQueryable();
         }
 
-        public async Task<Album> GetAlbumAsync(int albumId)
+        public async Task<Album> GetAsync(Expression<Func<Album, bool>> predicate)
         {
             Album result = null;
 
             using (var applicationContext = new ApplicationContext())
             {
-                result = await applicationContext.Albums.FirstOrDefaultAsync(x => x.Id == albumId);
+                result = await applicationContext.Albums.FirstOrDefaultAsync(predicate);
 
-                if (result != null)
+                if(result != null)
                 {
-                    result.Photos = await _photoRepository.GetPhotosAsync(result.Id);
+                    result.Photos = await _photoRepository.GetAllAsync(x => x.AlbumId == result.Id);
                 }
             }
 
             return result;
         }
 
-        public async Task<Album> GetAlbumAsync(string albumName)
+        public async Task<Album> AddAsync(Album item)
         {
             Album result = null;
 
             using (var applicationContext = new ApplicationContext())
             {
-                result = await applicationContext.Albums.FirstOrDefaultAsync(x => x.Name == albumName);
-
-                if (result != null)
-                {
-                    result.Photos = await _photoRepository.GetPhotosAsync(result.Id);
-                }
-            }
-
-            return result;
-        }
-
-        public async Task<Album> AddAlbumAsync(Album album)
-        {
-            Album result = null;
-
-            using (var applicationContext = new ApplicationContext())
-            {
-                result = applicationContext.Albums.Add(album);
+                result = applicationContext.Albums.Add(item);
                 await applicationContext.SaveChangesAsync();
             }
 
             return result;
         }
 
-        public async Task DeleteAlbumAsync(int albumId)
+        public async Task<Album> UpdateAsync(Album item)
         {
             using (var applicationContext = new ApplicationContext())
             {
-                var album = await applicationContext.Albums.FirstOrDefaultAsync(x => x.Id == albumId);
+                applicationContext.Entry(item).State = EntityState.Modified;
+
+                await applicationContext.SaveChangesAsync();
+            }
+
+            return item;
+        }
+
+        public async Task DeleteAsync(Expression<Func<Album, bool>> predicate)
+        {
+            using (var applicationContext = new ApplicationContext())
+            {
+                var album = await applicationContext.Albums.FirstOrDefaultAsync(predicate);
 
                 applicationContext.Entry(album).State = EntityState.Deleted;
 
@@ -97,16 +94,16 @@ namespace Simply_Gallery.Repositories
             }
         }
 
-        public async Task<Album> UpdateAlbumAsync(Album album)
+        public async Task<bool> IsFindAsync(Expression<Func<Album, bool>> predicate)
         {
+            bool result;
+
             using (var applicationContext = new ApplicationContext())
             {
-                applicationContext.Entry(album).State = EntityState.Modified;
-
-                await applicationContext.SaveChangesAsync();
+                result = await applicationContext.Albums.AnyAsync(predicate);
             }
 
-            return album;
+            return result;
         }
     }
 }

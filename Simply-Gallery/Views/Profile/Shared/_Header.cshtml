@@ -10,12 +10,13 @@
                 <a href="@Url.Action("Setting", new { act = "changeAvatar" })">
                     @if (!Model.UserIsImage)
                     {
-                        <img src="~/Content/profile/img/avatar.jpg" alt="аватар" title="default" />
+                        <img src="@Url.Content("~/Content/profile/img/user.svg")" alt="аватар" title="default" />
                     }
                     else
                     {
-                        <img src="@Url.Action("GetUserPhoto")" alt="аватар" title="@Model.UserName" style="width:80px;height:80px;" />
+                        <img src="@Url.Action("GetUserPhoto")" alt="аватар" title="@Model.UserName" />
                     }
+                    <div class="overlay"></div>
                 </a>
             </div>
             

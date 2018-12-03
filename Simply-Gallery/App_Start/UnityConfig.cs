@@ -6,6 +6,7 @@ using Unity;
 using Unity.AspNet.Mvc;
 using Unity.Injection;
 using Simply_Gallery.Interfaces;
+using Simply_Gallery.Models.Gallery;
 
 namespace Simply_Gallery
 {
@@ -22,9 +23,14 @@ namespace Simply_Gallery
         {
             var container = new UnityContainer();
 
-            container.RegisterType<IPhotoRepository, PhotoRepository>();
+            //container.RegisterType<IPhotoRepository, PhotoRepository>();
+            //container.RegisterType<IPhotoService, PhotoService>();
+            //container.RegisterType<IAlbumRepository, AlbumRepository>();
+            //container.RegisterType<IAlbumService, AlbumService>();
+
+            container.RegisterType<IRepository<Photo>, PhotoRepository>();
             container.RegisterType<IPhotoService, PhotoService>();
-            container.RegisterType<IAlbumRepository, AlbumRepository>();
+            container.RegisterType<IRepository<Album>, AlbumRepository>();
             container.RegisterType<IAlbumService, AlbumService>();
 
             RegisterTypes(container);

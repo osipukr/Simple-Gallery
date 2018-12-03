@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Simply_Gallery.Interfaces;
 using Simply_Gallery.Models.Gallery;
@@ -7,65 +9,41 @@ namespace Simply_Gallery.Services
 {
     public class AlbumService : IAlbumService
     {
-        private readonly IAlbumRepository _albumRepository;
+        private readonly IRepository<Album> _albumRepository;
 
-        public AlbumService(IAlbumRepository albumRepository)
+        public AlbumService(IRepository<Album> albumRepository)
         {
             _albumRepository = albumRepository;
         }
 
-        public async Task<IEnumerable<Album>> GetAlbumsAsync(string userId)
+        public async Task<IEnumerable<Album>> GetAlbumsAsync(Expression<Func<Album, bool>> predicate)
         {
-            return await _albumRepository.GetAlbumsAsync(userId);
+            return await _albumRepository.GetAllAsync(predicate);
         }
 
-        public async Task<Album> GetAlbumAsync(int albumId)
+        public async Task<Album> GetAlbumAsync(Expression<Func<Album, bool>> predicate)
         {
-            return await _albumRepository.GetAlbumAsync(albumId);
-        }
-
-        public async Task<Album> GetAlbumAsync(int albumId, string userId)
-        {
-            var album = await GetAlbumAsync(albumId);
-
-            if (album != null)
-            {
-                return album.UserId == userId ? album : null;
-            }
-
-            return null;
-        }
-
-        public async Task<Album> GetAlbumAsync(string albumName)
-        {
-            return await _albumRepository.GetAlbumAsync(albumName);
-        }
-
-        public async Task<Album> GetAlbumAsync(string albumName, string userId)
-        {
-            var album = await GetAlbumAsync(albumName);
-
-            if (album != null)
-            {
-                return album.UserId == userId ? album : null;
-            }
-
-            return null;
+            return await _albumRepository.GetAsync(predicate);
         }
 
         public async Task<Album> AddAlbumAsync(Album album)
         {
-            return await _albumRepository.AddAlbumAsync(album);
+            return await _albumRepository.AddAsync(album);
         }
 
-        public async Task DeleteAlbumAsync(int albumId)
+        public async Task DeleteAlbumAsync(Expression<Func<Album, bool>> predicate)
         {
-            await _albumRepository.DeleteAlbumAsync(albumId);
+            await _albumRepository.DeleteAsync(predicate);
         }
 
         public async Task<Album> UpdateAlbumAsync(Album album)
         {
-            return await _albumRepository.UpdateAlbumAsync(album);
+            return await _albumRepository.UpdateAsync(album);
+        }
+
+        public async Task<bool> IsAlbumFindAsync(Expression<Func<Album, bool>> predicate)
+        {
+            return await _albumRepository.IsFindAsync(predicate);
         }
     }
 }
