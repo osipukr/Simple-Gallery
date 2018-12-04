@@ -10,11 +10,11 @@
                 <a href="@Url.Action("Setting", new { act = "changeAvatar" })">
                     @if (!Model.UserIsImage)
                     {
-                        <img src="@Url.Content("~/Content/profile/img/user.svg")" alt="аватар" title="default" />
+                        <img class="lazy" data-original="@Url.Content("~/Content/profile/img/user.svg")" alt="аватар" title="default" />
                     }
                     else
                     {
-                        <img src="@Url.Action("GetUserPhoto")" alt="аватар" title="@Model.UserName" />
+                        <img class="lazy" data-original="@Url.Action("GetUserPhoto")" alt="аватар" title="@Model.UserName" />
                     }
                     <div class="overlay"></div>
                 </a>
@@ -44,7 +44,7 @@
                 {
                     @Html.AntiForgeryToken()
                     <li>
-                        <a href="javascript:void(0);" onclick="javascript:document.getElementById('logOutForm').submit()"><i class="icon fas fa-sign-out-alt">Выход</i></a>
+                        <a href="javascript:void(0);" onclick="logOut()"><i class="icon fas fa-sign-out-alt">Выход</i></a>
                     </li>
                 }
             </ul>

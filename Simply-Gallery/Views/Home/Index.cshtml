@@ -5,15 +5,11 @@
 
 <!-- Modal forms -->
 <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="loginModalTitle" aria-hidden="true">
-    @{ 
-        Html.RenderPartial("Shared/_Login");
-    }
+    @Html.Partial("Shared/_Login")
 </div>
 
 <div class="modal fade" id="register" tabindex="-1" role="dialog" aria-labelledby="registerModalTitle" aria-hidden="true">
-    @{
-        Html.RenderPartial("Shared/_Register");
-    }
+    @Html.Partial("Shared/_Register")
 </div>
 <!-- End Modal forms -->
 

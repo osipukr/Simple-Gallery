@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col-sm-4 sm-margin-b-50" style="padding:10px">
                 <div class="margin-b-20">
-                    <img class="img-responsive wow fadeIn" src="~/Content/home/img/about/01.jpg" alt="Изображение рабочей среды" title="Рабочая среда" data-wow-duration=".3" data-wow-delay=".1s">
+                    <img class="img-responsive wow fadeIn" src="@Url.Content("~/Content/home/img/about/01.jpg")" alt="Изображение рабочей среды" title="Рабочая среда" data-wow-duration=".3" data-wow-delay=".1s">
                 </div>
                 <h4>Рабочая среда<span class="text-uppercase margin-l-20">Управление</span></h4>
                 <p>
@@ -19,7 +19,7 @@
 
             <div class="col-sm-4 sm-margin-b-50" style="padding:10px">
                 <div class="margin-b-20">
-                    <img class="img-responsive wow fadeIn" src="~/Content/home/img/about/02.jpg" alt="Изображение минимализма разработки" title="Минимализм" data-wow-duration=".3" data-wow-delay=".2s">
+                    <img class="img-responsive wow fadeIn" src="@Url.Content("~/Content/home/img/about/02.jpg")" alt="Изображение минимализма разработки" title="Минимализм" data-wow-duration=".3" data-wow-delay=".2s">
                 </div>
                 <h4>Минимализм<span class="text-uppercase margin-l-20">Разработка</span></h4>
                 <p>Возможность создания нескольких галерей, сортировки изображений удобным для Вас способом, удаления, а так же различных других манипуляций с Вашими изображениями.</p>
@@ -27,7 +27,7 @@
 
             <div class="col-sm-4 sm-margin-b-50" style="padding:10px">
                 <div class="margin-b-20">
-                    <img class="img-responsive wow fadeIn" src="~/Content/home/img/about/03.jpg" alt="Изображениe удобства дизайна" title="Удобство" data-wow-duration=".3" data-wow-delay=".3s">
+                    <img class="img-responsive wow fadeIn" src="@Url.Content("~/Content/home/img/about/03.jpg")" alt="Изображениe удобства дизайна" title="Удобство" data-wow-duration=".3" data-wow-delay=".3s">
                 </div>
                 <h4>Удобство<span class="text-uppercase margin-l-20">Дизайн</span></h4>
                 <p>
@@ -40,10 +40,10 @@
     <div class="container-full-width">
         <div class="row row-space-2">
             <div class="col-sm-6 sm-margin-b-4">
-                <img class="img-responsive margin-l-auto" src="~/Content/home/img/about/01.jpg" alt="Изображение рабочей среды">
+                <img class="img-responsive margin-l-auto" src="@Url.Content("~/Content/home/img/about/01.jpg")" alt="Изображение рабочей среды">
             </div>
-            <div class="col-sm-6">
-                <img class="img-responsive" src="~/Content/home/img/about/03.jpg" alt="Изображениe удобства дизайна">
+            <div class="col-sm-6 lazy">
+                <img class="img-responsive" src="@Url.Content("~/Content/home/img/about/03.jpg")" alt="Изображениe удобства дизайна">
             </div>
         </div>
     </div>

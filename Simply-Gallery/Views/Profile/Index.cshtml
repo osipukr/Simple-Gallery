@@ -13,6 +13,11 @@
 
 @Html.Partial("Shared/_AlbumAction")
 
+<div class="add">
+    <p>Хотите создать новый альбом ?</p>
+    <button class="btn btn-primary" onclick="myLocation('@Url.Action("AddAlbum")')">Создать</button>
+</div>
+
 <hr />
 
 <p class="text-success" style="text-align:left">@TempData["Message"]</p>
@@ -20,18 +25,5 @@
 @Html.Partial("Shared/_Albums", Model)
 
 <hr />
-<div class="add">
-    <p>Хотите создать новый альбом ?</p>
-    <button class="btn btn-primary" onclick="location.href='@Url.Action("AddAlbum")'">Создать</button>
-</div>
 
 @Html.Partial("Shared/_Delete")
-
-@section Script {
-    <script>
-        $('.img-load').css({ 'display': 'none' }).load(function (e) {
-            console.log(e);
-            $(this).css({ 'display': 'block'});
-        });
-    </script>
-}

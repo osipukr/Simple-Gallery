@@ -151,6 +151,10 @@ var Layout = function () {
     };
 }();
 
+function logOut() {
+    $('#logOutForm').submit();
+}
+
 $(document).ready(function () {
     Layout.init();
 });

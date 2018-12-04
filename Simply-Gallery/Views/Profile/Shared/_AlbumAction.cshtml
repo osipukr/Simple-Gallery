@@ -1,13 +1,13 @@
 ﻿<div class="nav-action">
 
-    @using (Html.BeginForm("Index", "Profile", FormMethod.Get, new { @class = "form form-inline", @id = "form-search" }))
+    @using (Html.BeginForm("Index", "Profile", FormMethod.Get, new { @class = "form form-inline", @id = "action-search" }))
     {
         <input class="form-control" type="search" name="search" value="@ViewBag.Search" placeholder="Поиск" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Найти <i class="fas fa-search"></i></button>
+        <button class="btn btn-success" type="submit">Найти <i class="fas fa-search"></i></button>
     }
 
-    <div class="dropdown show">
-        <button class="btn btn-secondary dropdown-toggle" href="" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <div id="action-sort" class="dropdown show">
+        <button class="btn btn-info dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Сортировка <i class="fas fa-sort"></i>
         </button>
         <div class="dropdown-menu pull-right" aria-labelledby="dropdownMenuLink">

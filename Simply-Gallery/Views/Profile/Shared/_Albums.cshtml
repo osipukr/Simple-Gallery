@@ -14,6 +14,7 @@
                 <p>По вашему запросу ничего не найдено ;(</p>
             }
             <img src="@Url.Content("~/Content/profile/img/empty-album.jpg")" alt=":(" title="Альбомов нет" />
+
         </div>
     }
     else
@@ -26,13 +27,13 @@
                     <div class="album-image">
                         @if (album.Photos.Count() == 0)
                         {
-                            <img src="@Url.Content("~/Content/profile/img/noroot.png")" alt="Фото альбома" title="В альбоме нету фотографий">
+                            <img class="lazy" data-original="@Url.Content("~/Content/profile/img/noroot.png")" alt="Фото альбома" title="В альбоме нету фотографий">
                         }
                         else
                         {
-                            <img class="img-load" src="@Url.Action("GetPhoto", new { photoId = album.Photos.Last().Id })" alt="Фото альбома" title="Последняя фотография в альбоме">
+                            <img class="lazy" data-original="@Url.Action("GetPhoto", new { photoId = album.Photos.Last().Id })" alt="Фото альбома" title="Последняя фотография в альбоме">
                         }
-
+                        <div class="overlay-img">@album.Name</div>
                     </div>
 
                     <div class="album-name" style="cursor:default">
@@ -47,23 +48,32 @@
 
                     <div class="album-bottom">
                         <div class="album-buttons">
-                            <button class="btn btn-primary" onclick="location.href='@Url.Action("Album", new { albumId = album.Id })'" title="Перейти к альбому">
-                                Перейти <i class="far fa-arrow-alt-circle-right"></i>
-                            </button>
-                            
-                            <button class="btn btn-primary" onclick="location.href='@Url.Action("EditAlbum", new { albumId = album.Id })'" title="Изменить альбом">
-                                Изменить <i class="far fa-edit"></i>
-                            </button>
-                            
-                            <button class="btn btn-primary" onclick="deleteAction('@Url.Action("DeleteAlbum", new { albumId = album.Id })')" data-toggle="modal" data-target="#deleteModal" title="Удалить альбом">
-                                Удалить <i class="far fa-trash-alt"></i>
-                            </button>
+
+                            <div id="album-butt-action" class="btn-group">
+
+                                <button type="button" class="btn btn-primary" onclick="myLocation('@Url.Action("Album", new { albumId = album.Id })')" title="Перейти к альбому">Перейти</button>
+
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a onclick="myLocation('@Url.Action("EditAlbum", new { albumId = album.Id })')" title="Изменить альбом">Изменить альбом</a>
+                                    </li>
+                                    <li>
+                                        <a onclick="deleteAction('@Url.Action("DeleteAlbum", new { albumId = album.Id })')" data-toggle="modal" data-target="#deleteModal" title="Удалить альбом">Удалить альбом</a>
+                                    </li>
+                                </ul>
+
+                            </div>
+
                         </div>
 
                         <div class="album-date">
                             @if (album.Date != null)
                             {
-                                <small>@album.Date.Value.ToShortDateString()</small>
+                                <small title="Дата создания альбома">@album.Date.Value.ToShortDateString()</small>
                             }
                         </div>
 
