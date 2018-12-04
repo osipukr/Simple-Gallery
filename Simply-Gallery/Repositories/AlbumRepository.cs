@@ -34,6 +34,11 @@ namespace Simply_Gallery.Repositories
                 foreach (var album in result)
                 {
                     album.Photos = await _photoRepository.GetAllAsync(x => x.AlbumId == album.Id);
+
+                    foreach (var photo in album.Photos)
+                    {
+                        photo.Album = album;
+                    }
                 }
             }
 
@@ -51,6 +56,11 @@ namespace Simply_Gallery.Repositories
                 if(result != null)
                 {
                     result.Photos = await _photoRepository.GetAllAsync(x => x.AlbumId == result.Id);
+
+                    foreach (var photo in result.Photos)
+                    {
+                        photo.Album = result;
+                    }
                 }
             }
 

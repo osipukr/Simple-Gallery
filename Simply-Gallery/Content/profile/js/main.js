@@ -45,10 +45,10 @@ function logOut() {
 $(document).ready(function () {
 
     //Lazy loader
-    $('img.lazy').lazyload({
+    $('.lazy').lazyload({
         //event: "lazyload",
         effect: 'fadeIn',
-        effectspeed: 1000
+        effectspeed: 500
     }).trigger("lazyload");
 
     

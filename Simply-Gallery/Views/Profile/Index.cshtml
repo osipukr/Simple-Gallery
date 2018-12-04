@@ -7,13 +7,15 @@
     ViewBag.TitleDelete = "альбом";
 }
 
-<div class="title">
+<div class="property-title">
     <h2>Список всех альбомов</h2>
 </div>
 
+<hr />
+
 @Html.Partial("Shared/_AlbumAction")
 
-<div class="add">
+<div class="albums-add">
     <p>Хотите создать новый альбом ?</p>
     <button class="btn btn-primary" onclick="myLocation('@Url.Action("AddAlbum")')">Создать</button>
 </div>

@@ -249,24 +249,8 @@ namespace Simply_Gallery.Controllers
             return RedirectToAction("Index");
         }
 
-        //[HttpPost]
-        //public async Task<ActionResult> SearchAlbum()
-        //{
-        //    var userId = User.Identity.GetUserId();
-        //    var requests = Request.Params["Search"];
-        //    var albums = await _albumService.GetAlbumsAsync(a => a.UserId == userId);
-
-        //    if(!string.IsNullOrEmpty(requests))
-        //    {
-        //        return PartialView("Shared/_Albums", albums.Where(a => a.Name.ToLower().Contains(requests) || a.Description.ToLower().Contains(requests)));
-        //    }
-
-        //    return PartialView("Shared/_Albums", albums);
-        //}
-
         //
-        // GET: /Profile/Setting
-
+        // GET: /Profile/AddPhoto
         public async Task<ActionResult> AddPhoto(int? albumId)
         {
             if(albumId != null)

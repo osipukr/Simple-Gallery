@@ -3,6 +3,7 @@
 
     if (!IsAjax)
     {
+
         Layout = "~/Views/Profile/Shared/_Layout.cshtml";
     }
 }
@@ -14,6 +15,10 @@
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        @Html.Label("image-upload", "Загрузка изображения", new { @class = "control-label" })
+    </div>
 
     <div class="form-group">
         <input id="image-upload" name="image" type="file" />

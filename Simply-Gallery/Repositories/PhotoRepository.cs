@@ -12,10 +12,6 @@ namespace Simply_Gallery.Repositories
 {
     public class PhotoRepository : IRepository<Photo>
     {
-        public PhotoRepository()
-        {
-        }
-
         public async Task<IQueryable<Photo>> GetAllAsync(Expression<Func<Photo, bool>> predicate)
         {
             var result = new List<Photo>();
