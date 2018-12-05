@@ -23,22 +23,17 @@ namespace Simply_Gallery
         {
             var container = new UnityContainer();
 
-            //container.RegisterType<IPhotoRepository, PhotoRepository>();
-            //container.RegisterType<IPhotoService, PhotoService>();
-            //container.RegisterType<IAlbumRepository, AlbumRepository>();
-            //container.RegisterType<IAlbumService, AlbumService>();
-
-            container.RegisterType<IRepository<Photo>, PhotoRepository>();
-            container.RegisterType<IPhotoService, PhotoService>();
-            container.RegisterType<IRepository<Album>, AlbumRepository>();
-            container.RegisterType<IAlbumService, AlbumService>();
-
             RegisterTypes(container);
             return container;
         }
 
         public static void RegisterTypes(IUnityContainer container)
         {
+            container.RegisterType<IRepository<Photo>, PhotoRepository>();
+            container.RegisterType<IPhotoService, PhotoService>();
+            container.RegisterType<IRepository<Album>, AlbumRepository>();
+            container.RegisterType<IAlbumService, AlbumService>();
+
             container.RegisterType<HomeController>(new InjectionConstructor());
             container.RegisterType<AdminController>(new InjectionConstructor());
         }

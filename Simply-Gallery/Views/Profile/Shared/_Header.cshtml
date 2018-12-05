@@ -10,21 +10,21 @@
                 <a href="@Url.Action("Setting", new { act = "changeAvatar" })">
                     @if (!Model.UserIsImage)
                     {
-                        <img class="lazy" data-original="@Url.Content("~/Content/profile/img/user.svg")" alt="аватар" title="default" />
+                        <img class="lazy" data-original="@Url.Content("~/Content/profile/img/user.svg")" alt="аватар" title="Аватар профиля" />
                     }
                     else
                     {
-                        <img class="lazy" data-original="@Url.Action("GetUserPhoto")" alt="аватар" title="@Model.UserName" />
+                        <img class="lazy" data-original="@Url.Action("GetUserPhoto")" alt="аватар" title="Аватар профиля" />
                     }
                     <div class="overlay"></div>
                 </a>
             </div>
             
             <div class="info">
-                <h1>@Model.UserName</h1>
+                <h1 title="@Model.UserName">@Model.UserName</h1>
                 @foreach (var role in Model.UserRoles)
                 {
-                    <p>@role</p>
+                    <p title="@role">@role</p>
                 }
             </div>
 
@@ -52,13 +52,11 @@
     </div>
 
     <div class="bottom">
-        <!-- Social Icons -->
         <ul class="icons">
             <li><a href="https://vk.com/osipykr" class="icon"><i class="fab fa-vk"></i><span class="label">VK</span></a></li>
             <li><a href="https://github.com/fredstone624" class="icon"><i class="fab fa-github"></i><span class="label">Github</span></a></li>
             <li><a href="http://www.bstu.by/" class="icon"><i class="fas fa-university"></i><span class="label">University</span></a></li>
             <li><a href="mailto:fredstone624@gmail.com" class="icon"><i class="fas fa-envelope"></i><span class="label">Email</span></a></li>
         </ul>
-
     </div>
 </div>

@@ -1,22 +1,24 @@
 ﻿@{
+    if (!IsAjax)
+    {
+        Layout = "~/Views/Profile/Shared/_Layout.cshtml";
+    }
+
     ViewBag.Title = "Настройки";
     ViewBag.AjaxOptions = new AjaxOptions
     {
         UpdateTargetId = "property",
         HttpMethod = "Get"
     };
-
-    if (!IsAjax)
-    {
-        Layout = "~/Views/Profile/Shared/_Layout.cshtml";
-    }
 }
 
-<h2>@ViewBag.Title</h2>
+<div class="property-title">
+    <h2>@ViewBag.Title</h2>
+</div>
+
 <hr />
 
-<p class="text-success" style="text-align:left">@TempData["Message"]</p>
-
+<p class="text-success">@TempData["Message"]</p>
 <div style="text-align:left">
 
     <dl class="dl-horizontal">

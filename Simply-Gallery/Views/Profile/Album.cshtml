@@ -5,8 +5,16 @@
     Layout = "~/Views/Profile/Shared/_Layout.cshtml";
 }
 
-<div class="title">
+<div class="property-title">
     <h2>Список всех фотографий альбома</h2>
+</div>
+
+<hr />
+
+<div class="add-item">
+    <p>Хотите добавить новую фотографию ?</p>
+    <button class="btn btn-primary" onclick="myLocation('@Url.Action("AddPhoto", new { albumId = Model.Id })')">Добавить</button>
+    <button class="btn btn-primary" onclick="myLocation('@Url.Action("Index")')">Вернуться назад</button>
 </div>
 
 <hr />
@@ -15,30 +23,26 @@
 {
     <div class="album-null">
         <p>@string.Format("В альбоме '{0}' нету фотографий", Model.Name)</p>
-        <img src="@Url.Content("~/Content/profile/img/empty-album.jpg")" alt=":(" title="Фоток нет" />
+        <img class="lazy" data-original="@Url.Content("~/Content/profile/img/empty-album.jpg")" alt=":(" title="Фоток нет" />
     </div>
 }
 else
 {
     <div class="photos">
+
         <div class="zoom-gallery">
             @foreach (var photo in Model.Photos)
             {
-                <button href="@Url.Action("GetPhoto", new { photoId = photo.Id })" class="photo-link">
-                    <img class="lazy" data-original="@Url.Action("GetPhoto", new { photoId = photo.Id })">
+                <button href="@Url.Action("Photo", new { photoId = photo.Id })" class="photo-link">
+                    <img class="lazy" data-original="@Url.Action("Photo", new { photoId = photo.Id })">
                 </button>
             }
         </div>
+
     </div>
 }
 
 <hr />
-<div class="add">
-    <p>Хотите добавить новую фотографию ?</p>
-    <button class="btn btn-primary" onclick="myLocation('@Url.Action("AddPhoto", new { albumId = Model.Id })')">Добавить</button>
-</div>
-
-<button class="btn btn-primary" onclick="myLocation('@Url.Action("Index")')">Вернуться назад</button>
 
 @section Style {
     <link href="@Url.Content("~/Content/home/vendor/magnific-popup/magnific-popup.css")" rel="stylesheet" type="text/css" />

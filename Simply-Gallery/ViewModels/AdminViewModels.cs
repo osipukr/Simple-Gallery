@@ -21,12 +21,12 @@ namespace Simply_Gallery.ViewModels
         [ScaffoldColumn(false)]
         public string OldName { get; set; }
 
+        [ScaffoldColumn(false)]
+        public string OldDescription { get; set; }
+
         [Display(Name = "Название")]
         [StringLength(15, MinimumLength = 3)]
         public string NewName { get; set; }
-
-        [ScaffoldColumn(false)]
-        public string OldDescription { get; set; }
 
         [Display(Name = "Описание")]
         [StringLength(30)]
@@ -36,8 +36,7 @@ namespace Simply_Gallery.ViewModels
     public class UsersRoleViewModel
     {
         public string Name { get; set; }
-
-        public List<ApplicationUser> Users { get; set; }
+        public ICollection<ApplicationUser> Users { get; set; }
 
         public UsersRoleViewModel()
         {

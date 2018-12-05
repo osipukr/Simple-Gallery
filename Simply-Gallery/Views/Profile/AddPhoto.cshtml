@@ -5,7 +5,10 @@
     Layout = "~/Views/Profile/Shared/_Layout.cshtml";
 }
 
-<h2>@ViewBag.Title</h2>
+<div class="property-title">
+    <h2>@ViewBag.Title</h2>
+</div>
+
 <hr />
 
 @using (Html.BeginForm("AddPhoto", "Profile", FormMethod.Post, new { @class = "form", enctype = "multipart/form-data" }))
@@ -20,7 +23,7 @@
     </div>
 
     <div class="form-group">
-        <input type="submit" class="btn btn-primary" value="Загрузить" />
+        <button class="btn btn-primary">Загрузить</button>
     </div>
 }
 

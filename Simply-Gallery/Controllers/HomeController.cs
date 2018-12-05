@@ -134,6 +134,7 @@ namespace Simply_Gallery.Controllers
         //
         // POST: /Home/LogOut
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult LogOut()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);

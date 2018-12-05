@@ -311,11 +311,11 @@ hr {
     font-size: 1.8rem;
 }
 
-.albums-add {
+.add-item {
     margin-top: 50px;
-    margin-bottom: 10px;
+    margin-bottom: 50px;
 }
-    .albums-add p {
+    .add-item p {
         margin-bottom: 10px;
     }
 
@@ -531,10 +531,6 @@ hr {
             -webkit-justify-content: space-between;
             justify-content: space-between;
         }
-
-            #logo .info {
-                max-width: 50%;
-            }
 
         #nav ul li a {
             font-size: 0.9em;
@@ -978,6 +974,10 @@ table {
 
 .text-danger {
     padding-left: 50px;
+}
+
+.text-success {
+    text-align: left;
 }
 
 .header-visible {

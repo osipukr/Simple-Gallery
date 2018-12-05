@@ -10,19 +10,17 @@
 <div class="property-title">
     <h2>Список всех альбомов</h2>
 </div>
-
 <hr />
 
 @Html.Partial("Shared/_AlbumAction")
 
-<div class="albums-add">
-    <p>Хотите создать новый альбом ?</p>
+<div class="add-item">
+    <p>Может хотите создать новый альбом ?</p>
     <button class="btn btn-primary" onclick="myLocation('@Url.Action("AddAlbum")')">Создать</button>
 </div>
 
 <hr />
-
-<p class="text-success" style="text-align:left">@TempData["Message"]</p>
+<p class="text-success">@TempData["Message"]</p>
 
 @Html.Partial("Shared/_Albums", Model)
 

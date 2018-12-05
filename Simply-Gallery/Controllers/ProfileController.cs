@@ -297,18 +297,13 @@ namespace Simply_Gallery.Controllers
         {
             if(photoId != null)
             {
-                var photo = await _photoService.GetPhotoAsync(p => p.Id == photoId.Value);
+                var userId = User.Identity.GetUserId();
+                var photo = await _photoService.GetPhotoAsync(p => p.Id == photoId.Value && p.Album.UserId == userId);
 
                 if (photo != null)
                 {
-                    var userId = User.Identity.GetUserId();
-                    var album = await _albumService.GetAlbumAsync(a => a.Id == photo.AlbumId && a.UserId == userId);
-
-                    if (album != null)
-                    {
-                        await _photoService.DeletePhotoAsync(p => p.Id == photoId.Value);
-                        return RedirectToAction("Album", new { albumId = album.Id });
-                    }
+                    await _photoService.DeletePhotoAsync(p => p.Id == photoId.Value);
+                    return RedirectToAction("Album", new { albumId = photo.AlbumId });
                 }
             }
                 
@@ -317,31 +312,28 @@ namespace Simply_Gallery.Controllers
 
         //
         // GET: Profile/GetPhoto
-        public async Task<ActionResult> GetPhoto(int? photoId)
+        public async Task<FileContentResult> Photo(int? photoId)
         {
             if(photoId != null)
             {
-                var photo = await _photoService.GetPhotoAsync(p => p.Id == photoId.Value);
+                var userId = User.Identity.GetUserId();
+                var photo = await _photoService.GetPhotoAsync(p => p.Id == photoId.Value && p.Album.UserId == userId);
 
                 if (photo != null)
                 {
-                    var userId = User.Identity.GetUserId();
-                    var album = await _albumService.GetAlbumAsync(a => a.Id == photo.AlbumId && a.UserId == userId);
-
-                    if (album != null)
-                    {
-                        return File(photo.Image, photo.ImageMimeType);
-                    }
+                    return File(photo.Image, photo.ImageMimeType);
                 }
             }
 
-            Response.StatusCode = 404;
-            return View("Error");
+            //Response.StatusCode = 404;
+            //return View("Error");
+
+            return null;
         }
 
         //
         // GET: /Profile/GetUserPhoto
-        public async Task<ActionResult> GetUserPhoto()
+        public async Task<FileContentResult> GetUserPhoto()
         {
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
@@ -387,7 +379,7 @@ namespace Simply_Gallery.Controllers
                 }
 
                 TempData["Message"] = "Пароль успешно изменен";
-                return JavaScript(string.Format("location.href='{0}'", Url.Action("Setting")));
+                return JavaScript(string.Format("myLocation('{0}')", Url.Action("Setting")));
             }
 
             AddErrors(result);
@@ -416,7 +408,7 @@ namespace Simply_Gallery.Controllers
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                     TempData["Message"] = "Имя пользователя успешно изменено";
-                    return JavaScript(string.Format("location.href='{0}'", Url.Action("Setting")));
+                    return JavaScript(string.Format("myLocation('{0}')", Url.Action("Setting")));
                 }
 
                 AddErrors(result);
@@ -447,7 +439,7 @@ namespace Simply_Gallery.Controllers
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                     TempData["Message"] = "Почта успешно изменена";
-                    return JavaScript(string.Format("location.href='{0}'", Url.Action("Setting")));
+                    return JavaScript(string.Format("myLocation('{0}')", Url.Action("Setting")));
                 }
 
                 AddErrors(result);
@@ -486,7 +478,7 @@ namespace Simply_Gallery.Controllers
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                     TempData["Message"] = "Аватар пользователя успешно изменён";
-                    return JavaScript(string.Format("location.href='{0}'", Url.Action("Setting")));
+                    return JavaScript(string.Format("myLocation('{0}')", Url.Action("Setting")));
                 }
 
                 AddErrors(result);
@@ -494,6 +486,12 @@ namespace Simply_Gallery.Controllers
 
             return PartialView("Setting/_ChangeAvatar");
         }
+
+        //protected override void HandleUnknownAction(string actionName)
+        //{
+        //    Response.StatusCode = 404;
+        //    View("Error").ExecuteResult(ControllerContext);
+        //}
 
         protected override void Dispose(bool disposing)
         {

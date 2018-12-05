@@ -24,14 +24,13 @@
 
     <!-- Main -->
     <div id="main">
+
         <div id="property">
             @RenderBody()
-            <div id="setting-property"></div>
         </div>
 
         <!-- Footer -->
         <div id="footer">
-            <!-- Copyright -->
             <ul class="copyright">
                 <li>&copy; Simply Gallery</li>
                 <li>Developer: Roman Osipyk</li>
@@ -53,5 +52,6 @@
     @RenderSection("Script", required: false)
 
     <script src="@Url.Content("~/Content/profile/js/main.js")"></script>
+
 </body>
 </html>

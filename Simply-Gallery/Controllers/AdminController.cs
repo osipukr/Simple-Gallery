@@ -89,7 +89,7 @@ namespace Simply_Gallery.Controllers
                 return RedirectToAction("Index");
             }
 
-            ModelState.AddModelError("", "Ошибка при создании новой роли");
+            AddErrors(result);
             return View(model);
         }
 
@@ -97,9 +97,8 @@ namespace Simply_Gallery.Controllers
         // GET: /Admin/Edit
         public async Task<ActionResult> Edit(string roleId)
         {
-            if(roleId == null)
+            if (roleId == null)
             {
-                TempData["Message"] = "Ошибка";
                 return RedirectToAction("Index");
             }
 
@@ -163,7 +162,6 @@ namespace Simply_Gallery.Controllers
         {
             if (roleId == null)
             {
-                TempData["Message"] = "Ошибка";
                 return RedirectToAction("Index");
             }
 
@@ -173,13 +171,12 @@ namespace Simply_Gallery.Controllers
             {
                 var result = await RoleManager.DeleteAsync(role);
 
-                if (!result.Succeeded)
+                if (result.Succeeded)
                 {
-                    AddErrors(result);
+                    TempData["Message"] = "Роль успешно удалена";
                 }
             }
 
-            TempData["Message"] = "Роль успешно удалена";
             return RedirectToAction("Index");
         }
 
@@ -189,7 +186,6 @@ namespace Simply_Gallery.Controllers
         {
             if (roleId == null)
             {
-                TempData["Message"] = "Ошибка";
                 return RedirectToAction("Index");
             }
 
@@ -201,14 +197,9 @@ namespace Simply_Gallery.Controllers
             }
 
             var roleModel = new UsersRoleViewModel { Name = role.Name };
-            foreach (var item in role.Users)
+            foreach (var userRole in role.Users)
             {
-                var user = await UserManager.FindByIdAsync(item.UserId);
-
-                if (user != null)
-                {
-                    roleModel.Users.Add(user);
-                }
+                roleModel.Users.Add(await UserManager.FindByIdAsync(userRole.UserId));
             }
 
             return View(roleModel);
