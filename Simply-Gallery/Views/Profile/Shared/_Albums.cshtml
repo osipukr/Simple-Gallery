@@ -16,7 +16,7 @@
             {
                 <div class="album">
 
-                    <div class="album-image">
+                    <a class="album-image" onclick="myLocation('@Url.Action("Album", new { albumId = album.Id })')">
                         @if (album.Photos.Count() == 0)
                         {
                             <img class="lazy" data-original="@Url.Content("~/Content/profile/img/defaul-album-img.png")" alt="Фото альбома" title="В альбоме нету фотографий">
@@ -26,7 +26,7 @@
                             <img class="lazy" data-original="@Url.Action("Photo", new { photoId = album.Photos.Last().Id })" alt="Фото альбома" title="Последняя фотография в альбоме">
                         }
                         <div class="overlay-img">@album.Name</div>
-                    </div>
+                    </a>
 
                     <div class="album-name" style="cursor:default">
                         <h4><strong>Название альбома:</strong></h4>

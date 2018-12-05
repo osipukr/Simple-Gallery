@@ -141,6 +141,12 @@ namespace Simply_Gallery.Controllers
             return RedirectToAction("Index");
         }
 
+        protected override void HandleUnknownAction(string actionName)
+        {
+            Response.StatusCode = 404;
+            View("Error").ExecuteResult(ControllerContext);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

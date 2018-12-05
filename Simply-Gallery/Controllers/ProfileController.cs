@@ -487,11 +487,11 @@ namespace Simply_Gallery.Controllers
             return PartialView("Setting/_ChangeAvatar");
         }
 
-        //protected override void HandleUnknownAction(string actionName)
-        //{
-        //    Response.StatusCode = 404;
-        //    View("Error").ExecuteResult(ControllerContext);
-        //}
+        protected override void HandleUnknownAction(string actionName)
+        {
+            Response.StatusCode = 404;
+            View("Error").ExecuteResult(ControllerContext);
+        }
 
         protected override void Dispose(bool disposing)
         {
