@@ -23,7 +23,7 @@
 {
     <div class="album-null">
         <p>@string.Format("В альбоме '{0}' нету фотографий", Model.Name)</p>
-        <img class="lazy" data-original="@Url.Content("~/Content/profile/img/empty-album.jpg")" alt=":(" title="Фоток нет" />
+        <img src="@Url.Content("~/Content/profile/img/empty-album.jpg")" alt=":(" title="Фоток нет" />
     </div>
 }
 else
@@ -34,7 +34,7 @@ else
             @foreach (var photo in Model.Photos)
             {
                 <button href="@Url.Action("Photo", new { photoId = photo.Id })" class="photo-link">
-                    <img class="lazy" data-original="@Url.Action("Photo", new { photoId = photo.Id })">
+                    <img class="lazy" src="@Url.Action("Photo", new { photoId = photo.Id })">
                 </button>
             }
         </div>

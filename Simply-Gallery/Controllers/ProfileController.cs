@@ -325,14 +325,47 @@ namespace Simply_Gallery.Controllers
                 }
             }
 
-            //Response.StatusCode = 404;
-            //return View("Error");
-
             return null;
         }
 
+        //public byte[] ImageResize(byte[] image, string mimeType, bool thumb)
+        //{
+        //    var ext = mimeType.Split(new char[] { '/' }).Last();
+
+        //    // Define the versions to generate
+        //    var versions = new Dictionary<string, string>
+        //    {
+        //        { "_thumb", "width=100&height=100&crop=auto&format=" + ext },  // Crop to square thumbnail
+        //        { "_medium", "maxwidth=250&maxheight=150&format=" + ext },     // Fit inside 400x400 area, jpeg
+        //        { "_large", "maxwidth=900&maxheight=900&format=" + ext }          // Fit inside 1900x1200 area
+        //    };
+
+        //    var imageStream = new MemoryStream(image);
+        //    byte[] result = null;
+
+        //    if (thumb)
+        //    {
+        //        using (var thumbStream = new MemoryStream())
+        //        {
+        //            ImageBuilder.Current.Build(imageStream, thumbStream, new ResizeSettings(versions["_medium"]));
+        //            result = thumbStream.ToArray();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        using (var originalStream = new MemoryStream())
+        //        {
+        //            ImageBuilder.Current.Build(imageStream, originalStream, new ResizeSettings(versions["_large"]));
+        //            result = originalStream.ToArray();
+        //        }
+        //    }
+
+        //    return result;
+        //}
+
         //
         // GET: /Profile/GetUserPhoto
+
         public async Task<FileContentResult> GetUserPhoto()
         {
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
