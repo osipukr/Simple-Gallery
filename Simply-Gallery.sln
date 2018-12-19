@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28010.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simply-Gallery", "Simply-Gallery\Simply-Gallery.csproj", "{0CA4722F-E21F-4575-BBC5-C28772D56409}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simply-Gallery.DAL", "Simply-Gallery.DAL\Simply-Gallery.DAL.csproj", "{D89FA47A-EB71-4A4C-BB3D-B52E7C0CD091}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{0CA4722F-E21F-4575-BBC5-C28772D56409}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CA4722F-E21F-4575-BBC5-C28772D56409}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CA4722F-E21F-4575-BBC5-C28772D56409}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D89FA47A-EB71-4A4C-BB3D-B52E7C0CD091}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D89FA47A-EB71-4A4C-BB3D-B52E7C0CD091}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D89FA47A-EB71-4A4C-BB3D-B52E7C0CD091}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D89FA47A-EB71-4A4C-BB3D-B52E7C0CD091}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
